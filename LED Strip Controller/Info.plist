@@ -26,6 +26,8 @@
 	<string>Copyright © 2018 Jaden Bernal. All rights reserved.</string>
 	<key>NSMainStoryboardFile</key>
 	<string>Main</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app requires microphone access to analyze music</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 </dict>

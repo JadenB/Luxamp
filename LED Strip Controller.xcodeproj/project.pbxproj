@@ -7,12 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7D884BC021CB75B700FAD263 /* AudioKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D884BBE21CB75B700FAD263 /* AudioKit.framework */; };
+		7D884BC121CB75B700FAD263 /* AudioKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D884BBF21CB75B700FAD263 /* AudioKitUI.framework */; };
 		7DFE038021CB2C8800D6288F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE037F21CB2C8800D6288F /* AppDelegate.swift */; };
 		7DFE038221CB2C8800D6288F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE038121CB2C8800D6288F /* ViewController.swift */; };
 		7DFE038421CB2C8900D6288F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7DFE038321CB2C8900D6288F /* Assets.xcassets */; };
 		7DFE038721CB2C8900D6288F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DFE038521CB2C8900D6288F /* Main.storyboard */; };
 		7DFE039321CB2C8900D6288F /* LED_Strip_ControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE039221CB2C8900D6288F /* LED_Strip_ControllerTests.swift */; };
 		7DFE039E21CB2C8900D6288F /* LED_Strip_ControllerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE039D21CB2C8900D6288F /* LED_Strip_ControllerUITests.swift */; };
+		7DFE03AE21CB304900D6288F /* ColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE03AD21CB304900D6288F /* ColorView.swift */; };
+		7DFE03B521CB6F8C00D6288F /* AudioReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE03B421CB6F8C00D6288F /* AudioReader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +37,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7D884BBE21CB75B700FAD263 /* AudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AudioKit.framework; sourceTree = "<group>"; };
+		7D884BBF21CB75B700FAD263 /* AudioKitUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AudioKitUI.framework; sourceTree = "<group>"; };
 		7DFE037C21CB2C8800D6288F /* LED Strip Controller.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LED Strip Controller.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DFE037F21CB2C8800D6288F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7DFE038121CB2C8800D6288F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -46,6 +52,8 @@
 		7DFE039921CB2C8900D6288F /* LED Strip ControllerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "LED Strip ControllerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DFE039D21CB2C8900D6288F /* LED_Strip_ControllerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LED_Strip_ControllerUITests.swift; sourceTree = "<group>"; };
 		7DFE039F21CB2C8900D6288F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7DFE03AD21CB304900D6288F /* ColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorView.swift; sourceTree = "<group>"; };
+		7DFE03B421CB6F8C00D6288F /* AudioReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioReader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +61,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D884BC121CB75B700FAD263 /* AudioKitUI.framework in Frameworks */,
+				7D884BC021CB75B700FAD263 /* AudioKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,6 +90,7 @@
 				7DFE039121CB2C8900D6288F /* LED Strip ControllerTests */,
 				7DFE039C21CB2C8900D6288F /* LED Strip ControllerUITests */,
 				7DFE037D21CB2C8800D6288F /* Products */,
+				7DFE03AF21CB6D4400D6288F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -100,6 +111,8 @@
 				7DFE038121CB2C8800D6288F /* ViewController.swift */,
 				7DFE038321CB2C8900D6288F /* Assets.xcassets */,
 				7DFE038521CB2C8900D6288F /* Main.storyboard */,
+				7DFE03AD21CB304900D6288F /* ColorView.swift */,
+				7DFE03B421CB6F8C00D6288F /* AudioReader.swift */,
 				7DFE038821CB2C8900D6288F /* Info.plist */,
 				7DFE038921CB2C8900D6288F /* LED_Strip_Controller.entitlements */,
 			);
@@ -122,6 +135,15 @@
 				7DFE039F21CB2C8900D6288F /* Info.plist */,
 			);
 			path = "LED Strip ControllerUITests";
+			sourceTree = "<group>";
+		};
+		7DFE03AF21CB6D4400D6288F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7D884BBE21CB75B700FAD263 /* AudioKit.framework */,
+				7D884BBF21CB75B700FAD263 /* AudioKitUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -254,7 +276,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7DFE03AE21CB304900D6288F /* ColorView.swift in Sources */,
 				7DFE038221CB2C8800D6288F /* ViewController.swift in Sources */,
+				7DFE03B521CB6F8C00D6288F /* AudioReader.swift in Sources */,
 				7DFE038021CB2C8800D6288F /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -421,17 +445,24 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "LED Strip Controller/LED_Strip_Controller.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)";
+				GCC_OPTIMIZATION_LEVEL = s;
 				INFOPLIST_FILE = "LED Strip Controller/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				OTHER_LDFLAGS = (
+					"-lstdc++",
+					"-all_load",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "jadenbernal.LED-Strip-Controller";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
+				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
@@ -439,17 +470,23 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "LED Strip Controller/LED_Strip_Controller.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)";
 				INFOPLIST_FILE = "LED Strip Controller/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				OTHER_LDFLAGS = (
+					"-lstdc++",
+					"-all_load",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "jadenbernal.LED-Strip-Controller";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
+				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};
