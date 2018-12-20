@@ -1,0 +1,576 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		7DFE038021CB2C8800D6288F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE037F21CB2C8800D6288F /* AppDelegate.swift */; };
+		7DFE038221CB2C8800D6288F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE038121CB2C8800D6288F /* ViewController.swift */; };
+		7DFE038421CB2C8900D6288F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7DFE038321CB2C8900D6288F /* Assets.xcassets */; };
+		7DFE038721CB2C8900D6288F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DFE038521CB2C8900D6288F /* Main.storyboard */; };
+		7DFE039321CB2C8900D6288F /* LED_Strip_ControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE039221CB2C8900D6288F /* LED_Strip_ControllerTests.swift */; };
+		7DFE039E21CB2C8900D6288F /* LED_Strip_ControllerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE039D21CB2C8900D6288F /* LED_Strip_ControllerUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		7DFE038F21CB2C8900D6288F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7DFE037421CB2C8800D6288F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7DFE037B21CB2C8800D6288F;
+			remoteInfo = "LED Strip Controller";
+		};
+		7DFE039A21CB2C8900D6288F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7DFE037421CB2C8800D6288F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7DFE037B21CB2C8800D6288F;
+			remoteInfo = "LED Strip Controller";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		7DFE037C21CB2C8800D6288F /* LED Strip Controller.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LED Strip Controller.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7DFE037F21CB2C8800D6288F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		7DFE038121CB2C8800D6288F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		7DFE038321CB2C8900D6288F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7DFE038621CB2C8900D6288F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		7DFE038821CB2C8900D6288F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7DFE038921CB2C8900D6288F /* LED_Strip_Controller.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LED_Strip_Controller.entitlements; sourceTree = "<group>"; };
+		7DFE038E21CB2C8900D6288F /* LED Strip ControllerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "LED Strip ControllerTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7DFE039221CB2C8900D6288F /* LED_Strip_ControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LED_Strip_ControllerTests.swift; sourceTree = "<group>"; };
+		7DFE039421CB2C8900D6288F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7DFE039921CB2C8900D6288F /* LED Strip ControllerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "LED Strip ControllerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7DFE039D21CB2C8900D6288F /* LED_Strip_ControllerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LED_Strip_ControllerUITests.swift; sourceTree = "<group>"; };
+		7DFE039F21CB2C8900D6288F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7DFE037921CB2C8800D6288F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7DFE038B21CB2C8900D6288F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7DFE039621CB2C8900D6288F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		7DFE037321CB2C8800D6288F = {
+			isa = PBXGroup;
+			children = (
+				7DFE037E21CB2C8800D6288F /* LED Strip Controller */,
+				7DFE039121CB2C8900D6288F /* LED Strip ControllerTests */,
+				7DFE039C21CB2C8900D6288F /* LED Strip ControllerUITests */,
+				7DFE037D21CB2C8800D6288F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		7DFE037D21CB2C8800D6288F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7DFE037C21CB2C8800D6288F /* LED Strip Controller.app */,
+				7DFE038E21CB2C8900D6288F /* LED Strip ControllerTests.xctest */,
+				7DFE039921CB2C8900D6288F /* LED Strip ControllerUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7DFE037E21CB2C8800D6288F /* LED Strip Controller */ = {
+			isa = PBXGroup;
+			children = (
+				7DFE037F21CB2C8800D6288F /* AppDelegate.swift */,
+				7DFE038121CB2C8800D6288F /* ViewController.swift */,
+				7DFE038321CB2C8900D6288F /* Assets.xcassets */,
+				7DFE038521CB2C8900D6288F /* Main.storyboard */,
+				7DFE038821CB2C8900D6288F /* Info.plist */,
+				7DFE038921CB2C8900D6288F /* LED_Strip_Controller.entitlements */,
+			);
+			path = "LED Strip Controller";
+			sourceTree = "<group>";
+		};
+		7DFE039121CB2C8900D6288F /* LED Strip ControllerTests */ = {
+			isa = PBXGroup;
+			children = (
+				7DFE039221CB2C8900D6288F /* LED_Strip_ControllerTests.swift */,
+				7DFE039421CB2C8900D6288F /* Info.plist */,
+			);
+			path = "LED Strip ControllerTests";
+			sourceTree = "<group>";
+		};
+		7DFE039C21CB2C8900D6288F /* LED Strip ControllerUITests */ = {
+			isa = PBXGroup;
+			children = (
+				7DFE039D21CB2C8900D6288F /* LED_Strip_ControllerUITests.swift */,
+				7DFE039F21CB2C8900D6288F /* Info.plist */,
+			);
+			path = "LED Strip ControllerUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		7DFE037B21CB2C8800D6288F /* LED Strip Controller */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7DFE03A221CB2C8900D6288F /* Build configuration list for PBXNativeTarget "LED Strip Controller" */;
+			buildPhases = (
+				7DFE037821CB2C8800D6288F /* Sources */,
+				7DFE037921CB2C8800D6288F /* Frameworks */,
+				7DFE037A21CB2C8800D6288F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "LED Strip Controller";
+			productName = "LED Strip Controller";
+			productReference = 7DFE037C21CB2C8800D6288F /* LED Strip Controller.app */;
+			productType = "com.apple.product-type.application";
+		};
+		7DFE038D21CB2C8900D6288F /* LED Strip ControllerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7DFE03A521CB2C8900D6288F /* Build configuration list for PBXNativeTarget "LED Strip ControllerTests" */;
+			buildPhases = (
+				7DFE038A21CB2C8900D6288F /* Sources */,
+				7DFE038B21CB2C8900D6288F /* Frameworks */,
+				7DFE038C21CB2C8900D6288F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7DFE039021CB2C8900D6288F /* PBXTargetDependency */,
+			);
+			name = "LED Strip ControllerTests";
+			productName = "LED Strip ControllerTests";
+			productReference = 7DFE038E21CB2C8900D6288F /* LED Strip ControllerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		7DFE039821CB2C8900D6288F /* LED Strip ControllerUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7DFE03A821CB2C8900D6288F /* Build configuration list for PBXNativeTarget "LED Strip ControllerUITests" */;
+			buildPhases = (
+				7DFE039521CB2C8900D6288F /* Sources */,
+				7DFE039621CB2C8900D6288F /* Frameworks */,
+				7DFE039721CB2C8900D6288F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7DFE039B21CB2C8900D6288F /* PBXTargetDependency */,
+			);
+			name = "LED Strip ControllerUITests";
+			productName = "LED Strip ControllerUITests";
+			productReference = 7DFE039921CB2C8900D6288F /* LED Strip ControllerUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		7DFE037421CB2C8800D6288F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1010;
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = "Jaden Bernal";
+				TargetAttributes = {
+					7DFE037B21CB2C8800D6288F = {
+						CreatedOnToolsVersion = 10.1;
+					};
+					7DFE038D21CB2C8900D6288F = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = 7DFE037B21CB2C8800D6288F;
+					};
+					7DFE039821CB2C8900D6288F = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = 7DFE037B21CB2C8800D6288F;
+					};
+				};
+			};
+			buildConfigurationList = 7DFE037721CB2C8800D6288F /* Build configuration list for PBXProject "LED Strip Controller" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 7DFE037321CB2C8800D6288F;
+			productRefGroup = 7DFE037D21CB2C8800D6288F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7DFE037B21CB2C8800D6288F /* LED Strip Controller */,
+				7DFE038D21CB2C8900D6288F /* LED Strip ControllerTests */,
+				7DFE039821CB2C8900D6288F /* LED Strip ControllerUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7DFE037A21CB2C8800D6288F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7DFE038421CB2C8900D6288F /* Assets.xcassets in Resources */,
+				7DFE038721CB2C8900D6288F /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7DFE038C21CB2C8900D6288F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7DFE039721CB2C8900D6288F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7DFE037821CB2C8800D6288F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7DFE038221CB2C8800D6288F /* ViewController.swift in Sources */,
+				7DFE038021CB2C8800D6288F /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7DFE038A21CB2C8900D6288F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7DFE039321CB2C8900D6288F /* LED_Strip_ControllerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7DFE039521CB2C8900D6288F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7DFE039E21CB2C8900D6288F /* LED_Strip_ControllerUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7DFE039021CB2C8900D6288F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7DFE037B21CB2C8800D6288F /* LED Strip Controller */;
+			targetProxy = 7DFE038F21CB2C8900D6288F /* PBXContainerItemProxy */;
+		};
+		7DFE039B21CB2C8900D6288F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7DFE037B21CB2C8800D6288F /* LED Strip Controller */;
+			targetProxy = 7DFE039A21CB2C8900D6288F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		7DFE038521CB2C8900D6288F /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7DFE038621CB2C8900D6288F /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		7DFE03A021CB2C8900D6288F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		7DFE03A121CB2C8900D6288F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		7DFE03A321CB2C8900D6288F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "LED Strip Controller/LED_Strip_Controller.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "LED Strip Controller/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "jadenbernal.LED-Strip-Controller";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+			};
+			name = Debug;
+		};
+		7DFE03A421CB2C8900D6288F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "LED Strip Controller/LED_Strip_Controller.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "LED Strip Controller/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "jadenbernal.LED-Strip-Controller";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+			};
+			name = Release;
+		};
+		7DFE03A621CB2C8900D6288F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "LED Strip ControllerTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "jadenbernal.LED-Strip-ControllerTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LED Strip Controller.app/Contents/MacOS/LED Strip Controller";
+			};
+			name = Debug;
+		};
+		7DFE03A721CB2C8900D6288F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "LED Strip ControllerTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "jadenbernal.LED-Strip-ControllerTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LED Strip Controller.app/Contents/MacOS/LED Strip Controller";
+			};
+			name = Release;
+		};
+		7DFE03A921CB2C8900D6288F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "LED Strip ControllerUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "jadenbernal.LED-Strip-ControllerUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TEST_TARGET_NAME = "LED Strip Controller";
+			};
+			name = Debug;
+		};
+		7DFE03AA21CB2C8900D6288F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "LED Strip ControllerUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "jadenbernal.LED-Strip-ControllerUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TEST_TARGET_NAME = "LED Strip Controller";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7DFE037721CB2C8800D6288F /* Build configuration list for PBXProject "LED Strip Controller" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7DFE03A021CB2C8900D6288F /* Debug */,
+				7DFE03A121CB2C8900D6288F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7DFE03A221CB2C8900D6288F /* Build configuration list for PBXNativeTarget "LED Strip Controller" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7DFE03A321CB2C8900D6288F /* Debug */,
+				7DFE03A421CB2C8900D6288F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7DFE03A521CB2C8900D6288F /* Build configuration list for PBXNativeTarget "LED Strip ControllerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7DFE03A621CB2C8900D6288F /* Debug */,
+				7DFE03A721CB2C8900D6288F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7DFE03A821CB2C8900D6288F /* Build configuration list for PBXNativeTarget "LED Strip ControllerUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7DFE03A921CB2C8900D6288F /* Debug */,
+				7DFE03AA21CB2C8900D6288F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 7DFE037421CB2C8800D6288F /* Project object */;
+}
