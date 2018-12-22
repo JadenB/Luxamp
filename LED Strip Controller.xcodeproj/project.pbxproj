@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		7D884BC021CB75B700FAD263 /* AudioKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D884BBE21CB75B700FAD263 /* AudioKit.framework */; };
 		7D884BC121CB75B700FAD263 /* AudioKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D884BBF21CB75B700FAD263 /* AudioKitUI.framework */; };
+		7D884BC821CC47FD00FAD263 /* Visualizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D884BC721CC47FD00FAD263 /* Visualizer.swift */; };
+		7D884BD421CCC36B00FAD263 /* SpectrumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D884BD321CCC36B00FAD263 /* SpectrumView.swift */; };
+		7D884BD621CCD8EE00FAD263 /* LevelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D884BD521CCD8EE00FAD263 /* LevelView.swift */; };
+		7D884BD821CD96A200FAD263 /* FFTProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D884BD721CD96A200FAD263 /* FFTProcessor.swift */; };
 		7DFE038021CB2C8800D6288F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE037F21CB2C8800D6288F /* AppDelegate.swift */; };
 		7DFE038221CB2C8800D6288F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE038121CB2C8800D6288F /* ViewController.swift */; };
 		7DFE038421CB2C8900D6288F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7DFE038321CB2C8900D6288F /* Assets.xcassets */; };
@@ -16,7 +20,7 @@
 		7DFE039321CB2C8900D6288F /* LED_Strip_ControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE039221CB2C8900D6288F /* LED_Strip_ControllerTests.swift */; };
 		7DFE039E21CB2C8900D6288F /* LED_Strip_ControllerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE039D21CB2C8900D6288F /* LED_Strip_ControllerUITests.swift */; };
 		7DFE03AE21CB304900D6288F /* ColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE03AD21CB304900D6288F /* ColorView.swift */; };
-		7DFE03B521CB6F8C00D6288F /* AudioReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE03B421CB6F8C00D6288F /* AudioReader.swift */; };
+		7DFE03B521CB6F8C00D6288F /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE03B421CB6F8C00D6288F /* AudioEngine.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,6 +43,10 @@
 /* Begin PBXFileReference section */
 		7D884BBE21CB75B700FAD263 /* AudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AudioKit.framework; sourceTree = "<group>"; };
 		7D884BBF21CB75B700FAD263 /* AudioKitUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AudioKitUI.framework; sourceTree = "<group>"; };
+		7D884BC721CC47FD00FAD263 /* Visualizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visualizer.swift; sourceTree = "<group>"; };
+		7D884BD321CCC36B00FAD263 /* SpectrumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrumView.swift; sourceTree = "<group>"; };
+		7D884BD521CCD8EE00FAD263 /* LevelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelView.swift; sourceTree = "<group>"; };
+		7D884BD721CD96A200FAD263 /* FFTProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFTProcessor.swift; sourceTree = "<group>"; };
 		7DFE037C21CB2C8800D6288F /* LED Strip Controller.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LED Strip Controller.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DFE037F21CB2C8800D6288F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7DFE038121CB2C8800D6288F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -53,7 +61,7 @@
 		7DFE039D21CB2C8900D6288F /* LED_Strip_ControllerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LED_Strip_ControllerUITests.swift; sourceTree = "<group>"; };
 		7DFE039F21CB2C8900D6288F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7DFE03AD21CB304900D6288F /* ColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorView.swift; sourceTree = "<group>"; };
-		7DFE03B421CB6F8C00D6288F /* AudioReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioReader.swift; sourceTree = "<group>"; };
+		7DFE03B421CB6F8C00D6288F /* AudioEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngine.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,12 +115,16 @@
 		7DFE037E21CB2C8800D6288F /* LED Strip Controller */ = {
 			isa = PBXGroup;
 			children = (
+				7D884BC721CC47FD00FAD263 /* Visualizer.swift */,
 				7DFE037F21CB2C8800D6288F /* AppDelegate.swift */,
 				7DFE038121CB2C8800D6288F /* ViewController.swift */,
 				7DFE038321CB2C8900D6288F /* Assets.xcassets */,
 				7DFE038521CB2C8900D6288F /* Main.storyboard */,
 				7DFE03AD21CB304900D6288F /* ColorView.swift */,
-				7DFE03B421CB6F8C00D6288F /* AudioReader.swift */,
+				7D884BD321CCC36B00FAD263 /* SpectrumView.swift */,
+				7D884BD721CD96A200FAD263 /* FFTProcessor.swift */,
+				7D884BD521CCD8EE00FAD263 /* LevelView.swift */,
+				7DFE03B421CB6F8C00D6288F /* AudioEngine.swift */,
 				7DFE038821CB2C8900D6288F /* Info.plist */,
 				7DFE038921CB2C8900D6288F /* LED_Strip_Controller.entitlements */,
 			);
@@ -276,9 +288,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D884BD621CCD8EE00FAD263 /* LevelView.swift in Sources */,
 				7DFE03AE21CB304900D6288F /* ColorView.swift in Sources */,
+				7D884BD421CCC36B00FAD263 /* SpectrumView.swift in Sources */,
 				7DFE038221CB2C8800D6288F /* ViewController.swift in Sources */,
-				7DFE03B521CB6F8C00D6288F /* AudioReader.swift in Sources */,
+				7DFE03B521CB6F8C00D6288F /* AudioEngine.swift in Sources */,
+				7D884BD821CD96A200FAD263 /* FFTProcessor.swift in Sources */,
+				7D884BC821CC47FD00FAD263 /* Visualizer.swift in Sources */,
 				7DFE038021CB2C8800D6288F /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -448,7 +464,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)";
-				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_OPTIMIZATION_LEVEL = fast;
 				INFOPLIST_FILE = "LED Strip Controller/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -473,6 +489,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)";
+				GCC_OPTIMIZATION_LEVEL = fast;
 				INFOPLIST_FILE = "LED Strip Controller/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

@@ -7,35 +7,36 @@
 //
 
 import Cocoa
+import AudioKit
+import AudioKitUI
 
-class ViewController: NSViewController, AudioReaderDelegate {
+class ViewController: NSViewController, FFTProcessorDelegate {
     
-    var prevAmp: Double = 0.0
+    @IBOutlet weak var level1: LevelView!
+    var audioReader: AudioEngine!
+    var ffttap: AKFFTTap!
+    var processor = FFTProcessor(buckets: 512)
     
-    func updateWithAudioData(frequency: Double, amplitude: Double) {
-        let newColor = NSColor(hue: 1, saturation: 1, brightness: CGFloat(amplitude), alpha: 1)
-        color = newColor
-    }
-    
-    @IBOutlet weak var colorView: ColorView!
-    var colorPanel: NSColorPanel!
-    var audioRead: AudioReader!
-    
-    var color: NSColor = NSColor(hue: 0, saturation: 1, brightness: 1, alpha: 1) {
-        didSet {
-            colorView.fillColor = color
-        }
-    }
+    @IBOutlet weak var spectrumView: SpectrumView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        audioRead = AudioReader(updateFrequency: 60, delegate: self)
+        audioReader = AudioEngine(updateFrequency: 0)
+        spectrumView.backgroundColor = NSColor.black
+        
+        level1.min = -72
+        level1.max = 0
+        level1.backgroundColor = .black
+        level1.color = .red
+        
+        processor.delegate = self
         // Do any additional setup after loading the view.
     }
     
     override func viewDidAppear() {
         super.viewDidAppear()
-        audioRead.start()
+        audioReader.start()
+        ffttap = AKFFTTap(audioReader.mic)
     }
 
     override var representedObject: Any? {
@@ -43,30 +44,18 @@ class ViewController: NSViewController, AudioReaderDelegate {
         // Update the view, if already loaded.
         }
     }
-
-    @IBAction func redButtonPressed(_ sender: Any) {
-        color = NSColor.red
+    
+    @IBAction func readFFTButtonPressed(_ sender: Any) {
+        Timer.scheduledTimer(timeInterval: 1.0/43.06640625, target: self, selector: #selector(updateSpec), userInfo: nil, repeats: true)
     }
     
-    @IBAction func greenButtonPressed(_ sender: Any) {
-        color = NSColor.green
+    @objc func updateSpec() {
+        processor.process(fft: ffttap.fftData)
     }
     
-    @IBAction func customButtonPressed(_ sender: Any) {
-        if colorPanel == nil {
-            colorPanel = NSColorPanel.shared
-            colorPanel.center()
-            colorPanel.setTarget(self)
-            colorPanel.setAction(#selector(colorPanelChanged))
-        }
-        
-        colorPanel.color = color
-        colorPanel.display()
-        colorPanel.makeKeyAndOrderFront(nil)
-    }
-    
-    @objc func colorPanelChanged() {
-        color = colorPanel.color
+    func didFinishProcessingFFT(_ p: FFTProcessor) {
+        spectrumView.updateSpectrum(spectrum: p.dbData)
+        level1.updateLevel(level: p.dbData[1])
     }
     
 

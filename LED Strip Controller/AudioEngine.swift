@@ -6,22 +6,24 @@
 //  Copyright © 2018 Jaden Bernal. All rights reserved.
 //
 
+// https://stackoverflow.com/questions/20408388/how-to-filter-fft-data-for-audio-visualisation
+
 import Foundation
 import AudioKit
 import AudioKitUI
 
-class AudioReader {
+class AudioEngine {
     
     var mic: AKMicrophone
     var tracker: AKFrequencyTracker
     var silence: AKBooster
     
-    var delegate: AudioReaderDelegate
+    var delegate: AudioReaderDelegate?
     let updateFrequency: Double
     
     var updateTimer = Timer()
     
-    init(updateFrequency: Double, delegate: AudioReaderDelegate) {
+    init(updateFrequency: Double) {
         AKSettings.audioInputEnabled = true
         mic = AKMicrophone()
         tracker = AKFrequencyTracker(mic)
@@ -29,7 +31,6 @@ class AudioReader {
         AudioKit.output = silence
         
         self.updateFrequency = updateFrequency
-        self.delegate = delegate
     }
     
     func start() {
@@ -39,6 +40,8 @@ class AudioReader {
             print("AudioKit failed to start")
             return
         }
+        
+        if updateFrequency == 0 || delegate == nil { return }
         
         DispatchQueue.main.async {
         
@@ -59,12 +62,14 @@ class AudioReader {
             return
         }
         
+        if updateFrequency == 0 || delegate == nil { return }
+        
         updateTimer.invalidate()
         updateTimer = Timer()
     }
     
     @objc func update() {
-        delegate.updateWithAudioData(frequency: tracker.frequency, amplitude: tracker.amplitude)
+        delegate?.updateWithAudioData(frequency: tracker.frequency, amplitude: tracker.amplitude)
     }
 }
 
