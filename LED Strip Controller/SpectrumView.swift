@@ -10,14 +10,14 @@ import Cocoa
 
 class SpectrumView: NSView {
     
-    var spectrumArray: [Double] = []
+    var spectrumArray: [Float] = []
     var color = NSColor.black
     var backgroundColor = NSColor.white
     
-    var max: Double = 0
-    var min: Double = -72
+    var max: Float = 1.0
+    var min: Float = 0.0
     
-    func updateSpectrum(spectrum: [Double]) {
+    func updateSpectrum(spectrum: [Float]) {
         spectrumArray = spectrum
         needsDisplay = true
     }
@@ -38,32 +38,30 @@ class SpectrumView: NSView {
         var x: CGFloat = 0
         let dx = (bounds.size.width) / CGFloat(bitmapWidth)
         
-        var lastX = x // log
-        
         for i in 0 ..< bitmapWidth  {
             let y = bounds.origin.y
-            let h = viewHeight * CGFloat( remapValueToBounds(spectrumArray[i]) )
-            var w = ceil(dx) + 1
-            x = linearToExponential(data: Double(i+1),
-                        screenY0: 0, screenY1: bounds.size.width,
-                        dataY0: 1, dataY1: CGFloat(bitmapWidth)) // log
-            w = x - lastX + 1 // log
+            let v = valueAt(position: i, bitmapWidth: bitmapWidth)
+            let h = viewHeight * CGFloat( remapValueToBounds(v) )
+            let w = dx + 1
             
-            //let r1  = CGRect(x: xOffset + x, y: y, width: w, height: h)
-            let r1  = CGRect(x: xOffset + lastX, y: y, width: w, height: h) // log
+            let r1  = CGRect(x: xOffset + x, y: y, width: w, height: h)
             NSColor(hue: CGFloat(i)/CGFloat(bitmapWidth), saturation: 1, brightness: 1, alpha: 1).setFill()
             r1.fill()
             
-            lastX = x // log
             x += dx
         }
     }
     
-    func linearToExponential(data: Double, screenY0:CGFloat, screenY1:CGFloat, dataY0:Double, dataY1:CGFloat) ->CGFloat{
-        return screenY0 + (log(CGFloat(data)) - log(CGFloat(dataY0))) / (log(CGFloat(dataY1)) - log(CGFloat(dataY0))) * (screenY1 - screenY0)
+    func valueAt(position: Int, bitmapWidth: Int) -> Float {
+        if(position == bitmapWidth - 1) {
+            return spectrumArray[bitmapWidth - 1]
+        }
+        let index: Float = Float(bitmapWidth) * (log2f(Float(bitmapWidth)) - log2f(Float(bitmapWidth - position))) / log2f(Float(bitmapWidth))
+        return spectrumArray[Int(index)]
+        
     }
     
-    func remapValueToBounds(_ value: Double) -> Double {
+    func remapValueToBounds(_ value: Float) -> Float {
         if value > max {
             return 1.0
         } else if value < min {

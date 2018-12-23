@@ -9,34 +9,48 @@
 import Cocoa
 import AudioKit
 import AudioKitUI
+import GistSwift
 
-class ViewController: NSViewController, FFTProcessorDelegate {
+class ViewController: NSViewController, AudioEngineBufferHandler, BufferProcessorDelegate {
     
-    @IBOutlet weak var level1: LevelView!
-    var audioReader: AudioEngine!
-    var ffttap: AKFFTTap!
-    var processor = FFTProcessor(buckets: 512)
+    var audioEngine: AudioEngine!
+    var bProcessor = BufferProcessor()
+    
+    var refreshTimer = Timer()
     
     @IBOutlet weak var spectrumView: SpectrumView!
+    @IBOutlet weak var level1: LevelView!
+    var levelIIR = BiasedIIRFilter(initialData: [0])
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        audioReader = AudioEngine(updateFrequency: 0)
-        spectrumView.backgroundColor = NSColor.black
+        audioEngine = AudioEngine(bufferSize: UInt32(BUFFER_SIZE))
         
-        level1.min = -72
-        level1.max = 0
+        spectrumView.backgroundColor = NSColor.black
+        spectrumView.min = -48
+        spectrumView.max = 4
+        
+        level1.min = 0
+        level1.max = 1
         level1.backgroundColor = .black
         level1.color = .red
         
-        processor.delegate = self
-        // Do any additional setup after loading the view.
+        levelIIR.upwardsAlpha = 0.7
+        
+        bProcessor.delegate = self
     }
     
     override func viewDidAppear() {
         super.viewDidAppear()
-        audioReader.start()
-        ffttap = AKFFTTap(audioReader.mic)
+        audioEngine.start()
+        refreshTimer = Timer.scheduledTimer(timeInterval: 1.0/43.06640625, target: self, selector: #selector(updateSpec), userInfo: nil, repeats: true)
+    }
+    
+    override func viewDidDisappear() {
+        super.viewDidDisappear()
+        audioEngine.stop()
+        refreshTimer.invalidate()
+        refreshTimer = Timer()
     }
 
     override var representedObject: Any? {
@@ -46,18 +60,25 @@ class ViewController: NSViewController, FFTProcessorDelegate {
     }
     
     @IBAction func readFFTButtonPressed(_ sender: Any) {
-        Timer.scheduledTimer(timeInterval: 1.0/43.06640625, target: self, selector: #selector(updateSpec), userInfo: nil, repeats: true)
+        
     }
     
     @objc func updateSpec() {
-        processor.process(fft: ffttap.fftData)
+        audioEngine.getBuffer(handler: self)
     }
     
-    func didFinishProcessingFFT(_ p: FFTProcessor) {
-        spectrumView.updateSpectrum(spectrum: p.dbData)
-        level1.updateLevel(level: p.dbData[0])
+    func didGetBuffer(buffer: [Float]) {
+        self.bProcessor.process(buffer: buffer)
     }
     
+    func didFinishProcessingBuffer(_ p: BufferProcessor) {
+        DispatchQueue.main.async {
+            self.spectrumView.updateSpectrum( spectrum: p.data )
+            
+            let level = self.levelIIR.applyFilter(toValue: p.gist.peakEnergy(), atIndex: 0)
+            self.level1.updateLevel(level: level)
+        }
+    }
 
 }
 

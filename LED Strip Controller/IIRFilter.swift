@@ -2,22 +2,22 @@
 
 class BiasedIIRFilter {
     
-    var downwardsAlpha: Double = 0.5 {
+    var downwardsAlpha: Float = 0.5 {
         didSet {
             oneMinusDAlpha = 1.0 - downwardsAlpha
         }
     }
     
-    var upwardsAlpha: Double = 0.5 {
+    var upwardsAlpha: Float = 0.5 {
         didSet {
             oneMinusUAlpha = 1.0 - upwardsAlpha
         }
     }
     
-    private var oneMinusDAlpha: Double = 0.5
-    private var oneMinusUAlpha: Double = 0.5
+    private var oneMinusDAlpha: Float = 0.5
+    private var oneMinusUAlpha: Float = 0.5
     
-    private var lastData: [Double]
+    private var lastData: [Float]
     
     var size: Int {
         get {
@@ -26,16 +26,16 @@ class BiasedIIRFilter {
     }
     
     init(size: Int) {
-        lastData = Array<Double>(repeating: 0.0, count: size)
+        lastData = Array<Float>(repeating: 0.0, count: size)
     }
     
-    init(initialData: [Double]) {
+    init(initialData: [Float]) {
         lastData = initialData
     }
     
-    func applyFilter(toValue value: Double, atIndex index: Int) -> Double {
+    func applyFilter(toValue value: Float, atIndex index: Int) -> Float {
         let oldValue = lastData[index]
-        var newValue = 0.0
+        var newValue: Float = 0.0
         if value == oldValue {
             return value
         } else if value > oldValue {
@@ -48,7 +48,7 @@ class BiasedIIRFilter {
         return newValue
     }
     
-    func applyFilter(toData data: inout [Double]) {
+    func applyFilter(toData data: inout [Float]) {
         assert(data.count == size)
         for i in 0..<size {
             data[i] = applyFilter(toValue: data[i], atIndex: i)

@@ -8,24 +8,23 @@
 
 import Foundation
 
-let SAMPLE_RATE: Double = 44_100
-
 class FFTProcessor {
     
     let fftSize: Int
-    var fftData: [Double]
-    var dbData: [Double]
+    private var fftData: [Float]
+    var data: [Float]
     
     var delegate: FFTProcessorDelegate?
     
-    var useAWeighting = true
+    var useAWeighting = false
     var useWindowing = false
     var useIIRFilter = true
+    var shouldConvertToDb = true
     var smoothingFactor = 1
     
     private var iirFilter: BiasedIIRFilter
     
-    private let aWeightFrequency: [Double] = [
+    private let aWeightFrequency: [Float] = [
         10, 12.5, 16, 20,
         25, 31.5, 40, 50,
         63, 80, 100, 125,
@@ -37,7 +36,7 @@ class FFTProcessor {
         16000, 20000
     ]
     
-    private let aWeightDecibels: [Double] = [
+    private let aWeightDecibels: [Float] = [
         -70.4, -63.4, -56.7, -50.5,
         -44.7, -39.4, -34.6, -30.2,
         -26.2, -22.5, -19.1, -16.1,
@@ -51,14 +50,14 @@ class FFTProcessor {
     
     init(buckets: Int) {
         fftSize = buckets
-        fftData = Array<Double>(repeating: 0.0, count: fftSize)
-        dbData = Array<Double>(repeating: 0.0, count: fftSize)
+        fftData = Array<Float>(repeating: 0.0, count: fftSize)
+        data = Array<Float>(repeating: 0.0, count: fftSize)
         iirFilter = BiasedIIRFilter(initialData: fftData)
         iirFilter.upwardsAlpha = 0.4
         iirFilter.downwardsAlpha = 0.7
     }
     
-    func process(fft: [Double]) {
+    func process(fft: [Float]) {
         var result = fft
         
         if useIIRFilter {
@@ -74,17 +73,21 @@ class FFTProcessor {
         }
         
         fftData = result
-        applyDbConversion(fftSize, &result)
-        dbData = result
+
+        if shouldConvertToDb {
+            applyDbConversion(fftSize, &result)
+        }
+        
+        data = result
         delegate?.didFinishProcessingFFT(self)
     }
     
-    private func applySmooth(_ data: inout [Double]) {
+    private func applySmooth(_ data: inout [Float]) {
         for i in stride(from: smoothingFactor, to: data.count, by: smoothingFactor) {
             let x0 = i - smoothingFactor
             let x1 = i
             
-            var maxx: Double = 0
+            var maxx: Float = 0
             for j in x0..<x1 {
                 maxx = max(maxx, data[j])
             }
@@ -100,19 +103,23 @@ class FFTProcessor {
             let y1 = data[x1]
             
             for j in x0..<x1 {
-                let mu: Double = Double(j - x0) / Double(smoothingFactor)
-                let mu2 = (1-cos(mu*Double.pi))/2;
+                let mu: Float = Float(j - x0) / Float(smoothingFactor)
+                let mu2 = (1-cos(mu*Float.pi))/2;
                 data[j] = y0*(1-mu2)+y1*mu2
             }
             
         }
     }
     
-    func convertToDB(_ value: Double) -> Double {
-        return 20 * log10(value)
+    func convertToDB(_ value: Float) -> Float {
+        // Gist
+        return 20 * log10(2 * value / Float(fftSize))
+        
+        // AudioKit
+        // return 20 * log10(value)
     }
     
-    func applyAWeightingToDb(value: Double, freq: Double) -> Double {
+    func applyAWeightingToDb(value: Float, freq: Float) -> Float {
         if freq < aWeightFrequency[0] {
             return value + aWeightDecibels[0]
         } else if freq > aWeightFrequency[aWeightFrequency.count - 1] {
@@ -130,9 +137,9 @@ class FFTProcessor {
         return 0.0
     }
     
-    private func applyDbConversion(_ fftSize: Int, _ data: inout [Double]) {
-        var frequency: Double = 0
-        let df: Double = SAMPLE_RATE / Double(fftSize * 2)
+    private func applyDbConversion(_ fftSize: Int, _ data: inout [Float]) {
+        var frequency: Float = 0
+        let df: Float = Float(SAMPLE_RATE) / Float(fftSize * 2)
         for i in 0..<fftSize {
             data[i] = convertToDB(data[i])
             
@@ -143,9 +150,9 @@ class FFTProcessor {
         }
     }
     
-    private func applyHanningWindow(_ data: inout [Double]) {
+    private func applyHanningWindow(_ data: inout [Float]) {
         for i in 0..<data.count {
-            data[i] = data[i] * 0.5 * (1.0 - cos(2.0 * Double.pi * Double(i) / Double(data.count)))
+            data[i] = data[i] * 0.5 * (1.0 - cos(2.0 * Float.pi * Float(i) / Float(data.count)))
         }
     }
     

@@ -12,67 +12,84 @@ import Foundation
 import AudioKit
 import AudioKitUI
 
+let BUFFER_SIZE: Int = 1_024
+let SAMPLE_RATE: Int = 44_100
+
 class AudioEngine {
     
     var mic: AKMicrophone
-    var tracker: AKFrequencyTracker
     var silence: AKBooster
+    var bufferSize: UInt32
     
-    var delegate: AudioReaderDelegate?
-    let updateFrequency: Double
+    private var sendBufferNextCycle = false
+    private var handler: AudioEngineBufferHandler?
     
-    var updateTimer = Timer()
-    
-    init(updateFrequency: Double) {
+    init(bufferSize: UInt32 = 1_024) {
+        self.bufferSize = bufferSize
         AKSettings.audioInputEnabled = true
         mic = AKMicrophone()
-        tracker = AKFrequencyTracker(mic)
-        silence = AKBooster(tracker, gain: 0)
+        silence = AKBooster(mic, gain: 0)
         AudioKit.output = silence
-        
-        self.updateFrequency = updateFrequency
+    }
+    
+    private func setupBufferTap(onNode node: AKNode?) {
+            node?.avAudioNode.installTap(
+                onBus: 0,
+                bufferSize: bufferSize,
+                format: nil) { [weak self] (buffer, _) in
+                    
+                    guard let strongSelf = self else {
+                        AKLog("Unable to create strong reference to self")
+                        return
+                    }
+                    
+                    buffer.frameLength = strongSelf.bufferSize
+                    let offset = Int(buffer.frameCapacity - buffer.frameLength)
+                    
+                    if let tail = buffer.floatChannelData?[0] {
+                        strongSelf.updateBuffer(tail + offset, withBufferSize: strongSelf.bufferSize)
+                    }
+            }
+    }
+    
+    private func removeBufferTap(fromNode node: AKNode?) {
+        node?.avAudioNode.removeTap(onBus: 0)
     }
     
     func start() {
         do {
             try AudioKit.start()
+            setupBufferTap(onNode: mic)
         } catch {
             print("AudioKit failed to start")
             return
-        }
-        
-        if updateFrequency == 0 || delegate == nil { return }
-        
-        DispatchQueue.main.async {
-        
-        self.updateTimer = Timer.scheduledTimer(timeInterval: 1 / self.updateFrequency,
-                             target: self,
-                             selector: #selector(self.update),
-                             userInfo: nil,
-                             repeats: true)
-            
         }
     }
     
     func stop() {
         do {
+            removeBufferTap(fromNode: mic)
             try AudioKit.stop()
         } catch {
             print("AudioKit failed to stop")
             return
         }
-        
-        if updateFrequency == 0 || delegate == nil { return }
-        
-        updateTimer.invalidate()
-        updateTimer = Timer()
     }
     
-    @objc func update() {
-        delegate?.updateWithAudioData(frequency: tracker.frequency, amplitude: tracker.amplitude)
+    private func updateBuffer(_ buffer: UnsafeMutablePointer<Float>, withBufferSize size: UInt32) {
+        if sendBufferNextCycle {
+            let bufferArray = Array<Float>(UnsafeBufferPointer(start: buffer, count: Int(size)))
+            handler?.didGetBuffer(buffer: bufferArray)
+            sendBufferNextCycle = false
+        }
+    }
+    
+    func getBuffer(handler: AudioEngineBufferHandler) {
+        self.handler = handler
+        sendBufferNextCycle = true
     }
 }
 
-protocol AudioReaderDelegate {
-    func updateWithAudioData(frequency: Double, amplitude: Double)
+protocol AudioEngineBufferHandler {
+    func didGetBuffer(buffer: [Float])
 }

@@ -10,14 +10,14 @@ import Cocoa
 
 class LevelView: NSView {
     
-    var level: Double = -Double.infinity
+    var level: Float = -Float.infinity
     var color = NSColor.black
     var backgroundColor = NSColor.white
     
-    var max: Double = 1.0
-    var min: Double = 0.0
+    var max: Float = 1.0
+    var min: Float = 0.0
     
-    func updateLevel(level: Double) {
+    func updateLevel(level: Float) {
         self.level = level
         needsDisplay = true
     }
@@ -42,7 +42,7 @@ class LevelView: NSView {
         r1.fill()
     }
     
-    func remapValueToBounds(_ value: Double) -> Double {
+    func remapValueToBounds(_ value: Float) -> Float {
         let scalingFactor = 1 / (max - min)
         return (value - min) * scalingFactor
     }

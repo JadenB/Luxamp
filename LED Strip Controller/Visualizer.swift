@@ -10,5 +10,5 @@ import Cocoa
 import AudioKit
 
 class Visualizer {
-    
+
 }
