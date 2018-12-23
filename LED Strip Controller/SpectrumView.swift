@@ -64,6 +64,11 @@ class SpectrumView: NSView {
     }
     
     func remapValueToBounds(_ value: Double) -> Double {
+        if value > max {
+            return 1.0
+        } else if value < min {
+            return 0.0
+        }
         let scalingFactor = 1 / (max - min)
         return (value - min) * scalingFactor
     }

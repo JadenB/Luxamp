@@ -12,7 +12,20 @@ let SAMPLE_RATE: Double = 44_100
 
 class FFTProcessor {
     
-    let aWeightFrequency: [Double] = [
+    let fftSize: Int
+    var fftData: [Double]
+    var dbData: [Double]
+    
+    var delegate: FFTProcessorDelegate?
+    
+    var useAWeighting = true
+    var useWindowing = false
+    var useIIRFilter = true
+    var smoothingFactor = 1
+    
+    private var iirFilter: BiasedIIRFilter
+    
+    private let aWeightFrequency: [Double] = [
         10, 12.5, 16, 20,
         25, 31.5, 40, 50,
         63, 80, 100, 125,
@@ -24,7 +37,7 @@ class FFTProcessor {
         16000, 20000
     ]
     
-    let aWeightDecibels: [Double] = [
+    private let aWeightDecibels: [Double] = [
         -70.4, -63.4, -56.7, -50.5,
         -44.7, -39.4, -34.6, -30.2,
         -26.2, -22.5, -19.1, -16.1,
@@ -36,33 +49,20 @@ class FFTProcessor {
         -6.6, -9.3
     ]
     
-    let fftSize: Int
-    private var lastIIR: [Double]
-    var fftData: [Double]
-    var dbData: [Double]
-    
-    var delegate: FFTProcessorDelegate?
-    
-    var useAWeighting = true
-    var useWindowing = false
-    
-    var useIIRFilter = true
-    var IIRAlpha = 0.6
-    
-    var smoothingFactor = 1
-    
     init(buckets: Int) {
         fftSize = buckets
-        lastIIR = Array<Double>(repeating: 0.0, count: fftSize)
-        fftData = lastIIR
-        dbData = lastIIR
+        fftData = Array<Double>(repeating: 0.0, count: fftSize)
+        dbData = Array<Double>(repeating: 0.0, count: fftSize)
+        iirFilter = BiasedIIRFilter(initialData: fftData)
+        iirFilter.upwardsAlpha = 0.4
+        iirFilter.downwardsAlpha = 0.7
     }
     
     func process(fft: [Double]) {
         var result = fft
         
         if useIIRFilter {
-            applyIIRFilter(&result)
+            iirFilter.applyFilter(toData: &result)
         }
         
         if smoothingFactor >= 1 {
@@ -77,14 +77,6 @@ class FFTProcessor {
         applyDbConversion(fftSize, &result)
         dbData = result
         delegate?.didFinishProcessingFFT(self)
-    }
-    
-    private func applyIIRFilter(_ data: inout [Double]) {
-        for i in 0..<fftSize {
-            //data[i] = IIRAlpha * lastIIR[i] + (1 - IIRAlpha) * data[i]
-            data[i] = max(IIRAlpha * lastIIR[i] + (1 - IIRAlpha) * data[i], data[i])
-            lastIIR[i] = data[i]
-        }
     }
     
     private func applySmooth(_ data: inout [Double]) {

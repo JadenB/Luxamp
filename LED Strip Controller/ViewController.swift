@@ -55,7 +55,7 @@ class ViewController: NSViewController, FFTProcessorDelegate {
     
     func didFinishProcessingFFT(_ p: FFTProcessor) {
         spectrumView.updateSpectrum(spectrum: p.dbData)
-        level1.updateLevel(level: p.dbData[1])
+        level1.updateLevel(level: p.dbData[0])
     }
     
 

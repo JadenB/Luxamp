@@ -13,6 +13,7 @@
 		7D884BD421CCC36B00FAD263 /* SpectrumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D884BD321CCC36B00FAD263 /* SpectrumView.swift */; };
 		7D884BD621CCD8EE00FAD263 /* LevelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D884BD521CCD8EE00FAD263 /* LevelView.swift */; };
 		7D884BD821CD96A200FAD263 /* FFTProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D884BD721CD96A200FAD263 /* FFTProcessor.swift */; };
+		7D884BDA21CEEB9000FAD263 /* IIRFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D884BD921CEEB9000FAD263 /* IIRFilter.swift */; };
 		7DFE038021CB2C8800D6288F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE037F21CB2C8800D6288F /* AppDelegate.swift */; };
 		7DFE038221CB2C8800D6288F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE038121CB2C8800D6288F /* ViewController.swift */; };
 		7DFE038421CB2C8900D6288F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7DFE038321CB2C8900D6288F /* Assets.xcassets */; };
@@ -47,6 +48,7 @@
 		7D884BD321CCC36B00FAD263 /* SpectrumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrumView.swift; sourceTree = "<group>"; };
 		7D884BD521CCD8EE00FAD263 /* LevelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelView.swift; sourceTree = "<group>"; };
 		7D884BD721CD96A200FAD263 /* FFTProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFTProcessor.swift; sourceTree = "<group>"; };
+		7D884BD921CEEB9000FAD263 /* IIRFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IIRFilter.swift; sourceTree = "<group>"; };
 		7DFE037C21CB2C8800D6288F /* LED Strip Controller.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LED Strip Controller.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DFE037F21CB2C8800D6288F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7DFE038121CB2C8800D6288F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 				7DFE03AD21CB304900D6288F /* ColorView.swift */,
 				7D884BD321CCC36B00FAD263 /* SpectrumView.swift */,
 				7D884BD721CD96A200FAD263 /* FFTProcessor.swift */,
+				7D884BD921CEEB9000FAD263 /* IIRFilter.swift */,
 				7D884BD521CCD8EE00FAD263 /* LevelView.swift */,
 				7DFE03B421CB6F8C00D6288F /* AudioEngine.swift */,
 				7DFE038821CB2C8900D6288F /* Info.plist */,
@@ -289,6 +292,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7D884BD621CCD8EE00FAD263 /* LevelView.swift in Sources */,
+				7D884BDA21CEEB9000FAD263 /* IIRFilter.swift in Sources */,
 				7DFE03AE21CB304900D6288F /* ColorView.swift in Sources */,
 				7D884BD421CCC36B00FAD263 /* SpectrumView.swift in Sources */,
 				7DFE038221CB2C8800D6288F /* ViewController.swift in Sources */,
