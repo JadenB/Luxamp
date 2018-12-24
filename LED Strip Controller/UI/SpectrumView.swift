@@ -17,9 +17,21 @@ class SpectrumView: NSView {
     var max: Float = 1.0
     var min: Float = 0.0
     
+    convenience init(min: Float, max: Float) {
+        self.init()
+        self.min = min
+        self.max = max
+    }
+    
     func updateSpectrum(spectrum: [Float]) {
         spectrumArray = spectrum
         needsDisplay = true
+    }
+    
+    override var isOpaque: Bool {
+        get {
+            return true
+        }
     }
 
     override func draw(_ dirtyRect: NSRect) {
@@ -45,7 +57,7 @@ class SpectrumView: NSView {
             let w = dx + 1
             
             let r1  = CGRect(x: xOffset + x, y: y, width: w, height: h)
-            NSColor(hue: CGFloat(i)/CGFloat(bitmapWidth), saturation: 1, brightness: 1, alpha: 1).setFill()
+            NSColor(hue: 0.9 * CGFloat(i)/CGFloat(bitmapWidth), saturation: 1, brightness: 1, alpha: 1).setFill()
             r1.fill()
             
             x += dx

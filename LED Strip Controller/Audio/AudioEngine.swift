@@ -15,21 +15,31 @@ import AudioKitUI
 let BUFFER_SIZE: Int = 1_024
 let SAMPLE_RATE: Int = 44_100
 
-class AudioEngine {
+class AudioEngine: BufferProcessorDelegate {
     
     var mic: AKMicrophone
     var silence: AKBooster
     var bufferSize: UInt32
+    var bProcessor: BufferProcessor
+    var refreshTimer: Timer
+    let refreshRate: Double
+    
+    var delegate: AudioEngineDelegate?
     
     private var sendBufferNextCycle = false
-    private var handler: AudioEngineBufferHandler?
     
-    init(bufferSize: UInt32 = 1_024) {
+    init(refreshRate: Double, bufferSize: UInt32 = 1_024) {
         self.bufferSize = bufferSize
         AKSettings.audioInputEnabled = true
         mic = AKMicrophone()
         silence = AKBooster(mic, gain: 0)
         AudioKit.output = silence
+        
+        self.refreshRate = refreshRate
+        refreshTimer = Timer()
+        
+        bProcessor = BufferProcessor()
+        bProcessor.delegate = self
     }
     
     private func setupBufferTap(onNode node: AKNode?) {
@@ -60,15 +70,20 @@ class AudioEngine {
         do {
             try AudioKit.start()
             setupBufferTap(onNode: mic)
+            refreshTimer = Timer.scheduledTimer(timeInterval: 1.0/refreshRate, target: self, selector: #selector(getBuffer), userInfo: nil, repeats: true)
         } catch {
             print("AudioKit failed to start")
             return
         }
+        
+        
     }
     
     func stop() {
         do {
             removeBufferTap(fromNode: mic)
+            refreshTimer.invalidate()
+            refreshTimer = Timer()
             try AudioKit.stop()
         } catch {
             print("AudioKit failed to stop")
@@ -78,18 +93,21 @@ class AudioEngine {
     
     private func updateBuffer(_ buffer: UnsafeMutablePointer<Float>, withBufferSize size: UInt32) {
         if sendBufferNextCycle {
-            let bufferArray = Array<Float>(UnsafeBufferPointer(start: buffer, count: Int(size)))
-            handler?.didGetBuffer(buffer: bufferArray)
             sendBufferNextCycle = false
+            let bufferArray = Array<Float>(UnsafeBufferPointer(start: buffer, count: Int(size)))
+            bProcessor.process(buffer: bufferArray)
         }
     }
     
-    func getBuffer(handler: AudioEngineBufferHandler) {
-        self.handler = handler
+    @objc func getBuffer() {
         sendBufferNextCycle = true
+    }
+    
+    func didFinishProcessingBuffer(_ bp: BufferProcessor) {
+        delegate?.didRefreshAudioEngine(withProcessor: bp)
     }
 }
 
-protocol AudioEngineBufferHandler {
-    func didGetBuffer(buffer: [Float])
+protocol AudioEngineDelegate {
+    func didRefreshAudioEngine(withProcessor p: BufferProcessor)
 }

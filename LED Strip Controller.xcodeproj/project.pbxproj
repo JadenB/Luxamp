@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7D14BC5721D0464700CF199F /* VisualizerSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D14BC5621D0464700CF199F /* VisualizerSettingsViewController.swift */; };
 		7D33777221CF142A00554841 /* GistSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D33777121CF142A00554841 /* GistSwift.framework */; };
 		7D33777521CF240C00554841 /* GistSwift.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7D33777421CF240C00554841 /* GistSwift.framework.dSYM */; };
 		7D33777721CF244300554841 /* GistSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7D33777121CF142A00554841 /* GistSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -14,20 +15,22 @@
 		7D33777B21CF244300554841 /* AudioKitUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7D884BBF21CB75B700FAD263 /* AudioKitUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7D33777D21CF247600554841 /* AudioKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D884BBE21CB75B700FAD263 /* AudioKit.framework */; };
 		7D33777E21CF247600554841 /* AudioKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D884BBF21CB75B700FAD263 /* AudioKitUI.framework */; };
-		7D33778021CF2C4900554841 /* BufferProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D33777F21CF2C4900554841 /* BufferProcessor.swift */; };
-		7D884BC821CC47FD00FAD263 /* Visualizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D884BC721CC47FD00FAD263 /* Visualizer.swift */; };
-		7D884BD421CCC36B00FAD263 /* SpectrumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D884BD321CCC36B00FAD263 /* SpectrumView.swift */; };
-		7D884BD621CCD8EE00FAD263 /* LevelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D884BD521CCD8EE00FAD263 /* LevelView.swift */; };
-		7D884BD821CD96A200FAD263 /* FFTProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D884BD721CD96A200FAD263 /* FFTProcessor.swift */; };
-		7D884BDA21CEEB9000FAD263 /* IIRFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D884BD921CEEB9000FAD263 /* IIRFilter.swift */; };
-		7DFE038021CB2C8800D6288F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE037F21CB2C8800D6288F /* AppDelegate.swift */; };
-		7DFE038221CB2C8800D6288F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE038121CB2C8800D6288F /* ViewController.swift */; };
+		7D33778321D027B900554841 /* FFTProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D884BD721CD96A200FAD263 /* FFTProcessor.swift */; };
+		7D33778421D027BA00554841 /* BufferProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D33777F21CF2C4900554841 /* BufferProcessor.swift */; };
+		7D33778521D027BB00554841 /* IIRFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D884BD921CEEB9000FAD263 /* IIRFilter.swift */; };
+		7D33778621D027BC00554841 /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE03B421CB6F8C00D6288F /* AudioEngine.swift */; };
+		7D33778721D027BF00554841 /* SpectrumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D884BD321CCC36B00FAD263 /* SpectrumView.swift */; };
+		7D33778821D027C000554841 /* ColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE03AD21CB304900D6288F /* ColorView.swift */; };
+		7D33778921D027C100554841 /* LevelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D884BD521CCD8EE00FAD263 /* LevelView.swift */; };
+		7D33778A21D027C200554841 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE037F21CB2C8800D6288F /* AppDelegate.swift */; };
+		7D33778B21D027C400554841 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE038121CB2C8800D6288F /* ViewController.swift */; };
+		7D33778C21D027C500554841 /* Visualizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D884BC721CC47FD00FAD263 /* Visualizer.swift */; };
+		7D33778E21D0281700554841 /* VisualizerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D33778D21D0281700554841 /* VisualizerController.swift */; };
+		7D33779021D035C800554841 /* AdaptiveRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D33778F21D035C800554841 /* AdaptiveRange.swift */; };
 		7DFE038421CB2C8900D6288F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7DFE038321CB2C8900D6288F /* Assets.xcassets */; };
 		7DFE038721CB2C8900D6288F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DFE038521CB2C8900D6288F /* Main.storyboard */; };
 		7DFE039321CB2C8900D6288F /* LED_Strip_ControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE039221CB2C8900D6288F /* LED_Strip_ControllerTests.swift */; };
 		7DFE039E21CB2C8900D6288F /* LED_Strip_ControllerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE039D21CB2C8900D6288F /* LED_Strip_ControllerUITests.swift */; };
-		7DFE03AE21CB304900D6288F /* ColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE03AD21CB304900D6288F /* ColorView.swift */; };
-		7DFE03B521CB6F8C00D6288F /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE03B421CB6F8C00D6288F /* AudioEngine.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,9 +77,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7D14BC5621D0464700CF199F /* VisualizerSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizerSettingsViewController.swift; sourceTree = "<group>"; };
 		7D33777121CF142A00554841 /* GistSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GistSwift.framework; path = Carthage/Build/Mac/GistSwift.framework; sourceTree = "<group>"; };
 		7D33777421CF240C00554841 /* GistSwift.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = GistSwift.framework.dSYM; path = Carthage/Build/Mac/GistSwift.framework.dSYM; sourceTree = "<group>"; };
 		7D33777F21CF2C4900554841 /* BufferProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BufferProcessor.swift; sourceTree = "<group>"; };
+		7D33778D21D0281700554841 /* VisualizerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizerController.swift; sourceTree = "<group>"; };
+		7D33778F21D035C800554841 /* AdaptiveRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveRange.swift; sourceTree = "<group>"; };
 		7D884BBE21CB75B700FAD263 /* AudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AudioKit.framework; sourceTree = "<group>"; };
 		7D884BBF21CB75B700FAD263 /* AudioKitUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AudioKitUI.framework; sourceTree = "<group>"; };
 		7D884BC721CC47FD00FAD263 /* Visualizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visualizer.swift; sourceTree = "<group>"; };
@@ -129,6 +135,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7D33778121D0274600554841 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				7D884BD321CCC36B00FAD263 /* SpectrumView.swift */,
+				7DFE03AD21CB304900D6288F /* ColorView.swift */,
+				7D884BD521CCD8EE00FAD263 /* LevelView.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		7D33778221D0277600554841 /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				7D884BD721CD96A200FAD263 /* FFTProcessor.swift */,
+				7D33777F21CF2C4900554841 /* BufferProcessor.swift */,
+				7D884BD921CEEB9000FAD263 /* IIRFilter.swift */,
+				7DFE03B421CB6F8C00D6288F /* AudioEngine.swift */,
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
 		7DFE037321CB2C8800D6288F = {
 			isa = PBXGroup;
 			children = (
@@ -154,18 +181,16 @@
 		7DFE037E21CB2C8800D6288F /* LED Strip Controller */ = {
 			isa = PBXGroup;
 			children = (
-				7D884BC721CC47FD00FAD263 /* Visualizer.swift */,
-				7DFE037F21CB2C8800D6288F /* AppDelegate.swift */,
-				7DFE038121CB2C8800D6288F /* ViewController.swift */,
-				7DFE038321CB2C8900D6288F /* Assets.xcassets */,
 				7DFE038521CB2C8900D6288F /* Main.storyboard */,
-				7DFE03AD21CB304900D6288F /* ColorView.swift */,
-				7D884BD321CCC36B00FAD263 /* SpectrumView.swift */,
-				7D884BD721CD96A200FAD263 /* FFTProcessor.swift */,
-				7D33777F21CF2C4900554841 /* BufferProcessor.swift */,
-				7D884BD921CEEB9000FAD263 /* IIRFilter.swift */,
-				7D884BD521CCD8EE00FAD263 /* LevelView.swift */,
-				7DFE03B421CB6F8C00D6288F /* AudioEngine.swift */,
+				7DFE038121CB2C8800D6288F /* ViewController.swift */,
+				7D884BC721CC47FD00FAD263 /* Visualizer.swift */,
+				7D33778D21D0281700554841 /* VisualizerController.swift */,
+				7D14BC5621D0464700CF199F /* VisualizerSettingsViewController.swift */,
+				7D33778F21D035C800554841 /* AdaptiveRange.swift */,
+				7DFE037F21CB2C8800D6288F /* AppDelegate.swift */,
+				7DFE038321CB2C8900D6288F /* Assets.xcassets */,
+				7D33778121D0274600554841 /* UI */,
+				7D33778221D0277600554841 /* Audio */,
 				7DFE038821CB2C8900D6288F /* Info.plist */,
 				7DFE038921CB2C8900D6288F /* LED_Strip_Controller.entitlements */,
 			);
@@ -332,16 +357,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7D884BD621CCD8EE00FAD263 /* LevelView.swift in Sources */,
-				7D884BDA21CEEB9000FAD263 /* IIRFilter.swift in Sources */,
-				7DFE03AE21CB304900D6288F /* ColorView.swift in Sources */,
-				7D884BD421CCC36B00FAD263 /* SpectrumView.swift in Sources */,
-				7D33778021CF2C4900554841 /* BufferProcessor.swift in Sources */,
-				7DFE038221CB2C8800D6288F /* ViewController.swift in Sources */,
-				7DFE03B521CB6F8C00D6288F /* AudioEngine.swift in Sources */,
-				7D884BD821CD96A200FAD263 /* FFTProcessor.swift in Sources */,
-				7D884BC821CC47FD00FAD263 /* Visualizer.swift in Sources */,
-				7DFE038021CB2C8800D6288F /* AppDelegate.swift in Sources */,
+				7D33778E21D0281700554841 /* VisualizerController.swift in Sources */,
+				7D33778621D027BC00554841 /* AudioEngine.swift in Sources */,
+				7D33778321D027B900554841 /* FFTProcessor.swift in Sources */,
+				7D33778C21D027C500554841 /* Visualizer.swift in Sources */,
+				7D14BC5721D0464700CF199F /* VisualizerSettingsViewController.swift in Sources */,
+				7D33778A21D027C200554841 /* AppDelegate.swift in Sources */,
+				7D33778B21D027C400554841 /* ViewController.swift in Sources */,
+				7D33778821D027C000554841 /* ColorView.swift in Sources */,
+				7D33778921D027C100554841 /* LevelView.swift in Sources */,
+				7D33778721D027BF00554841 /* SpectrumView.swift in Sources */,
+				7D33779021D035C800554841 /* AdaptiveRange.swift in Sources */,
+				7D33778421D027BA00554841 /* BufferProcessor.swift in Sources */,
+				7D33778521D027BB00554841 /* IIRFilter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

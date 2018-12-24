@@ -17,9 +17,21 @@ class LevelView: NSView {
     var max: Float = 1.0
     var min: Float = 0.0
     
+    convenience init(min: Float, max: Float) {
+        self.init()
+        self.min = min
+        self.max = max
+    }
+    
     func updateLevel(level: Float) {
         self.level = level
         needsDisplay = true
+    }
+    
+    override var isOpaque: Bool {
+        get {
+            return true
+        }
     }
     
     override func draw(_ dirtyRect: NSRect) {

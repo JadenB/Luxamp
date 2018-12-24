@@ -58,13 +58,13 @@ class FFTProcessor {
     }
     
     func process(fft: [Float]) {
-        var result = fft
+        var result = normalizeFFT(fft)
         
         if useIIRFilter {
             iirFilter.applyFilter(toData: &result)
         }
         
-        if smoothingFactor >= 1 {
+        if smoothingFactor > 1 {
             applySmooth(&result)
         }
         
@@ -111,12 +111,19 @@ class FFTProcessor {
         }
     }
     
-    func convertToDB(_ value: Float) -> Float {
-        // Gist
-        return 20 * log10(2 * value / Float(fftSize))
+    func normalizeFFT(_ fft: [Float]) -> [Float] {
+        var result = fft
+        let normFactor = 2 / Float(fftSize)
         
-        // AudioKit
-        // return 20 * log10(value)
+        for i in 0..<fft.count {
+            result[i] = fft[i] * normFactor
+        }
+        
+        return result
+    }
+    
+    func convertToDB(_ value: Float) -> Float {
+        return 20 * log10(value)
     }
     
     func applyAWeightingToDb(value: Float, freq: Float) -> Float {

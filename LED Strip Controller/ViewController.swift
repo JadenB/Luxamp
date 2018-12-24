@@ -11,72 +11,58 @@ import AudioKit
 import AudioKitUI
 import GistSwift
 
-class ViewController: NSViewController, AudioEngineBufferHandler, BufferProcessorDelegate {
+typealias AudioProcessor = BufferProcessor
+
+class ViewController: NSViewController, AudioEngineDelegate {
     
     var audioEngine: AudioEngine!
-    var bProcessor = BufferProcessor()
-    
-    var refreshTimer = Timer()
     
     @IBOutlet weak var spectrumView: SpectrumView!
-    @IBOutlet weak var level1: LevelView!
-    var levelIIR = BiasedIIRFilter(initialData: [0])
+    @IBOutlet weak var totalAmpLevel: LevelView!
+    @IBOutlet weak var totalAmpLabel: NSTextField!
+    @IBOutlet weak var colorView: NSColorWell!
+    
+    var levelIIR = BiasedIIRFilter(initialData: [0.0])
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        audioEngine = AudioEngine(bufferSize: UInt32(BUFFER_SIZE))
+        audioEngine = AudioEngine(refreshRate: 43.06640625, bufferSize: UInt32(BUFFER_SIZE))
+        audioEngine.delegate = self
         
-        spectrumView.backgroundColor = NSColor.black
+        spectrumView.backgroundColor = .black
+        spectrumView.color = .red
         spectrumView.min = -48
         spectrumView.max = 4
         
-        level1.min = 0
-        level1.max = 1
-        level1.backgroundColor = .black
-        level1.color = .red
+        totalAmpLevel.min = -72
+        totalAmpLevel.max = 2
+        totalAmpLevel.backgroundColor = .black
+        totalAmpLevel.color = .red
         
-        levelIIR.upwardsAlpha = 0.7
+        levelIIR.upwardsAlpha = 0.5
+        levelIIR.downwardsAlpha = 0.8
         
-        bProcessor.delegate = self
+        
     }
     
     override func viewDidAppear() {
         super.viewDidAppear()
         audioEngine.start()
-        refreshTimer = Timer.scheduledTimer(timeInterval: 1.0/43.06640625, target: self, selector: #selector(updateSpec), userInfo: nil, repeats: true)
     }
     
     override func viewDidDisappear() {
         super.viewDidDisappear()
         audioEngine.stop()
-        refreshTimer.invalidate()
-        refreshTimer = Timer()
-    }
-
-    override var representedObject: Any? {
-        didSet {
-        // Update the view, if already loaded.
-        }
     }
     
-    @IBAction func readFFTButtonPressed(_ sender: Any) {
-        
-    }
-    
-    @objc func updateSpec() {
-        audioEngine.getBuffer(handler: self)
-    }
-    
-    func didGetBuffer(buffer: [Float]) {
-        self.bProcessor.process(buffer: buffer)
-    }
-    
-    func didFinishProcessingBuffer(_ p: BufferProcessor) {
+    func didRefreshAudioEngine(withProcessor p: BufferProcessor) {
         DispatchQueue.main.async {
-            self.spectrumView.updateSpectrum( spectrum: p.data )
+            self.spectrumView.updateSpectrum( spectrum: p.spectrumDecibelData )
             
-            let level = self.levelIIR.applyFilter(toValue: p.gist.peakEnergy(), atIndex: 0)
-            self.level1.updateLevel(level: level)
+            var level = max(p.amplitudeInDecibels(), self.totalAmpLevel.min)
+            level = self.levelIIR.applyFilter(toValue: level, atIndex: 0)
+            self.totalAmpLevel.updateLevel(level: level)
+            self.totalAmpLabel.stringValue = String(format: "%.1f", level)
         }
     }
 
