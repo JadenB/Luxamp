@@ -45,7 +45,7 @@ class BufferProcessor: FFTProcessorDelegate {
         return fftProcessor.convertToDB(gist.peakEnergy())
     }
     
-    func averageMagOfRange(_ range: Range<Int>, withFalloff falloff: Int) -> Float {
+    func averageMagOfRange(_ range: ClosedRange<Int>, withFalloff falloff: Int) -> Float {
         var sum: Float = 0.0
         var denom: Float = Float(range.count)
         let magSpec = gist.magnitudeSpectrum()
@@ -60,12 +60,12 @@ class BufferProcessor: FFTProcessorDelegate {
             
             for i in 1...falloff {
                 fallOffFactor -= df
-                if range.startIndex - i >= 0 {
-                    sum += magSpec[range.startIndex - i] * fallOffFactor
+                if range.lowerBound - i >= 0 {
+                    sum += magSpec[range.lowerBound - i] * fallOffFactor
                     denom += fallOffFactor
                 }
-                if range.endIndex + i < magSpec.count {
-                    sum += magSpec[range.endIndex + i] * fallOffFactor
+                if range.upperBound + i < magSpec.count {
+                    sum += magSpec[range.upperBound + i] * fallOffFactor
                     denom += fallOffFactor
                 }
             }
@@ -81,3 +81,18 @@ protocol BufferProcessorDelegate {
     func didFinishProcessingBuffer(_ bp: BufferProcessor)
 }
 
+enum AudioFunctions: Int {
+    case magnitudeSpectrum = 0
+    case rootMeanSquare
+    case peakEnergy
+    case spectralDifference
+    case spectralCentroid
+    case spectralCrest
+    case spectralFlatness
+    case spectralKurtosis
+    case energyDifference
+    case spectralDifferenceHWR
+    case complexSpectralDifference
+    case highFrequencyContent
+    case pitch
+}

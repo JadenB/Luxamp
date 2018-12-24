@@ -17,6 +17,8 @@ class LevelView: NSView {
     var max: Float = 1.0
     var min: Float = 0.0
     
+    private var shouldClear = false
+    
     convenience init(min: Float, max: Float) {
         self.init()
         self.min = min
@@ -28,6 +30,15 @@ class LevelView: NSView {
         needsDisplay = true
     }
     
+    func disable() {
+        shouldClear = true
+        needsDisplay = true
+    }
+    
+    func enable() {
+        shouldClear = false
+    }
+    
     override var isOpaque: Bool {
         get {
             return true
@@ -35,11 +46,13 @@ class LevelView: NSView {
     }
     
     override func draw(_ dirtyRect: NSRect) {
-        super.draw(dirtyRect)
-        
         // Fill background
         backgroundColor.setFill()
         bounds.fill()
+        
+        if shouldClear {
+            return
+        }
         
         // Fill spectrum bars
         color.setFill()

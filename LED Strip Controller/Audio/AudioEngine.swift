@@ -7,6 +7,7 @@
 //
 
 // https://stackoverflow.com/questions/20408388/how-to-filter-fft-data-for-audio-visualisation
+//https://www.cocoawithlove.com/blog/2016/07/30/timer-problems.html#a-single-queue-synchronized-timer
 
 import Foundation
 import AudioKit
@@ -21,7 +22,7 @@ class AudioEngine: BufferProcessorDelegate {
     var silence: AKBooster
     var bufferSize: UInt32
     var bProcessor: BufferProcessor
-    var refreshTimer: Timer
+    var refreshTimer: DispatchSourceTimer?
     let refreshRate: Double
     
     var delegate: AudioEngineDelegate?
@@ -36,30 +37,29 @@ class AudioEngine: BufferProcessorDelegate {
         AudioKit.output = silence
         
         self.refreshRate = refreshRate
-        refreshTimer = Timer()
         
         bProcessor = BufferProcessor()
         bProcessor.delegate = self
     }
     
     private func setupBufferTap(onNode node: AKNode?) {
-            node?.avAudioNode.installTap(
-                onBus: 0,
-                bufferSize: bufferSize,
-                format: nil) { [weak self] (buffer, _) in
-                    
-                    guard let strongSelf = self else {
-                        AKLog("Unable to create strong reference to self")
-                        return
-                    }
-                    
-                    buffer.frameLength = strongSelf.bufferSize
-                    let offset = Int(buffer.frameCapacity - buffer.frameLength)
-                    
-                    if let tail = buffer.floatChannelData?[0] {
-                        strongSelf.updateBuffer(tail + offset, withBufferSize: strongSelf.bufferSize)
-                    }
-            }
+        node?.avAudioNode.installTap(
+            onBus: 0,
+            bufferSize: bufferSize,
+            format: nil) { [weak self] (buffer, _) in
+                
+                guard let strongSelf = self else {
+                    AKLog("Unable to create strong reference to self")
+                    return
+                }
+                
+                buffer.frameLength = strongSelf.bufferSize
+                let offset = Int(buffer.frameCapacity - buffer.frameLength)
+                
+                if let tail = buffer.floatChannelData?[0] {
+                    strongSelf.updateBuffer(tail + offset, withBufferSize: strongSelf.bufferSize)
+                }
+        }
     }
     
     private func removeBufferTap(fromNode node: AKNode?) {
@@ -70,7 +70,21 @@ class AudioEngine: BufferProcessorDelegate {
         do {
             try AudioKit.start()
             setupBufferTap(onNode: mic)
-            refreshTimer = Timer.scheduledTimer(timeInterval: 1.0/refreshRate, target: self, selector: #selector(getBuffer), userInfo: nil, repeats: true)
+            
+            guard let timer = refreshTimer else {
+                refreshTimer = DispatchSource.makeTimerSource()
+                refreshTimer!.schedule(deadline: .now(), repeating: 1.0/refreshRate)
+                refreshTimer!.setEventHandler(handler: { [weak self] in
+                    guard let strongSelf = self else {
+                        print("Unable to create strong reference to self")
+                        return
+                    }
+                    strongSelf.getBuffer() })
+                refreshTimer!.resume()
+                return
+            }
+            
+            timer.resume()
         } catch {
             print("AudioKit failed to start")
             return
@@ -82,8 +96,8 @@ class AudioEngine: BufferProcessorDelegate {
     func stop() {
         do {
             removeBufferTap(fromNode: mic)
-            refreshTimer.invalidate()
-            refreshTimer = Timer()
+            refreshTimer?.suspend()
+            sendBufferNextCycle = false
             try AudioKit.stop()
         } catch {
             print("AudioKit failed to stop")
@@ -104,7 +118,9 @@ class AudioEngine: BufferProcessorDelegate {
     }
     
     func didFinishProcessingBuffer(_ bp: BufferProcessor) {
-        delegate?.didRefreshAudioEngine(withProcessor: bp)
+        DispatchQueue.main.async {
+            self.delegate?.didRefreshAudioEngine(withProcessor: bp)
+        }
     }
 }
 
