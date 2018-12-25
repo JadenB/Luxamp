@@ -15,6 +15,7 @@ class Visualizer {
                                           SpectralDifferenceDriver(),
                                           SpectralCrestDriver()]
     var delegate: VisualizerOutputDelegate?
+    var dataDelegate: VisualizerDataDelegate?
     
     var hue: VisualizerMapper
     var brightness: VisualizerMapper
@@ -33,6 +34,7 @@ class Visualizer {
         let colorToOutput = NSColor(hue: CGFloat(hue.processedVal), saturation: 1.0,
                          brightness: CGFloat(brightness.processedVal), alpha: 1.0)
         delegate?.didVisualizeIntoColor(colorToOutput)
+        dataDelegate?.didVisualizeWithData(brightness: brightness.processedVal, hue: hue.processedVal, rawBrightness: brightness.rawVal, rawHue: hue.rawVal)
         output = colorToOutput
     }
     
@@ -67,17 +69,22 @@ class VisualizerMapper {
     var useAdaptiveRange = false
     var invert = false
     
+    private var preFilter = BiasedIIRFilter(size: 1)
     var filter = BiasedIIRFilter(size: 1)
     // var range = AdaptiveRange()
     
     init(withEngine engine: AudioEngine) {
         self.engine = engine
+        preFilter.upwardsAlpha = 0.4
+        preFilter.downwardsAlpha = 0.4
+        filter.upwardsAlpha = 0.5
+        filter.downwardsAlpha = 0.5
     }
     
     func applyMapping() {
         guard let d = driver else { return }
         
-        rawVal = d.output(usingEngine: engine)
+        rawVal = preFilter.applyFilter(toValue: d.output(usingEngine: engine), atIndex: 0)
         
         var newVal = filter.applyFilter(toValue: rawVal, atIndex: 0)
         newVal = remapValueToBounds(newVal, min: 0.0, max: 1.0)

@@ -120,7 +120,7 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
         }
         
         visualizer.visualize()
-        self.spectrumView.updateSpectrum( spectrum: p.spectrumDecibelData)
+        self.spectrumView.updateSpectrum( spectrum: Array(p.spectrumDecibelData[0..<256]))
         var level = max(p.amplitudeInDecibels(), self.totalAmpLevel.min)
         level = self.levelIIR.applyFilter(toValue: level, atIndex: 0)
         self.totalAmpLevel.updateLevel(level: level)
