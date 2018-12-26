@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7D03140221D24ABE00F46D04 /* VisualizerTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D03140121D24ABE00F46D04 /* VisualizerTextField.swift */; };
+		7D03140421D2539D00F46D04 /* LightController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D03140321D2539D00F46D04 /* LightController.swift */; };
+		7D03140621D2E06800F46D04 /* ORSSerial.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D03140521D2E06800F46D04 /* ORSSerial.framework */; };
+		7D03140821D2E09400F46D04 /* ORSSerial.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7D03140521D2E06800F46D04 /* ORSSerial.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		7D03140A21D2E0DE00F46D04 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D03140921D2E0DE00F46D04 /* PreferencesViewController.swift */; };
+		7D03140C21D2E30300F46D04 /* OutputDeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D03140B21D2E30300F46D04 /* OutputDeviceManager.swift */; };
 		7D14BC5721D0464700CF199F /* VisualizerSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D14BC5621D0464700CF199F /* VisualizerSettingsViewController.swift */; };
 		7D14BC5921D0C1E500CF199F /* VisualizationDrivers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D14BC5821D0C1E500CF199F /* VisualizationDrivers.swift */; };
 		7D33777221CF142A00554841 /* GistSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D33777121CF142A00554841 /* GistSwift.framework */; };
@@ -70,6 +76,7 @@
 				7D33777B21CF244300554841 /* AudioKitUI.framework in Embed Frameworks */,
 				7D33777921CF244300554841 /* AudioKit.framework in Embed Frameworks */,
 				7D33777721CF244300554841 /* GistSwift.framework in Embed Frameworks */,
+				7D03140821D2E09400F46D04 /* ORSSerial.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -77,6 +84,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7D03140121D24ABE00F46D04 /* VisualizerTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizerTextField.swift; sourceTree = "<group>"; };
+		7D03140321D2539D00F46D04 /* LightController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightController.swift; sourceTree = "<group>"; };
+		7D03140521D2E06800F46D04 /* ORSSerial.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ORSSerial.framework; sourceTree = "<group>"; };
+		7D03140921D2E0DE00F46D04 /* PreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
+		7D03140B21D2E30300F46D04 /* OutputDeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutputDeviceManager.swift; sourceTree = "<group>"; };
+		7D03140D21D2E40100F46D04 /* bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bridge.h; sourceTree = "<group>"; };
 		7D14BC5621D0464700CF199F /* VisualizerSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizerSettingsViewController.swift; sourceTree = "<group>"; };
 		7D14BC5821D0C1E500CF199F /* VisualizationDrivers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizationDrivers.swift; sourceTree = "<group>"; };
 		7D33777121CF142A00554841 /* GistSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GistSwift.framework; path = Carthage/Build/Mac/GistSwift.framework; sourceTree = "<group>"; };
@@ -115,6 +128,7 @@
 				7D33777221CF142A00554841 /* GistSwift.framework in Frameworks */,
 				7D33777D21CF247600554841 /* AudioKit.framework in Frameworks */,
 				7D33777E21CF247600554841 /* AudioKitUI.framework in Frameworks */,
+				7D03140621D2E06800F46D04 /* ORSSerial.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,6 +154,7 @@
 			children = (
 				7D884BD321CCC36B00FAD263 /* SpectrumView.swift */,
 				7DFE03AD21CB304900D6288F /* ColorView.swift */,
+				7D03140121D24ABE00F46D04 /* VisualizerTextField.swift */,
 				7D884BD521CCD8EE00FAD263 /* LevelView.swift */,
 			);
 			path = UI;
@@ -183,9 +198,13 @@
 			children = (
 				7DFE038521CB2C8900D6288F /* Main.storyboard */,
 				7DFE037F21CB2C8800D6288F /* AppDelegate.swift */,
+				7D03140D21D2E40100F46D04 /* bridge.h */,
 				7DFE038121CB2C8800D6288F /* ViewController.swift */,
+				7D03140B21D2E30300F46D04 /* OutputDeviceManager.swift */,
+				7D03140921D2E0DE00F46D04 /* PreferencesViewController.swift */,
 				7D14BC5621D0464700CF199F /* VisualizerSettingsViewController.swift */,
 				7D884BC721CC47FD00FAD263 /* Visualizer.swift */,
+				7D03140321D2539D00F46D04 /* LightController.swift */,
 				7D14BC5821D0C1E500CF199F /* VisualizationDrivers.swift */,
 				7D33778F21D035C800554841 /* AdaptiveRange.swift */,
 				7D33778121D0274600554841 /* UI */,
@@ -218,6 +237,7 @@
 		7DFE03AF21CB6D4400D6288F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7D03140521D2E06800F46D04 /* ORSSerial.framework */,
 				7D33777121CF142A00554841 /* GistSwift.framework */,
 				7D884BBE21CB75B700FAD263 /* AudioKit.framework */,
 				7D884BBF21CB75B700FAD263 /* AudioKitUI.framework */,
@@ -358,6 +378,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7D33778621D027BC00554841 /* AudioEngine.swift in Sources */,
+				7D03140421D2539D00F46D04 /* LightController.swift in Sources */,
 				7D33778321D027B900554841 /* FFTProcessor.swift in Sources */,
 				7D33778C21D027C500554841 /* Visualizer.swift in Sources */,
 				7D14BC5721D0464700CF199F /* VisualizerSettingsViewController.swift in Sources */,
@@ -366,6 +387,9 @@
 				7D33778B21D027C400554841 /* ViewController.swift in Sources */,
 				7D33778821D027C000554841 /* ColorView.swift in Sources */,
 				7D33778921D027C100554841 /* LevelView.swift in Sources */,
+				7D03140C21D2E30300F46D04 /* OutputDeviceManager.swift in Sources */,
+				7D03140221D24ABE00F46D04 /* VisualizerTextField.swift in Sources */,
+				7D03140A21D2E0DE00F46D04 /* PreferencesViewController.swift in Sources */,
 				7D33778721D027BF00554841 /* SpectrumView.swift in Sources */,
 				7D33779021D035C800554841 /* AdaptiveRange.swift in Sources */,
 				7D33778421D027BA00554841 /* BufferProcessor.swift in Sources */,
@@ -554,6 +578,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "jadenbernal.LED-Strip-Controller";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/LED Strip Controller/bridge.h";
 				SWIFT_VERSION = 4.2;
 				VALID_ARCHS = x86_64;
 			};
@@ -582,6 +607,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "jadenbernal.LED-Strip-Controller";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/LED Strip Controller/bridge.h";
 				SWIFT_VERSION = 4.2;
 				VALID_ARCHS = x86_64;
 			};

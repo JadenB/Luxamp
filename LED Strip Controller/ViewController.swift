@@ -16,7 +16,8 @@ typealias AudioProcessor = BufferProcessor
 class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDelegate {
     
     var audioEngine: AudioEngine!
-    var visualizer: Visualizer!
+    var musicVisualizer: Visualizer!
+    var lightController: LightController!
     
     @IBOutlet weak var spectrumView: SpectrumView!
     @IBOutlet weak var totalAmpLevel: LevelView!
@@ -29,6 +30,7 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
     @objc dynamic var isOn = false
     
     var currentMode: Mode = .Manual
+    var hidden = true
     
     var levelIIR = BiasedIIRFilter(initialData: [0.0])
     
@@ -36,8 +38,10 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
         super.viewDidLoad()
         audioEngine = AudioEngine(refreshRate: 43.06640625, bufferSize: UInt32(BUFFER_SIZE))
         audioEngine.delegate = self
-        visualizer = Visualizer(withEngine: audioEngine)
-        visualizer.delegate = self
+        musicVisualizer = Visualizer(withEngine: audioEngine)
+        musicVisualizer.delegate = self
+        
+        lightController = LightController(refreshRate: 60.0)
         
         spectrumView.backgroundColor = .black
         spectrumView.color = .red
@@ -55,16 +59,18 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
     
     override func viewDidAppear() {
         super.viewDidAppear()
+        hidden = false
     }
     
     override func viewDidDisappear() {
         super.viewDidDisappear()
+        hidden = true
     }
     
     override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
         guard let visualizationController = segue.destinationController as? VisualizerSettingsViewController else { return }
         
-        visualizationController.visualizer = visualizer
+        visualizationController.visualizer = musicVisualizer
     }
     
     @IBAction func rateSliderChanged(_ sender: NSSlider) {
@@ -119,16 +125,20 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
             return
         }
         
-        visualizer.visualize()
-        self.spectrumView.updateSpectrum( spectrum: Array(p.spectrumDecibelData[0..<256]))
-        var level = max(p.amplitudeInDecibels(), self.totalAmpLevel.min)
-        level = self.levelIIR.applyFilter(toValue: level, atIndex: 0)
-        self.totalAmpLevel.updateLevel(level: level)
-        self.totalAmpLabel.stringValue = String(format: "%.1f", level)
+        musicVisualizer.visualize()
+        
+        if !hidden {
+            self.spectrumView.updateSpectrum( spectrum: Array(p.spectrumDecibelData[0..<256]))
+            var level = max(p.amplitudeInDecibels(), self.totalAmpLevel.min)
+            level = self.levelIIR.applyFilter(toValue: level, atIndex: 0)
+            self.totalAmpLevel.updateLevel(level: level)
+            self.totalAmpLabel.stringValue = String(format: "%.1f", level)
+        }
     }
     
     func didVisualizeIntoColor(_ color: NSColor) {
         colorView.color = color
+        lightController.setColor(color: color)
     }
 
 }

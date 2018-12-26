@@ -20,6 +20,9 @@ class Visualizer {
     var hue: VisualizerMapper
     var brightness: VisualizerMapper
     
+    var colorGradient: NSGradient! = NSGradient(starting: .red, ending: .yellow)
+    var useGradient = false
+    
     var output: NSColor = .black
     
     init(withEngine engine: AudioEngine) {
@@ -29,10 +32,25 @@ class Visualizer {
     }
 
     func visualize() {
-        hue.applyMapping()
+        var outputBrightness: CGFloat = 1.0
+        var outputHue: CGFloat = 1.0
+        var outputSaturation: CGFloat = 1.0
+        
         brightness.applyMapping()
-        let colorToOutput = NSColor(hue: CGFloat(hue.processedVal), saturation: 1.0,
-                         brightness: CGFloat(brightness.processedVal), alpha: 1.0)
+        hue.applyMapping()
+        outputBrightness = CGFloat(brightness.processedVal)
+        
+        if useGradient {
+            let gradientColor = colorGradient.interpolatedColor(atLocation: CGFloat(hue.processedVal))
+            outputHue = gradientColor.hueComponent
+            outputSaturation = gradientColor.saturationComponent
+        } else {
+            outputHue = CGFloat(hue.processedVal)
+        }
+        
+        let colorToOutput = NSColor(hue: outputHue, saturation: outputSaturation,
+                         brightness: outputBrightness, alpha: 1.0)
+        
         delegate?.didVisualizeIntoColor(colorToOutput)
         dataDelegate?.didVisualizeWithData(brightness: brightness.processedVal, hue: hue.processedVal, rawBrightness: brightness.rawVal, rawHue: hue.rawVal)
         output = colorToOutput
@@ -60,6 +78,7 @@ class VisualizerMapper {
     fileprivate var engine: AudioEngine
     
     var rawVal: Float = 0.0
+    var mappedVal: Float = 0.0
     var processedVal: Float = 0.0
     
     var min: Float = 0.0
@@ -73,12 +92,32 @@ class VisualizerMapper {
     var filter = BiasedIIRFilter(size: 1)
     // var range = AdaptiveRange()
     
+    var upwardsSmoothing: Float {
+        set {
+            filter.upwardsAlpha = sqrtf(newValue)
+        }
+        
+        get {
+            return 0.0 // don't need this
+        }
+    }
+    
+    var downwardsSmoothing: Float {
+        set {
+            filter.downwardsAlpha = sqrtf(newValue)
+        }
+        
+        get {
+            return 0.0 // don't need this
+        }
+    }
+    
     init(withEngine engine: AudioEngine) {
         self.engine = engine
         preFilter.upwardsAlpha = 0.4
         preFilter.downwardsAlpha = 0.4
-        filter.upwardsAlpha = 0.5
-        filter.downwardsAlpha = 0.5
+        filter.upwardsAlpha = 0.707
+        filter.downwardsAlpha = 0.707
     }
     
     func applyMapping() {
@@ -86,8 +125,9 @@ class VisualizerMapper {
         
         rawVal = preFilter.applyFilter(toValue: d.output(usingEngine: engine), atIndex: 0)
         
-        var newVal = filter.applyFilter(toValue: rawVal, atIndex: 0)
-        newVal = remapValueToBounds(newVal, min: 0.0, max: 1.0)
+        var newVal = filter.applyFilter(toValue: rawVal, atIndex: 0) //Swap these two lines once range slider is implemented for output
+        newVal = remapValueToBounds(newVal, min: min, max: max) //
+        
         
         if invert {
             newVal = 1.0 - newVal

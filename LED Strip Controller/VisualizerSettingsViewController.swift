@@ -12,6 +12,8 @@ class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate
     
     var visualizer: Visualizer!
     
+    var hidden = true
+    
     @IBOutlet weak var brightnessDriverOptions: NSPopUpButton!
     @IBOutlet weak var hueDriverOptions: NSPopUpButton!
     
@@ -30,24 +32,33 @@ class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate
     @IBOutlet weak var hueSmoothingLabelUpwards: NSTextField!
     @IBOutlet weak var hueSmoothingLabelDownwards: NSTextField!
     
+    @objc dynamic var brightnessInputMax: Float = 1.0
+    @objc dynamic var brightnessInputMin: Float = 0.0
+    var brightnessSliderMax: Float = 1.0
+    var brightnessSliderMin: Float = 0.0
+    
+    @objc dynamic var hueInputMax: Float = 1.0
+    @objc dynamic var hueInputMin: Float = 0.0
+    var hueSliderMax: Float = 1.0
+    var hueSliderMin: Float = 0.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         populateMenus()
         visualizer.dataDelegate = self
         
-        brightnessOutputLevel.color = .red
-        brightnessInputLevel.color = .red
-        hueOutputLevel.color = .red
-        hueInputLevel.color = .red
-        
-        brightnessOutputLevel.backgroundColor = .black
-        brightnessInputLevel.backgroundColor = .black
-        hueOutputLevel.backgroundColor = .black
-        hueInputLevel.backgroundColor = .black
-        
         brightnessDriverSelected(brightnessDriverOptions)
         hueDriverSelected(hueDriverOptions)
+    }
+    
+    override func viewDidAppear() {
+        super.viewDidAppear()
+        hidden = false
+    }
+    
+    override func viewDidDisappear() {
+        super.viewDidDisappear()
+        hidden = true
     }
     
     @IBAction func brightnessDriverSelected(_ sender: NSPopUpButton) {
@@ -70,6 +81,21 @@ class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate
         }
     }
     
+    @IBAction func brightnessMaxChanged(_ sender: Any) {
+        visualizer.brightness.max = brightnessInputMin + (brightnessInputMax - brightnessInputMin) * brightnessSliderMax
+    }
+    
+    @IBAction func brightnessMinChanged(_ sender: Any) {
+        visualizer.brightness.min = brightnessInputMin + (brightnessInputMax - brightnessInputMin) * brightnessSliderMin
+    }
+    
+    @IBAction func hueMaxChanged(_ sender: Any) {
+        visualizer.hue.max = hueInputMin + (hueInputMax - hueInputMin) * hueSliderMax
+    }
+    
+    @IBAction func hueMinChanged(_ sender: Any) {
+        visualizer.hue.min = hueInputMin + (hueInputMax - hueInputMin) * hueSliderMin
+    }
     
     @IBAction func brightnessInvertPressed(_ sender: NSButton) {
         visualizer.brightness.invert = sender.state.rawValue == 1
@@ -80,26 +106,28 @@ class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate
     }
     
     @IBAction func brightnessUpwardsSmoothingSliderChanged(_ sender: NSSlider) {
-        visualizer.brightness.filter.upwardsAlpha = sender.floatValue
+        visualizer.brightness.upwardsSmoothing = sender.floatValue
         brightnessSmoothingLabelUpwards.stringValue = String(format: "%.2f", sender.floatValue)
     }
     
     @IBAction func brightnessDownwardsSmoothingSliderChanged(_ sender: NSSlider) {
-        visualizer.brightness.filter.downwardsAlpha = sender.floatValue
+        visualizer.brightness.downwardsSmoothing = sender.floatValue
         brightnessSmoothingLabelDownwards.stringValue = String(format: "%.2f", sender.floatValue)
     }
     
     @IBAction func hueUpwardsSmoothingSliderChanged(_ sender: NSSlider) {
-        visualizer.hue.filter.upwardsAlpha = sender.floatValue
+        visualizer.hue.upwardsSmoothing = sender.floatValue
         hueSmoothingLabelUpwards.stringValue = String(format: "%.2f", sender.floatValue)
     }
     
     @IBAction func hueDownwardsSmoothingSliderChanged(_ sender: NSSlider) {
-        visualizer.hue.filter.downwardsAlpha = sender.floatValue
+        visualizer.hue.downwardsSmoothing = sender.floatValue
         hueSmoothingLabelDownwards.stringValue = String(format: "%.2f", sender.floatValue)
     }
     
-    
+    override func setNilValueForKey(_ key: String) {
+        return
+    }
     
     // TODO: func loadPreset
     
@@ -120,9 +148,12 @@ class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate
     }
     
     func didVisualizeWithData(brightness: Float, hue: Float, rawBrightness: Float, rawHue: Float) {
+        if hidden {
+            return
+        }
         
-        brightnessInputLevel.updateLevel(level: rawBrightness)
-        hueInputLevel.updateLevel(level: rawHue)
+        brightnessInputLevel.updateLevel(level: remapValueToBounds(rawBrightness, min: brightnessInputMin, max: brightnessInputMax))
+        hueInputLevel.updateLevel(level: remapValueToBounds(rawHue, min: hueInputMin, max: hueInputMax))
         brightnessOutputLevel.updateLevel(level: brightness)
         hueOutputLevel.updateLevel(level: hue)
         

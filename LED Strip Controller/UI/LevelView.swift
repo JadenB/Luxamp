@@ -11,11 +11,11 @@ import Cocoa
 class LevelView: NSView {
     
     var level: Float = -Float.infinity
-    var color = NSColor.black
-    var backgroundColor = NSColor.white
+    @IBInspectable var color: NSColor = .black
+    @IBInspectable var backgroundColor: NSColor = .white
     
-    var max: Float = 1.0
-    var min: Float = 0.0
+    @IBInspectable var max: Float = 1.0
+    @IBInspectable var min: Float = 0.0
     
     private var shouldClear = false
     
