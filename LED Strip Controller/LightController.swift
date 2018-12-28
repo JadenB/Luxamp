@@ -42,6 +42,7 @@ class LightController {
         let gCom = calibratedColor.greenComponent
         let bCom = calibratedColor.blueComponent
         
+        // for some reason squaring the values gives a more linear-appearing brightness scale
         let r = UInt8(rCom * rCom * 255)
         let g = UInt8(gCom * gCom * 255)
         let b = UInt8(bCom * bCom * 255)

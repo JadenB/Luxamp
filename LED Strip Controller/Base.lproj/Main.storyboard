@@ -1457,6 +1457,9 @@
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
+                                <connections>
+                                    <segue destination="o5O-tv-4B6" kind="modal" id="qx2-uU-I5I"/>
+                                </connections>
                             </button>
                         </subviews>
                     </view>
@@ -1474,7 +1477,7 @@
                         <outlet property="brightnessSmoothingLabelDownwards" destination="OqD-BG-TF4" id="gV2-nr-RgN"/>
                         <outlet property="brightnessSmoothingLabelUpwards" destination="wdE-jX-r86" id="xum-OZ-TC2"/>
                         <outlet property="brightnessUpwardsSmoothingSlider" destination="ag9-tV-rcH" id="25Z-z9-LOK"/>
-                        <outlet property="gradientVew" destination="w9o-kd-dFm" id="xFa-xG-xoW"/>
+                        <outlet property="gradientView" destination="w9o-kd-dFm" id="xfZ-Jq-ZGm"/>
                         <outlet property="hueAdaptiveCheckbox" destination="BWD-1r-ZLN" id="tWp-Ue-7kI"/>
                         <outlet property="hueDownwardsSmoothingSlider" destination="eC8-Ay-Obl" id="z9Q-XW-HNX"/>
                         <outlet property="hueDriverMenu" destination="KYp-VG-QYX" id="fFq-M1-hhF"/>
@@ -1495,6 +1498,99 @@
                 <userDefaultsController id="J1k-fx-vyy"/>
             </objects>
             <point key="canvasLocation" x="128" y="1568"/>
+        </scene>
+        <!--Window Controller-->
+        <scene sceneID="4aP-Ut-hpg">
+            <objects>
+                <windowController id="o5O-tv-4B6" sceneMemberID="viewController">
+                    <window key="window" title="Gradient Editor" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="tlr-jb-D6U">
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+                        <rect key="contentRect" x="294" y="313" width="480" height="270"/>
+                        <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
+                        <connections>
+                            <outlet property="delegate" destination="o5O-tv-4B6" id="6P3-nY-KD9"/>
+                        </connections>
+                    </window>
+                    <connections>
+                        <segue destination="iO9-Dj-NaA" kind="relationship" relationship="window.shadowedContentViewController" id="9Za-Ln-2XU"/>
+                    </connections>
+                </windowController>
+                <customObject id="Ptm-q5-te1" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="855" y="1472"/>
+        </scene>
+        <!--Gradient Editor View Controller-->
+        <scene sceneID="2Ri-kS-6PU">
+            <objects>
+                <viewController id="iO9-Dj-NaA" customClass="GradientEditorViewController" customModule="LED_Strip_Controller" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="b9m-6P-BV4">
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vnJ-8o-TC9">
+                                <rect key="frame" x="384" y="13" width="82" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="FvM-Mt-2W2">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                    <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="applyButtonPressed:" target="iO9-Dj-NaA" id="Idk-14-95y"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eZc-p2-5Zw">
+                                <rect key="frame" x="302" y="13" width="82" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="5up-Gt-cdu">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                    <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="cancelButtonPressed:" target="iO9-Dj-NaA" id="cjB-Pu-P4y"/>
+                                </connections>
+                            </button>
+                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Isg-sz-mb3" customClass="GradientView" customModule="LED_Strip_Controller" customModuleProvider="target">
+                                <rect key="frame" x="20" y="154" width="440" height="96"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            </customView>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="46s-Ea-Z1h">
+                                <rect key="frame" x="149" y="94" width="108" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Blue/Green" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="NGF-1W-HWX">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="blueGreen:" target="iO9-Dj-NaA" id="9zx-Zh-K3m"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hXc-Wt-KEF">
+                                <rect key="frame" x="25" y="94" width="107" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Red/Yellow" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="UCl-Ad-dZ8">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="redYellow:" target="iO9-Dj-NaA" id="IzV-oa-5gf"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                    </view>
+                    <connections>
+                        <outlet property="gradientView" destination="Isg-sz-mb3" id="ByX-hz-exY"/>
+                    </connections>
+                </viewController>
+                <customObject id="XMm-M2-Za9" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1486" y="1343"/>
         </scene>
     </scenes>
 </document>

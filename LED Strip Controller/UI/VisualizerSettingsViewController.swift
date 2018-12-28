@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate {
+class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate, GradientEditorViewControllerDelegate {
     
     var visualizer: Visualizer!
     var presetManager: VisualizerPresetManager!
@@ -53,7 +53,7 @@ class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate
     @IBOutlet weak var hueUpwardsSmoothingSlider: NSSlider!
     @IBOutlet weak var hueDownwardsSmoothingSlider: NSSlider!
     
-    @IBOutlet weak var gradientVew: GradientView!
+    @IBOutlet weak var gradientView: GradientView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -189,7 +189,7 @@ class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate
         hueUpwardsSmoothingSliderChanged(hueUpwardsSmoothingSlider)
         hueDownwardsSmoothingSliderChanged(hueDownwardsSmoothingSlider)
         
-        gradientVew.gradient = visualizer.gradient
+        gradientView.gradient = v.gradient
     }
     
     func didVisualizeWithData(brightness: Float, hue: Float, inputBrightness: Float, inputHue: Float) {
@@ -207,6 +207,18 @@ class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate
         brightnessInputLabel.stringValue = String(format: "%.1f", inputBrightness)
         hueOutputLabel.stringValue = String(format: "%.1f", hue)
         hueInputLabel.stringValue = String(format: "%.1f", inputHue)
+    }
+    
+    override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
+        if let gradientEditor = (segue.destinationController as? NSWindowController)?.contentViewController as? GradientEditorViewController {
+            gradientEditor.gradient = visualizer.gradient
+            gradientEditor.delegate = self
+        }
+    }
+    
+    func didSetGradient(gradient: NSGradient) {
+        visualizer.gradient = gradient
+        gradientView.gradient = gradient
     }
     
 }

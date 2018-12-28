@@ -7,8 +7,6 @@
 //
 
 import Cocoa
-import AudioKit
-import AudioKitUI
 import GistSwift
 
 typealias AudioProcessor = BufferProcessor

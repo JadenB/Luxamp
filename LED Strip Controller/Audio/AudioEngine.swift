@@ -10,20 +10,19 @@
 //https://www.cocoawithlove.com/blog/2016/07/30/timer-problems.html#a-single-queue-synchronized-timer
 
 import Foundation
-import AudioKit
-import AudioKitUI
+import AVKit
 
 let BUFFER_SIZE: Int = 1_024
-let SAMPLE_RATE: Int = 44_100
+let SAMPLE_RATE: Int = 41_000
 
 class AudioEngine: BufferProcessorDelegate {
     
-    var mic: AKMicrophone
-    var silence: AKBooster
     var bufferSize: UInt32
     var bProcessor: BufferProcessor
     var refreshTimer: DispatchSourceTimer?
     let refreshRate: Double
+    
+    let av = AVAudioEngine()
     
     var delegate: AudioEngineDelegate?
     
@@ -31,25 +30,20 @@ class AudioEngine: BufferProcessorDelegate {
     
     init(refreshRate: Double, bufferSize: UInt32 = 1_024) {
         self.bufferSize = bufferSize
-        AKSettings.audioInputEnabled = true
-        mic = AKMicrophone()
-        silence = AKBooster(mic, gain: 0)
-        AudioKit.output = silence
-        
         self.refreshRate = refreshRate
         
         bProcessor = BufferProcessor(bufferSize: BUFFER_SIZE)
         bProcessor.delegate = self
     }
     
-    private func setupBufferTap(onNode node: AKNode?) {
-        node?.avAudioNode.installTap(
+    private func setupBufferTap() {
+        av.inputNode.installTap(
             onBus: 0,
             bufferSize: bufferSize,
             format: nil) { [weak self] (buffer, _) in
                 
                 guard let strongSelf = self else {
-                    AKLog("Unable to create strong reference to self")
+                    print("Unable to create strong reference to self")
                     return
                 }
                 
@@ -62,14 +56,15 @@ class AudioEngine: BufferProcessorDelegate {
         }
     }
     
-    private func removeBufferTap(fromNode node: AKNode?) {
-        node?.avAudioNode.removeTap(onBus: 0)
+    private func removeBufferTap() {
+        av.inputNode.removeTap(onBus: 0)
     }
     
     func start() {
         do {
-            try AudioKit.start()
-            setupBufferTap(onNode: mic)
+            setupBufferTap()
+            av.prepare()
+            try av.start()
             
             guard let timer = refreshTimer else {
                 refreshTimer = DispatchSource.makeTimerSource()
@@ -86,7 +81,7 @@ class AudioEngine: BufferProcessorDelegate {
             
             timer.resume()
         } catch {
-            print("AudioKit failed to start")
+            print("AudioEngine failed to start")
             return
         }
         
@@ -94,15 +89,10 @@ class AudioEngine: BufferProcessorDelegate {
     }
     
     func stop() {
-        do {
-            removeBufferTap(fromNode: mic)
-            refreshTimer?.suspend()
-            sendBufferNextCycle = false
-            try AudioKit.stop()
-        } catch {
-            print("AudioKit failed to stop")
-            return
-        }
+        removeBufferTap()
+        refreshTimer?.suspend()
+        sendBufferNextCycle = false
+        av.stop()
     }
     
     private func updateBuffer(_ buffer: UnsafeMutablePointer<Float>, withBufferSize size: UInt32) {
