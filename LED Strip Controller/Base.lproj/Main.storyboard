@@ -12,8 +12,10 @@
                     <window key="window" title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="JCx-ZW-uHY">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-                        <rect key="contentRect" x="294" y="313" width="480" height="270"/>
+                        <rect key="contentRect" x="294" y="313" width="295" height="270"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
+                        <value key="minSize" type="size" width="295" height="270"/>
+                        <value key="maxSize" type="size" width="295" height="270"/>
                         <connections>
                             <outlet property="delegate" destination="4rk-0I-SOC" id="6VZ-ld-95G"/>
                         </connections>
@@ -31,7 +33,7 @@
             <objects>
                 <viewController id="RIm-Mf-YdY" customClass="PreferencesViewController" customModule="LED_Strip_Controller" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="po3-7n-0hc">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <rect key="frame" x="0.0" y="0.0" width="295" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4T9-md-bB4">
@@ -59,6 +61,10 @@
                                     <action selector="outputDeviceSelected:" target="RIm-Mf-YdY" id="seM-eS-3pM"/>
                                 </connections>
                             </popUpButton>
+                            <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="CQs-dC-1SG">
+                                <rect key="frame" x="259" y="207" width="16" height="16"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            </progressIndicator>
                         </subviews>
                     </view>
                     <connections>
@@ -67,7 +73,7 @@
                 </viewController>
                 <customObject id="p4d-Ox-CIe" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="890" y="106"/>
+            <point key="canvasLocation" x="899.5" y="106"/>
         </scene>
         <!--Application-->
         <scene sceneID="JPo-4y-FX3">
@@ -784,12 +790,28 @@
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="hVK-5L-wPq" secondAttribute="height" multiplier="115:14" id="YGJ-c5-lMT"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="color">
+                                        <color key="value" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                                        <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </customView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="3z1-i0-Pb7" customClass="LevelView" customModule="LED_Strip_Controller" customModuleProvider="target">
                                 <rect key="frame" x="890" y="47" width="50" height="341"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="JVz-xJ-yir"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="color">
+                                        <color key="value" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                                        <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </customView>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="27v-AB-Tk7">
                                 <rect key="frame" x="900" y="20" width="31" height="19"/>
@@ -1015,17 +1037,20 @@
                             <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YRv-rx-gbi" userLabel="Preset Menu">
                                 <rect key="frame" x="221" y="328" width="228" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <popUpButtonCell key="cell" type="push" title="Preset: Default" bezelStyle="rounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" pullsDown="YES" arrowPosition="arrowAtCenter" selectedItem="ArX-W9-7mv" id="kns-ix-K28">
+                                <popUpButtonCell key="cell" type="push" title="Preset: Default" bezelStyle="rounded" alignment="center" lineBreakMode="truncatingTail" borderStyle="border" imageScaling="proportionallyDown" inset="2" pullsDown="YES" arrowPosition="arrowAtCenter" id="kns-ix-K28">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="menu"/>
                                     <menu key="menu" id="LzP-ov-yBw">
                                         <items>
-                                            <menuItem title="Preset: Default" state="on" hidden="YES" id="ArX-W9-7mv"/>
-                                            <menuItem title="Default" id="Ng7-tN-SvN"/>
+                                            <menuItem title="Preset: Default" hidden="YES" id="ArX-W9-7mv"/>
                                             <menuItem title="Save Preset..." id="g0y-Zl-6Ea"/>
+                                            <menuItem title="Delete Preset" enabled="NO" id="Ng7-tN-SvN" userLabel="Delete Preset"/>
                                         </items>
                                     </menu>
                                 </popUpButtonCell>
+                                <connections>
+                                    <action selector="presetSelected:" target="6en-Wh-d3J" id="gtu-HY-fcm"/>
+                                </connections>
                             </popUpButton>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jsv-hq-vYU">
                                 <rect key="frame" x="18" y="20" width="200" height="17"/>
@@ -1272,69 +1297,8 @@
                                     <action selector="brightnessDownwardsSmoothingSliderChanged:" target="6en-Wh-d3J" id="ths-ZF-LfS"/>
                                 </connections>
                             </slider>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jyT-bU-9jV">
-                                <rect key="frame" x="264" y="229" width="142" height="17"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Color Smoothing" id="OPm-Wo-hKh">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                            <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EUS-du-VFM">
-                                <rect key="frame" x="361" y="202" width="87" height="19"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="0.98999999999999999" doubleValue="0.5" tickMarkPosition="above" sliderType="linear" id="fek-MC-hVa"/>
-                                <connections>
-                                    <action selector="hueUpwardsSmoothingSliderChanged:" target="6en-Wh-d3J" id="Ort-BD-Bhi"/>
-                                </connections>
-                            </slider>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oQb-TP-kCC">
-                                <rect key="frame" x="222" y="204" width="62" height="17"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Upwards" id="blc-hk-j83">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W0k-rW-pkC">
-                                <rect key="frame" x="222" y="179" width="79" height="17"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Downwards" id="YJ0-VT-9C3">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hor-WI-PD1">
-                                <rect key="frame" x="315" y="202" width="40" height="17"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="0.50" drawsBackground="YES" id="0Ib-UA-lUA">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sc6-nB-e43">
-                                <rect key="frame" x="315" y="179" width="40" height="17"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="0.50" drawsBackground="YES" id="Xwn-0V-5cS">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                            <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eC8-Ay-Obl">
-                                <rect key="frame" x="361" y="179" width="87" height="19"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="0.98999999999999999" doubleValue="0.5" tickMarkPosition="above" sliderType="linear" id="owE-aN-wX5"/>
-                                <connections>
-                                    <action selector="hueDownwardsSmoothingSliderChanged:" target="6en-Wh-d3J" id="mfe-uh-mft"/>
-                                </connections>
-                            </slider>
                             <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="QRb-if-L5a">
-                                <rect key="frame" x="224" y="170" width="222" height="5"/>
+                                <rect key="frame" x="224" y="241" width="222" height="5"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             </box>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oz8-PX-ebM">
@@ -1364,11 +1328,9 @@
                                 </textFieldCell>
                                 <connections>
                                     <action selector="brightnessMaxChanged:" target="6en-Wh-d3J" id="3PJ-L4-GGZ"/>
-                                    <binding destination="6en-Wh-d3J" name="minValue" keyPath="self.brightnessInputMin" id="GLe-rL-4Vv"/>
-                                    <binding destination="6en-Wh-d3J" name="value" keyPath="self.brightnessInputMax" previousBinding="GLe-rL-4Vv" id="B9Q-hn-zwr"/>
                                 </connections>
                             </textField>
-                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XZg-H6-sn2">
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XZg-H6-sn2" customClass="VisualizerTextField" customModule="LED_Strip_Controller" customModuleProvider="target">
                                 <rect key="frame" x="92" y="99" width="54" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" refusesFirstResponder="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="center" title="0.0" drawsBackground="YES" usesSingleLineMode="YES" id="MJ3-uj-mcT">
@@ -1379,15 +1341,9 @@
                                 </textFieldCell>
                                 <connections>
                                     <action selector="brightnessMinChanged:" target="6en-Wh-d3J" id="MAY-hS-gRf"/>
-                                    <binding destination="6en-Wh-d3J" name="maxValue" keyPath="self.brightnessInputMax" id="OWW-uk-Sf7"/>
-                                    <binding destination="6en-Wh-d3J" name="value" keyPath="self.brightnessInputMin" previousBinding="OWW-uk-Sf7" id="dx4-mt-Taf">
-                                        <dictionary key="options">
-                                            <bool key="NSContinuouslyUpdatesValue" value="YES"/>
-                                        </dictionary>
-                                    </binding>
                                 </connections>
                             </textField>
-                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZJu-HC-hxP">
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZJu-HC-hxP" customClass="VisualizerTextField" customModule="LED_Strip_Controller" customModuleProvider="target">
                                 <rect key="frame" x="526" y="301" width="54" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" refusesFirstResponder="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="center" title="1.0" drawsBackground="YES" usesSingleLineMode="YES" id="fbq-9E-ou1">
@@ -1398,11 +1354,9 @@
                                 </textFieldCell>
                                 <connections>
                                     <action selector="hueMaxChanged:" target="6en-Wh-d3J" id="dP1-ox-uW0"/>
-                                    <binding destination="6en-Wh-d3J" name="minValue" keyPath="self.hueInputMin" id="VcD-6Q-Eer"/>
-                                    <binding destination="6en-Wh-d3J" name="value" keyPath="self.hueInputMax" previousBinding="VcD-6Q-Eer" id="Lxp-OM-ub2"/>
                                 </connections>
                             </textField>
-                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NNI-WI-pfo">
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NNI-WI-pfo" customClass="VisualizerTextField" customModule="LED_Strip_Controller" customModuleProvider="target">
                                 <rect key="frame" x="526" y="99" width="54" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" refusesFirstResponder="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="center" title="0.0" drawsBackground="YES" usesSingleLineMode="YES" id="Lan-OK-DGL">
@@ -1413,27 +1367,128 @@
                                 </textFieldCell>
                                 <connections>
                                     <action selector="hueMinChanged:" target="6en-Wh-d3J" id="jp3-7B-CD5"/>
-                                    <binding destination="6en-Wh-d3J" name="maxValue" keyPath="self.hueInputMax" id="T8K-cw-En6"/>
-                                    <binding destination="6en-Wh-d3J" name="value" keyPath="self.hueInputMin" previousBinding="T8K-cw-En6" id="izw-pX-ceI"/>
                                 </connections>
                             </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jyT-bU-9jV">
+                                <rect key="frame" x="264" y="218" width="142" height="17"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Color Smoothing" id="OPm-Wo-hKh">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EUS-du-VFM">
+                                <rect key="frame" x="361" y="191" width="87" height="19"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="0.98999999999999999" doubleValue="0.5" tickMarkPosition="above" sliderType="linear" id="fek-MC-hVa"/>
+                                <connections>
+                                    <action selector="hueUpwardsSmoothingSliderChanged:" target="6en-Wh-d3J" id="Ort-BD-Bhi"/>
+                                </connections>
+                            </slider>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oQb-TP-kCC">
+                                <rect key="frame" x="222" y="193" width="62" height="17"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Upwards" id="blc-hk-j83">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W0k-rW-pkC">
+                                <rect key="frame" x="222" y="168" width="79" height="17"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Downwards" id="YJ0-VT-9C3">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hor-WI-PD1">
+                                <rect key="frame" x="315" y="191" width="40" height="17"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="0.50" drawsBackground="YES" id="0Ib-UA-lUA">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sc6-nB-e43">
+                                <rect key="frame" x="315" y="168" width="40" height="17"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="0.50" drawsBackground="YES" id="Xwn-0V-5cS">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eC8-Ay-Obl">
+                                <rect key="frame" x="361" y="168" width="87" height="19"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="0.98999999999999999" doubleValue="0.5" tickMarkPosition="above" sliderType="linear" id="owE-aN-wX5"/>
+                                <connections>
+                                    <action selector="hueDownwardsSmoothingSliderChanged:" target="6en-Wh-d3J" id="mfe-uh-mft"/>
+                                </connections>
+                            </slider>
+                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="w9o-kd-dFm" customClass="GradientView" customModule="LED_Strip_Controller" customModuleProvider="target">
+                                <rect key="frame" x="224" y="129" width="222" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            </customView>
+                            <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="h0C-19-bZs">
+                                <rect key="frame" x="224" y="157" width="222" height="5"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            </box>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nI8-3K-Qdr">
+                                <rect key="frame" x="372" y="93" width="80" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Reset" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="YS8-rz-oeB">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </button>
+                            <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="Wpb-kE-tmr">
+                                <rect key="frame" x="224" y="88" width="222" height="5"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            </box>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2JD-PV-20Z">
+                                <rect key="frame" x="218" y="93" width="154" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Change Gradient..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="dKu-1U-8Fa">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </button>
                         </subviews>
                     </view>
                     <connections>
-                        <outlet property="brightnessDriverOptions" destination="pY6-NW-v2n" id="J90-92-CBO"/>
+                        <outlet property="brightnessAdaptiveCheckbox" destination="oz8-PX-ebM" id="gVD-3A-cmm"/>
+                        <outlet property="brightnessDownwardsSmoothingSlider" destination="PBx-8T-aar" id="MAV-nZ-h3t"/>
+                        <outlet property="brightnessDriverMenu" destination="pY6-NW-v2n" id="J90-92-CBO"/>
                         <outlet property="brightnessInputLabel" destination="DJV-Zy-b9h" id="jFi-I3-trf"/>
                         <outlet property="brightnessInputLevel" destination="A3P-oJ-NLf" id="r8Y-F2-Nkk"/>
+                        <outlet property="brightnessInvertCheckbox" destination="Drf-wd-9IV" id="HFe-8m-If7"/>
+                        <outlet property="brightnessMaxField" destination="hxk-ts-89a" id="a3X-PZ-5ns"/>
+                        <outlet property="brightnessMinField" destination="XZg-H6-sn2" id="OSK-ag-P5F"/>
                         <outlet property="brightnessOutputLabel" destination="TIv-Lv-4oG" id="8HP-GH-dS9"/>
                         <outlet property="brightnessOutputLevel" destination="gQc-f5-v3E" id="gcd-Z1-JwA"/>
                         <outlet property="brightnessSmoothingLabelDownwards" destination="OqD-BG-TF4" id="gV2-nr-RgN"/>
                         <outlet property="brightnessSmoothingLabelUpwards" destination="wdE-jX-r86" id="xum-OZ-TC2"/>
-                        <outlet property="hueDriverOptions" destination="KYp-VG-QYX" id="fFq-M1-hhF"/>
+                        <outlet property="brightnessUpwardsSmoothingSlider" destination="ag9-tV-rcH" id="25Z-z9-LOK"/>
+                        <outlet property="gradientVew" destination="w9o-kd-dFm" id="xFa-xG-xoW"/>
+                        <outlet property="hueAdaptiveCheckbox" destination="BWD-1r-ZLN" id="tWp-Ue-7kI"/>
+                        <outlet property="hueDownwardsSmoothingSlider" destination="eC8-Ay-Obl" id="z9Q-XW-HNX"/>
+                        <outlet property="hueDriverMenu" destination="KYp-VG-QYX" id="fFq-M1-hhF"/>
                         <outlet property="hueInputLabel" destination="Dzm-Zx-7Yx" id="RBf-We-kws"/>
                         <outlet property="hueInputLevel" destination="5aX-ZI-iVA" id="NJw-2F-Em9"/>
+                        <outlet property="hueInvertCheckbox" destination="ESx-Tc-Ztd" id="Gc7-50-ONe"/>
+                        <outlet property="hueMaxField" destination="ZJu-HC-hxP" id="9ki-wa-VZN"/>
+                        <outlet property="hueMinField" destination="NNI-WI-pfo" id="ndd-Fs-wRt"/>
                         <outlet property="hueOutputLabel" destination="l2m-Ft-MpQ" id="GUm-sO-Rhz"/>
                         <outlet property="hueOutputLevel" destination="qjw-ch-9a5" id="5di-HN-WEv"/>
                         <outlet property="hueSmoothingLabelDownwards" destination="sc6-nB-e43" id="hXX-5i-6iD"/>
                         <outlet property="hueSmoothingLabelUpwards" destination="hor-WI-PD1" id="XYn-kp-pfs"/>
+                        <outlet property="hueUpwardsSmoothingSlider" destination="EUS-du-VFM" id="4jp-6e-gtO"/>
+                        <outlet property="presetMenu" destination="YRv-rx-gbi" id="Jvd-W3-W4C"/>
                     </connections>
                 </viewController>
                 <customObject id="kHH-lN-hiY" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

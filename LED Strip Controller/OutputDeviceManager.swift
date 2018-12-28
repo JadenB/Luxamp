@@ -8,8 +8,6 @@
 
 import Foundation
 
-let PACKET_SIZE = 4
-
 class OutputDeviceManager: NSObject, ORSSerialPortDelegate {
     
     static let shared = OutputDeviceManager()
@@ -55,8 +53,18 @@ class OutputDeviceManager: NSObject, ORSSerialPortDelegate {
         print("sent \(MemoryLayout<UInt8>.size) bytes to \(port!.name)")
     }
     
-    func sendPacket(packet: UnsafeRawPointer) {
-        port?.send(Data(bytes: packet, count: PACKET_SIZE))
+    func sendPacket(packet: [UInt8], size: Int) {
+        var packetWithChecksum = packet
+        packetWithChecksum.append(computeChecksum(fromBytes: packet))
+        port?.send(Data(bytes: packetWithChecksum, count: packetWithChecksum.count))
+    }
+    
+    private func computeChecksum(fromBytes bytes: [UInt8]) -> UInt8 {
+        var checksum: UInt8 = 0
+        for byte in bytes {
+            checksum = checksum &+ byte
+        }
+        return ~checksum &+ 1
     }
     
     func serialPortWasRemovedFromSystem(_ serialPort: ORSSerialPort) {
@@ -73,7 +81,8 @@ class OutputDeviceManager: NSObject, ORSSerialPortDelegate {
     }
     
     func serialPort(_ serialPort: ORSSerialPort, didReceive data: Data) {
-        print("recieved")
+        let result = [UInt8](data)
+        print("recieved \(result)")
     }
 }
 

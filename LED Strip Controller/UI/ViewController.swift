@@ -43,15 +43,11 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
         
         lightController = LightController(refreshRate: 60.0)
         
-        spectrumView.backgroundColor = .black
-        spectrumView.color = .red
         spectrumView.min = -48
         spectrumView.max = 4
         
         totalAmpLevel.min = -72
         totalAmpLevel.max = 2
-        totalAmpLevel.backgroundColor = .black
-        totalAmpLevel.color = .red
         
         levelIIR.upwardsAlpha = 0.5
         levelIIR.downwardsAlpha = 0.8
@@ -128,7 +124,7 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
         musicVisualizer.visualize()
         
         if !hidden {
-            self.spectrumView.updateSpectrum( spectrum: Array(p.spectrumDecibelData[0..<256]))
+            self.spectrumView.updateSpectrum( spectrum: p.spectrumDecibelData )
             var level = max(p.amplitudeInDecibels(), self.totalAmpLevel.min)
             level = self.levelIIR.applyFilter(toValue: level, atIndex: 0)
             self.totalAmpLevel.updateLevel(level: level)

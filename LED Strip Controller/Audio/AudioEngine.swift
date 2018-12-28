@@ -38,7 +38,7 @@ class AudioEngine: BufferProcessorDelegate {
         
         self.refreshRate = refreshRate
         
-        bProcessor = BufferProcessor()
+        bProcessor = BufferProcessor(bufferSize: BUFFER_SIZE)
         bProcessor.delegate = self
     }
     

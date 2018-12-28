@@ -8,11 +8,12 @@
 
 import Cocoa
 
+@IBDesignable
 class SpectrumView: NSView {
     
     var spectrumArray: [Float] = []
-    var color = NSColor.black
-    var backgroundColor = NSColor.white
+    @IBInspectable var color: NSColor = NSColor.black
+    @IBInspectable var backgroundColor: NSColor = NSColor.white
     
     var max: Float = 1.0
     var min: Float = 0.0

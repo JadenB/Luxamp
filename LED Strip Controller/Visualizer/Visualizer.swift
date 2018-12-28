@@ -13,22 +13,32 @@ class Visualizer {
                                           RootMeanSquareDriver(),
                                           PitchDriver(),
                                           SpectralDifferenceDriver(),
-                                          SpectralCrestDriver()]
+                                          SpectralCrestDriver(),
+                                          VeryLowSpectrumDriver(),
+                                          LowSpectrumDriver(),
+                                          MidSpectrumDriver(),
+                                          HighSpectrumDriver()]
+    private var driverDict: [String : VisualizationDriver] = [:]
+    
     var delegate: VisualizerOutputDelegate?
     var dataDelegate: VisualizerDataDelegate?
     
     var hue: VisualizerMapper
     var brightness: VisualizerMapper
     
-    var colorGradient: NSGradient! = NSGradient(starting: .red, ending: .yellow)
-    var useGradient = false
+    var gradient: NSGradient! = NSGradient(starting: .red, ending: .green)
+    var useGradient = true
     
     var output: NSColor = .black
     
     init(withEngine engine: AudioEngine) {
         self.engine = engine
-        hue = VisualizerMapper(withEngine: engine)
-        brightness = VisualizerMapper(withEngine: engine)
+        hue = VisualizerMapper(withEngine: engine, andDriver: drivers[0])
+        brightness = VisualizerMapper(withEngine: engine, andDriver: drivers[0])
+        
+        for driver in drivers {
+            driverDict[driver.name] = driver
+        }
     }
 
     func visualize() {
@@ -38,53 +48,43 @@ class Visualizer {
         
         brightness.applyMapping()
         hue.applyMapping()
-        outputBrightness = CGFloat(brightness.processedVal)
+        outputBrightness = CGFloat(brightness.mappedVal)
         
         if useGradient {
-            let gradientColor = colorGradient.interpolatedColor(atLocation: CGFloat(hue.processedVal))
+            let gradientColor = gradient.interpolatedColor(atLocation: CGFloat(hue.mappedVal))
             outputHue = gradientColor.hueComponent
             outputSaturation = gradientColor.saturationComponent
         } else {
-            outputHue = CGFloat(hue.processedVal)
+            outputHue = CGFloat(hue.mappedVal)
         }
         
         let colorToOutput = NSColor(hue: outputHue, saturation: outputSaturation,
                          brightness: outputBrightness, alpha: 1.0)
         
         delegate?.didVisualizeIntoColor(colorToOutput)
-        dataDelegate?.didVisualizeWithData(brightness: brightness.processedVal, hue: hue.processedVal, rawBrightness: brightness.rawVal, rawHue: hue.rawVal)
+        dataDelegate?.didVisualizeWithData(brightness: brightness.mappedVal, hue: hue.mappedVal, inputBrightness: brightness.inputVal, inputHue: hue.inputVal)
         output = colorToOutput
     }
     
-    func setHueDriver(id: Int) {
-        hue.driver = drivers[id]
+    func setHueDriver(name: String) {
+        hue.driver = driverDict[name]!
     }
     
-    func setBrightnessDriver(id: Int) {
-        brightness.driver = drivers[id]
-    }
-    
-    func setCustomHueDriver(driver: VisualizationDriver) {
-        hue.driver = driver
-    }
-    
-    func setCustomBrightnessDriver(driver: VisualizationDriver) {
-        brightness.driver = driver
+    func setBrightnessDriver(name: String) {
+        brightness.driver = driverDict[name]!
     }
 }
 
 class VisualizerMapper {
-    fileprivate var driver: VisualizationDriver?
+    var driver: VisualizationDriver
     fileprivate var engine: AudioEngine
     
-    var rawVal: Float = 0.0
+    var inputVal: Float = 0.0
     var mappedVal: Float = 0.0
-    var processedVal: Float = 0.0
     
     var min: Float = 0.0
     var max: Float = 1.0
-    
-    var useFilter = true
+
     var useAdaptiveRange = false
     var invert = false
     
@@ -98,7 +98,7 @@ class VisualizerMapper {
         }
         
         get {
-            return 0.0 // don't need this
+            return filter.upwardsAlpha * filter.upwardsAlpha
         }
     }
     
@@ -108,12 +108,13 @@ class VisualizerMapper {
         }
         
         get {
-            return 0.0 // don't need this
+            return filter.downwardsAlpha * filter.downwardsAlpha
         }
     }
     
-    init(withEngine engine: AudioEngine) {
+    init(withEngine engine: AudioEngine, andDriver d: VisualizationDriver) {
         self.engine = engine
+        driver = d
         preFilter.upwardsAlpha = 0.4
         preFilter.downwardsAlpha = 0.4
         filter.upwardsAlpha = 0.707
@@ -121,19 +122,20 @@ class VisualizerMapper {
     }
     
     func applyMapping() {
-        guard let d = driver else { return }
+        inputVal = preFilter.applyFilter(toValue: driver.output(usingEngine: engine), atIndex: 0)
         
-        rawVal = preFilter.applyFilter(toValue: d.output(usingEngine: engine), atIndex: 0)
+        var newVal = filter.applyFilter(toValue: inputVal, atIndex: 0)
         
-        var newVal = filter.applyFilter(toValue: rawVal, atIndex: 0) //Swap these two lines once range slider is implemented for output
-        newVal = remapValueToBounds(newVal, min: min, max: max) //
+        // adaptive range code here
+        
+        newVal = remapValueToBounds(newVal, min: min, max: max)
         
         
         if invert {
             newVal = 1.0 - newVal
         }
         
-        processedVal = newVal
+        mappedVal = newVal
     }
 }
 
@@ -142,5 +144,5 @@ protocol VisualizerOutputDelegate {
 }
 
 protocol VisualizerDataDelegate {
-    func didVisualizeWithData(brightness: Float, hue: Float, rawBrightness: Float, rawHue: Float)
+    func didVisualizeWithData(brightness: Float, hue: Float, inputBrightness: Float, inputHue: Float)
 }

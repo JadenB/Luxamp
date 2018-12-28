@@ -8,6 +8,7 @@
 
 import Cocoa
 
+@IBDesignable
 class LevelView: NSView {
     
     var level: Float = -Float.infinity
@@ -70,6 +71,10 @@ class LevelView: NSView {
     func remapValueToBounds(_ value: Float) -> Float {
         let scalingFactor = 1 / (max - min)
         return (value - min) * scalingFactor
+    }
+    
+    override func prepareForInterfaceBuilder() {
+        updateLevel(level: 0.5)
     }
     
 }

@@ -9,6 +9,7 @@
 import Cocoa
 let COLOR_BYTE: UInt8 = 99 // 'c'
 let POWER_BYTE: UInt8 = 112 // 'p'
+let PACKET_SIZE = 5
 
 class LightController {
     
@@ -37,13 +38,17 @@ class LightController {
             return
         }
         
-        let r = UInt8(calibratedColor.redComponent * 255)
-        let g = UInt8(calibratedColor.greenComponent * 255)
-        let b = UInt8(calibratedColor.blueComponent * 255)
+        let rCom = calibratedColor.redComponent
+        let gCom = calibratedColor.greenComponent
+        let bCom = calibratedColor.blueComponent
+        
+        let r = UInt8(rCom * rCom * 255)
+        let g = UInt8(gCom * gCom * 255)
+        let b = UInt8(bCom * bCom * 255)
         
         let packet: [UInt8] = [COLOR_BYTE, r, g, b]
         
-        deviceManager.sendPacket(packet: packet)
+        deviceManager.sendPacket(packet: packet, size: PACKET_SIZE)
     }
     
 }
