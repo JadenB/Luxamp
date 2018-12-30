@@ -65,6 +65,17 @@
                                 <rect key="frame" x="259" y="207" width="16" height="16"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             </progressIndicator>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bei-zt-cQH">
+                                <rect key="frame" x="14" y="156" width="129" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Reset Defaults" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="CP7-GY-14j">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="resetDefaultsPressed:" target="RIm-Mf-YdY" id="Ihe-EW-RdB"/>
+                                </connections>
+                            </button>
                         </subviews>
                     </view>
                     <connections>
@@ -1035,14 +1046,15 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YRv-rx-gbi" userLabel="Preset Menu">
-                                <rect key="frame" x="221" y="328" width="228" height="21"/>
+                                <rect key="frame" x="221" y="328" width="228" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <popUpButtonCell key="cell" type="push" title="Preset: Default" bezelStyle="rounded" alignment="center" lineBreakMode="truncatingTail" borderStyle="border" imageScaling="proportionallyDown" inset="2" pullsDown="YES" arrowPosition="arrowAtCenter" id="kns-ix-K28">
-                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                <popUpButtonCell key="cell" type="push" title="Preset: Default" bezelStyle="rounded" alignment="center" lineBreakMode="truncatingTail" borderStyle="border" inset="2" pullsDown="YES" arrowPosition="arrowAtCenter" autoenablesItems="NO" id="kns-ix-K28">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="menu"/>
-                                    <menu key="menu" id="LzP-ov-yBw">
+                                    <menu key="menu" autoenablesItems="NO" id="LzP-ov-yBw">
                                         <items>
-                                            <menuItem title="Preset: Default" hidden="YES" id="ArX-W9-7mv"/>
+                                            <menuItem title="Preset: Default" hidden="YES" id="THX-ne-NzM"/>
+                                            <menuItem isSeparatorItem="YES" enabled="YES" id="DSL-2m-BcD"/>
                                             <menuItem title="Save Preset..." id="g0y-Zl-6Ea"/>
                                             <menuItem title="Delete Preset" enabled="NO" id="Ng7-tN-SvN" userLabel="Delete Preset"/>
                                         </items>
@@ -1461,7 +1473,7 @@
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <segue destination="o5O-tv-4B6" kind="modal" id="qx2-uU-I5I"/>
+                                    <segue destination="o5O-tv-4B6" kind="modal" identifier="GradientEditorSegue" id="qx2-uU-I5I"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -1495,6 +1507,8 @@
                         <outlet property="colorUpwardsSmoothingSlider" destination="EUS-du-VFM" id="4jp-6e-gtO"/>
                         <outlet property="gradientView" destination="w9o-kd-dFm" id="xfZ-Jq-ZGm"/>
                         <outlet property="presetMenu" destination="YRv-rx-gbi" id="Jvd-W3-W4C"/>
+                        <outlet property="presetMenuDeleteItem" destination="Ng7-tN-SvN" id="fZz-KH-UW0"/>
+                        <segue destination="Xjn-n8-aFl" kind="sheet" identifier="SaveDialogSegue" id="zoh-jf-paf"/>
                     </connections>
                 </viewController>
                 <customObject id="kHH-lN-hiY" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -1524,6 +1538,87 @@
                 <customObject id="Ptm-q5-te1" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="855" y="1472"/>
+        </scene>
+        <!--Save Dialog View Controller-->
+        <scene sceneID="Ojz-o1-50l">
+            <objects>
+                <viewController id="Xjn-n8-aFl" customClass="SaveDialogViewController" customModule="LED_Strip_Controller" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="7xL-mX-Y5M">
+                        <rect key="frame" x="0.0" y="0.0" width="350" height="103"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="stj-AK-y0g">
+                                <rect key="frame" x="18" y="63" width="56" height="17"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="Save As:" id="rU3-Ut-KN2">
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                    <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eZk-0x-nhg">
+                                <rect key="frame" x="80" y="61" width="250" height="22"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="BMW-z1-Y8n">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vHT-ob-BdP">
+                                <rect key="frame" x="254" y="13" width="82" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="70" id="fZJ-p3-AUG"/>
+                                </constraints>
+                                <buttonCell key="cell" type="push" title="Save" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="wKL-eH-PS3">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                    <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="saveButtonPressed:" target="Xjn-n8-aFl" id="Zgt-0Z-VtN"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PJU-lk-m73">
+                                <rect key="frame" x="172" y="13" width="82" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="70" id="ExS-m3-E2w"/>
+                                </constraints>
+                                <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Ycw-t9-zRm">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                    <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="cancelButtonPressed:" target="Xjn-n8-aFl" id="UBL-zj-kWW"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="stj-AK-y0g" firstAttribute="top" secondItem="7xL-mX-Y5M" secondAttribute="top" constant="23" id="2hq-aW-hRS"/>
+                            <constraint firstItem="eZk-0x-nhg" firstAttribute="top" secondItem="7xL-mX-Y5M" secondAttribute="top" constant="20" id="4sN-6L-ZAd"/>
+                            <constraint firstAttribute="trailing" secondItem="vHT-ob-BdP" secondAttribute="trailing" constant="20" id="524-9I-f6W"/>
+                            <constraint firstItem="eZk-0x-nhg" firstAttribute="leading" secondItem="stj-AK-y0g" secondAttribute="trailing" constant="8" id="9ma-oi-gAn"/>
+                            <constraint firstItem="eZk-0x-nhg" firstAttribute="leading" secondItem="stj-AK-y0g" secondAttribute="trailing" constant="8" id="H03-zy-uAw"/>
+                            <constraint firstItem="stj-AK-y0g" firstAttribute="leading" secondItem="7xL-mX-Y5M" secondAttribute="leading" constant="20" id="WEy-Pd-9C5"/>
+                            <constraint firstItem="vHT-ob-BdP" firstAttribute="leading" secondItem="PJU-lk-m73" secondAttribute="trailing" constant="12" id="Xxk-d6-j9x"/>
+                            <constraint firstItem="PJU-lk-m73" firstAttribute="top" secondItem="eZk-0x-nhg" secondAttribute="bottom" constant="20" id="gEI-qA-PTi"/>
+                            <constraint firstAttribute="trailing" secondItem="eZk-0x-nhg" secondAttribute="trailing" constant="20" id="hpU-RU-vRD"/>
+                            <constraint firstAttribute="bottom" secondItem="PJU-lk-m73" secondAttribute="bottom" constant="20" id="nb2-hm-94O"/>
+                            <constraint firstItem="vHT-ob-BdP" firstAttribute="top" secondItem="eZk-0x-nhg" secondAttribute="bottom" constant="20" id="vIu-t9-PLk"/>
+                            <constraint firstAttribute="bottom" secondItem="vHT-ob-BdP" secondAttribute="bottom" constant="20" id="wcR-5B-iHY"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="field" destination="eZk-0x-nhg" id="bkf-nS-8sG"/>
+                        <outlet property="saveButton" destination="vHT-ob-BdP" id="o7J-pv-wpV"/>
+                    </connections>
+                </viewController>
+                <customObject id="H8w-G1-xHj" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="805" y="1939.5"/>
         </scene>
         <!--Gradient Editor View Controller-->
         <scene sceneID="2Ri-kS-6PU">

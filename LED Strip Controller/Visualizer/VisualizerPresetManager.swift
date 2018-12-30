@@ -9,6 +9,7 @@
 import Cocoa
 
 fileprivate let USERDEFAULTS_PRESETS_KEY = "presets"
+let PRESETMANAGER_DEFAULT_PRESET_NAME = "Default"
 
 class VisualizerPresetManager {
     
@@ -24,7 +25,7 @@ class VisualizerPresetManager {
     /// Attempts to load saved presets from UserDefaults, or creates the default preset if none are found
     func loadPresets() {
         guard let presetData = UserDefaults.standard.object(forKey: USERDEFAULTS_PRESETS_KEY) as? Data else {
-            _presets = ["Default":VisualizerPreset.defaultPreset]
+            _presets = [PRESETMANAGER_DEFAULT_PRESET_NAME:VisualizerPreset.defaultPreset]
             _orderedPresets = [VisualizerPreset.defaultPreset]
             return
         }
@@ -136,7 +137,7 @@ class VisualizerPresetManager {
 }
 
 class VisualizerPreset: Codable {
-    static let defaultPreset = VisualizerPreset(name: "Default")
+    static let defaultPreset = VisualizerPreset(name: PRESETMANAGER_DEFAULT_PRESET_NAME)
     
     var name: String
     

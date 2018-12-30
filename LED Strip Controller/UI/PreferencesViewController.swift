@@ -47,6 +47,14 @@ class PreferencesViewController: NSViewController {
         DeviceManager.shared.activateDevice()
     }
     
+    @IBAction func resetDefaultsPressed(_ sender: Any) {
+        let defaults = UserDefaults.standard
+        let dictionary = defaults.dictionaryRepresentation()
+        dictionary.keys.forEach { key in
+            defaults.removeObject(forKey: key)
+        }
+    }
+    
     @objc func devicesAdded(_ notification: Notification) {
         if let userInfo = notification.userInfo {
             let addedNames = (userInfo[ORSConnectedSerialPortsKey] as! [ORSSerialPort]).map{ $0.path }

@@ -8,7 +8,9 @@
 
 import Cocoa
 
-class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate, GradientEditorViewControllerDelegate {
+let DEFAULT_PRESET_INDEX = 1
+
+class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate, GradientEditorViewControllerDelegate, SaveDialogDelegate {
     
     var visualizer: Visualizer!
     var presetManager: VisualizerPresetManager!
@@ -33,6 +35,7 @@ class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate
     
     /* USER SET ELEMENTS */
     @IBOutlet weak var presetMenu: NSPopUpButton!
+    @IBOutlet weak var presetMenuDeleteItem: NSMenuItem!
     
     @IBOutlet weak var brightnessDriverMenu: NSPopUpButton!
     @IBOutlet weak var colorDriverMenu: NSPopUpButton!
@@ -54,6 +57,8 @@ class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate
     @IBOutlet weak var colorDownwardsSmoothingSlider: NSSlider!
     
     @IBOutlet weak var gradientView: GradientView!
+    
+    private var lastSelectedPresetName: String = "" // Needed for when 'Delete Preset' is clicked and the pulldown menu changes
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,14 +83,30 @@ class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate
     
     @IBAction func presetSelected(_ sender: NSPopUpButton) {
         if sender.indexOfSelectedItem == sender.numberOfItems - 1 {
-            // delete preset
-            print("delete")
+            let alert = NSAlert()
+            alert.alertStyle = .warning
+            alert.addButton(withTitle: "Delete")
+            alert.addButton(withTitle: "Cancel")
+            alert.messageText = "Are you sure you want to delete \"\(lastSelectedPresetName)\"?"
+            alert.informativeText = "You are about to permanently delete this preset. Once deleted it cannot be recovered."
+            alert.beginSheetModal(for: view.window!) { response in
+                if response == .alertFirstButtonReturn {
+                    self.deletePreset(withName: self.lastSelectedPresetName)
+                }
+            }
+            
         } else if sender.indexOfSelectedItem == sender.numberOfItems - 2 {
-            // save preset
-            print("save")
+            performSegue(withIdentifier: "SaveDialogSegue", sender: self)
         } else {
-            presetManager.applyPreset(name: sender.selectedItem?.title ?? "Default")
-            sender.item(at: 0)?.title = "Preset: " + (sender.selectedItem?.title ?? "Error")
+            presetManager.applyPreset(name: sender.selectedItem?.title ?? PRESETMANAGER_DEFAULT_PRESET_NAME)
+            presetMenu.title = "Preset: " + (presetMenu.selectedItem?.title ?? "Error")
+            if sender.selectedItem?.title == PRESETMANAGER_DEFAULT_PRESET_NAME {
+                presetMenuDeleteItem.isEnabled = false
+            } else {
+                presetMenuDeleteItem.isEnabled = true
+                lastSelectedPresetName = sender.selectedItem!.title
+            }
+            
             refreshView()
         }
     }
@@ -162,9 +183,10 @@ class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate
     func populateMenus() {
         let presetNames = presetManager.getPresetNames()
         for i in (0..<presetNames.count).reversed() {
-            presetMenu.insertItem(withTitle: presetNames[i], at: 1) // insert at 1 to put after placeholder and before save/delete
+            presetMenu.insertItem(withTitle: presetNames[i], at: 1) // insert at 1 to put after title and before save/delete
         }
         
+        presetMenu.selectItem(at: 1)
         brightnessDriverMenu.addItems(withTitles: visualizer.brightness.drivers())
         colorDriverMenu.addItems(withTitles: visualizer.color.drivers())
     }
@@ -197,6 +219,33 @@ class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate
         gradientView.gradient = v.gradient
     }
     
+    func savePreset(withName name: String) {
+        presetManager.saveCurrentStateAsPreset(name: name)
+        presetMenu.insertItem(withTitle: name, at: presetMenu.numberOfItems - 3)
+        presetMenu.selectItem(withTitle: name)
+        presetSelected(presetMenu)
+    }
+    
+    func deletePreset(withName name: String) {
+        presetMenu.selectItem(at: 1)
+        presetManager.deletePreset(name: name)
+        presetMenu.removeItem(withTitle: name)
+        presetSelected(presetMenu)
+    }
+    
+    override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
+        if segue.identifier == "SaveDialogSegue" {
+            let saveDialogController = segue.destinationController as! SaveDialogViewController
+            saveDialogController.delegate = self
+        } else if segue.identifier == "GradientEditorSegue" {
+            let gradientEditor = (segue.destinationController as! NSWindowController).contentViewController as! GradientEditorViewController
+            gradientEditor.gradient = visualizer.gradient
+            gradientEditor.delegate = self
+        }
+    }
+    
+    // MARK: - VisualizerDataDelegate
+    
     func didVisualizeWithData(brightness: Float, color: Float, inputBrightness: Float, inputColor: Float) {
         if hidden {
             return
@@ -214,18 +263,45 @@ class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate
         colorInputLabel.stringValue = String(format: "%.1f", inputColor)
     }
     
-    override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
-        if let gradientEditor = (segue.destinationController as? NSWindowController)?.contentViewController as? GradientEditorViewController {
-            gradientEditor.gradient = visualizer.gradient
-            gradientEditor.delegate = self
-        }
-    }
+    // MARK: - GradientEditorViewControllerDelegate
     
     func didSetGradient(gradient: NSGradient) {
         visualizer.gradient = gradient
         gradientView.gradient = gradient
     }
     
+    // MARK: - SaveDialogDelegate
+    
+    func saveDialogSaved(withName name: String, _ sender: SaveDialogViewController) {
+        if name == PRESETMANAGER_DEFAULT_PRESET_NAME || name == "Delete Preset" || name == "Save Preset..." {
+            let alert = NSAlert()
+            alert.alertStyle = .critical
+            alert.addButton(withTitle: "OK")
+            alert.messageText = "Invalid Preset Name"
+            alert.informativeText = "Please choose a different name"
+            alert.beginSheetModal(for: view.window!, completionHandler: nil)
+        } else if presetManager.getPresetNames().contains(name) {
+            let alert = NSAlert()
+            alert.alertStyle = .critical
+            alert.addButton(withTitle: "Replace")
+            alert.addButton(withTitle: "Cancel")
+            alert.messageText = "\"\(name)\" already exists. Do you want to replace it?"
+            alert.informativeText = "A preset with the same name already exists. Replacing it will overwrite its current settings."
+            alert.beginSheetModal(for: view.window!) { response in
+                if response == .alertFirstButtonReturn {
+                    self.savePreset(withName: name)
+                    sender.dismiss(nil)
+                }
+            }
+        } else {
+            savePreset(withName: name)
+            sender.dismiss(nil)
+        }
+    } // end saveDialogSaved()
+    
+    func saveDialogCanceled(_ sender: SaveDialogViewController) {
+        sender.dismiss(nil)
+    }
 }
 
 
