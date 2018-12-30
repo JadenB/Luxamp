@@ -7,124 +7,134 @@
 //
 import Cocoa
 
+/// Visualizes data from its AudioEngine to an NSColor
 class Visualizer {
-    var engine: AudioEngine
-    var drivers: [VisualizationDriver] = [PeakEnergyDriver(),
-                                          RootMeanSquareDriver(),
-                                          PitchDriver(),
-                                          SpectralDifferenceDriver(),
-                                          SpectralCrestDriver(),
-                                          VeryLowSpectrumDriver(),
-                                          LowSpectrumDriver(),
-                                          MidSpectrumDriver(),
-                                          HighSpectrumDriver()]
-    private var driverDict: [String : VisualizationDriver] = [:]
+    weak var outputDelegate: VisualizerOutputDelegate?
+    weak var dataDelegate: VisualizerDataDelegate?
     
-    var delegate: VisualizerOutputDelegate?
-    var dataDelegate: VisualizerDataDelegate?
-    
-    var hue: VisualizerMapper
+    var color: VisualizerMapper
     var brightness: VisualizerMapper
     
     var gradient: NSGradient! = NSGradient(starting: .red, ending: .green)
-    var useGradient = true
     
-    var output: NSColor = .black
-    
+    /// Initializes a Visualizer
+    ///
+    /// - Parameter engine: The AudioEngine to draw values from. Will be accessed each time visualize() is called.
     init(withEngine engine: AudioEngine) {
-        self.engine = engine
-        hue = VisualizerMapper(withEngine: engine, andDriver: drivers[0])
-        brightness = VisualizerMapper(withEngine: engine, andDriver: drivers[0])
-        
-        for driver in drivers {
-            driverDict[driver.name] = driver
-        }
+        color = VisualizerMapper(withEngine: engine)
+        brightness = VisualizerMapper(withEngine: engine)
     }
 
+    /// Produces a color and sends it to the output delegate. Also sends raw brightness and color values to the data delegate.
     func visualize() {
         var outputBrightness: CGFloat = 1.0
         var outputHue: CGFloat = 1.0
         var outputSaturation: CGFloat = 1.0
         
         brightness.applyMapping()
-        hue.applyMapping()
-        outputBrightness = CGFloat(brightness.mappedVal)
+        color.applyMapping()
+        outputBrightness = CGFloat(brightness.outputVal)
         
-        if useGradient {
-            let gradientColor = gradient.interpolatedColor(atLocation: CGFloat(hue.mappedVal))
-            outputHue = gradientColor.hueComponent
-            outputSaturation = gradientColor.saturationComponent
-        } else {
-            outputHue = CGFloat(hue.mappedVal)
-        }
+        let gradientColor = gradient.interpolatedColor(atLocation: CGFloat(color.outputVal))
+        outputHue = gradientColor.hueComponent
+        outputSaturation = gradientColor.saturationComponent
         
         let colorToOutput = NSColor(hue: outputHue, saturation: outputSaturation,
                          brightness: outputBrightness, alpha: 1.0)
         
-        delegate?.didVisualizeIntoColor(colorToOutput)
-        dataDelegate?.didVisualizeWithData(brightness: brightness.mappedVal, hue: hue.mappedVal, inputBrightness: brightness.inputVal, inputHue: hue.inputVal)
-        output = colorToOutput
-    }
-    
-    func setHueDriver(name: String) {
-        hue.driver = driverDict[name]!
-    }
-    
-    func setBrightnessDriver(name: String) {
-        brightness.driver = driverDict[name]!
+        outputDelegate?.didVisualizeIntoColor(colorToOutput)
+        dataDelegate?.didVisualizeWithData(brightness: brightness.outputVal, color: color.outputVal, inputBrightness: brightness.inputVal, inputColor: color.inputVal)
     }
 }
 
+/// Implemented by the Visualizer class to handle brightness and color values seperately. Should not be instantiated outside of a Visualizer.
 class VisualizerMapper {
-    var driver: VisualizationDriver
-    fileprivate var engine: AudioEngine
+    private var orderedDrivers: [VisualizationDriver] = [PeakEnergyDriver(),
+                                                   RootMeanSquareDriver(),
+                                                   PitchDriver(),
+                                                   SpectralDifferenceDriver(),
+                                                   SpectralCrestDriver(),
+                                                   VeryLowSpectrumDriver(),
+                                                   LowSpectrumDriver(),
+                                                   MidSpectrumDriver(),
+                                                   HighSpectrumDriver()]
+    private var driverDict: [String : VisualizationDriver] = [:]
     
-    var inputVal: Float = 0.0
-    var mappedVal: Float = 0.0
+    private var driver: VisualizationDriver
+    private var engine: AudioEngine
+    
+    private var preFilter = BiasedIIRFilter(size: 1)
+    private var postFilter = BiasedIIRFilter(size: 1)
+    // var range = AdaptiveRange()
+    
+    fileprivate var inputVal: Float = 0.0
+    fileprivate var outputVal: Float = 0.0
     
     var min: Float = 0.0
     var max: Float = 1.0
-
+    
     var useAdaptiveRange = false
     var invert = false
     
-    private var preFilter = BiasedIIRFilter(size: 1)
-    var filter = BiasedIIRFilter(size: 1)
-    // var range = AdaptiveRange()
-    
     var upwardsSmoothing: Float {
         set {
-            filter.upwardsAlpha = sqrtf(newValue)
+            postFilter.upwardsAlpha = sqrtf(newValue)
         }
         
         get {
-            return filter.upwardsAlpha * filter.upwardsAlpha
+            return postFilter.upwardsAlpha * postFilter.upwardsAlpha
         }
     }
     
     var downwardsSmoothing: Float {
         set {
-            filter.downwardsAlpha = sqrtf(newValue)
+            postFilter.downwardsAlpha = sqrtf(newValue)
         }
         
         get {
-            return filter.downwardsAlpha * filter.downwardsAlpha
+            return postFilter.downwardsAlpha * postFilter.downwardsAlpha
         }
     }
     
-    init(withEngine engine: AudioEngine, andDriver d: VisualizationDriver) {
+    init(withEngine engine: AudioEngine) {
         self.engine = engine
-        driver = d
+        driver = orderedDrivers[0]
         preFilter.upwardsAlpha = 0.4
         preFilter.downwardsAlpha = 0.4
-        filter.upwardsAlpha = 0.707
-        filter.downwardsAlpha = 0.707
+        postFilter.upwardsAlpha = 0.707
+        postFilter.downwardsAlpha = 0.707
+        
+        for driver in orderedDrivers {
+            driverDict[driver.name] = driver
+        }
     }
     
-    func applyMapping() {
+    /// Gets the possible driver choices
+    ///
+    /// - Returns: The names of all possible drivers
+    func drivers() -> [String] {
+        return orderedDrivers.map { $0.name }
+    }
+    
+    /// Gets the name of the current driver
+    ///
+    /// - Returns: The name of the current driver
+    func driverName() -> String {
+        return driver.name
+    }
+    
+    /// Sets the current driver
+    ///
+    /// - Parameter name: The name of the driver to set
+    func setDriver(withName name: String) {
+        driver = driverDict[name] ?? orderedDrivers[0]
+    }
+    
+    /// Transforms the value given by the driver and sets inputVal and outputVal
+    fileprivate func applyMapping() {
         inputVal = preFilter.applyFilter(toValue: driver.output(usingEngine: engine), atIndex: 0)
         
-        var newVal = filter.applyFilter(toValue: inputVal, atIndex: 0)
+        var newVal = postFilter.applyFilter(toValue: inputVal, atIndex: 0)
         
         // adaptive range code here
         
@@ -135,14 +145,16 @@ class VisualizerMapper {
             newVal = 1.0 - newVal
         }
         
-        mappedVal = newVal
+        outputVal = newVal
     }
 }
 
-protocol VisualizerOutputDelegate {
+/// The output delegate of a Visualizer object implements this protocol to perform specialized actions when the visualizer produces a color
+protocol VisualizerOutputDelegate: class {
     func didVisualizeIntoColor(_ color: NSColor)
 }
 
-protocol VisualizerDataDelegate {
-    func didVisualizeWithData(brightness: Float, hue: Float, inputBrightness: Float, inputHue: Float)
+/// The data delegate of a Visualizer object implements this protocol to perform specialized actions when the visualizer converts data to color and brightness
+protocol VisualizerDataDelegate: class {
+    func didVisualizeWithData(brightness: Float, color: Float, inputBrightness: Float, inputColor: Float)
 }

@@ -11,12 +11,16 @@ import Cocoa
 @IBDesignable
 class SpectrumView: NSView {
     
-    var spectrumArray: [Float] = []
     @IBInspectable var color: NSColor = NSColor.black
     @IBInspectable var backgroundColor: NSColor = NSColor.white
     
-    var max: Float = 1.0
-    var min: Float = 0.0
+    @IBInspectable var max: Float = 1.0
+    @IBInspectable var min: Float = 0.0
+    var spectrum: [Float] = [] {
+        didSet {
+            needsDisplay = true
+        }
+    }
     
     private var shouldClear = false
     
@@ -24,11 +28,6 @@ class SpectrumView: NSView {
         self.init()
         self.min = min
         self.max = max
-    }
-    
-    func updateSpectrum(spectrum: [Float]) {
-        spectrumArray = spectrum
-        needsDisplay = true
     }
     
     func disable() {
@@ -47,7 +46,7 @@ class SpectrumView: NSView {
     }
 
     override func draw(_ dirtyRect: NSRect) {
-        let bitmapWidth = spectrumArray.count
+        let bitmapWidth = spectrum.count
         
         // Fill background
         backgroundColor.setFill()
@@ -79,13 +78,13 @@ class SpectrumView: NSView {
         }
     }
     
-    func valueAt(position: Int, bitmapWidth: Int) -> Float {
+    private func valueAt(position: Int, bitmapWidth: Int) -> Float {
         if(position == bitmapWidth - 1) {
-            return spectrumArray[bitmapWidth - 1]
+            return spectrum[bitmapWidth - 1]
         }
         let bmapWidthf = Float(bitmapWidth)
         let index: Float = bmapWidthf * (log2f(bmapWidthf) - log2f(Float(bitmapWidth - position))) / log2f(bmapWidthf)
-        return spectrumArray[Int(index)]
+        return spectrum[Int(index)]
         
     }
     

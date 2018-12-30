@@ -18,24 +18,24 @@ class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate
     /* DYNAMICALLY SET ELEMENTS */
     @IBOutlet weak var brightnessInputLevel: LevelView!
     @IBOutlet weak var brightnessOutputLevel: LevelView!
-    @IBOutlet weak var hueInputLevel: LevelView!
-    @IBOutlet weak var hueOutputLevel: LevelView!
+    @IBOutlet weak var colorInputLevel: LevelView!
+    @IBOutlet weak var colorOutputLevel: LevelView!
     
     @IBOutlet weak var brightnessInputLabel: NSTextField!
     @IBOutlet weak var brightnessOutputLabel: NSTextField!
-    @IBOutlet weak var hueInputLabel: NSTextField!
-    @IBOutlet weak var hueOutputLabel: NSTextField!
+    @IBOutlet weak var colorInputLabel: NSTextField!
+    @IBOutlet weak var colorOutputLabel: NSTextField!
     
     @IBOutlet weak var brightnessSmoothingLabelUpwards: NSTextField!
     @IBOutlet weak var brightnessSmoothingLabelDownwards: NSTextField!
-    @IBOutlet weak var hueSmoothingLabelUpwards: NSTextField!
-    @IBOutlet weak var hueSmoothingLabelDownwards: NSTextField!
+    @IBOutlet weak var colorSmoothingLabelUpwards: NSTextField!
+    @IBOutlet weak var colorSmoothingLabelDownwards: NSTextField!
     
     /* USER SET ELEMENTS */
     @IBOutlet weak var presetMenu: NSPopUpButton!
     
     @IBOutlet weak var brightnessDriverMenu: NSPopUpButton!
-    @IBOutlet weak var hueDriverMenu: NSPopUpButton!
+    @IBOutlet weak var colorDriverMenu: NSPopUpButton!
     
     @IBOutlet weak var brightnessMaxField: VisualizerTextField!
     @IBOutlet weak var brightnessMinField: VisualizerTextField!
@@ -45,13 +45,13 @@ class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate
     @IBOutlet weak var brightnessUpwardsSmoothingSlider: NSSlider!
     @IBOutlet weak var brightnessDownwardsSmoothingSlider: NSSlider!
     
-    @IBOutlet weak var hueMaxField: VisualizerTextField!
-    @IBOutlet weak var hueMinField: VisualizerTextField!
-    @IBOutlet weak var hueInvertCheckbox: NSButton!
-    @IBOutlet weak var hueAdaptiveCheckbox: NSButton!
+    @IBOutlet weak var colorMaxField: VisualizerTextField!
+    @IBOutlet weak var colorMinField: VisualizerTextField!
+    @IBOutlet weak var colorInvertCheckbox: NSButton!
+    @IBOutlet weak var colorAdaptiveCheckbox: NSButton!
     
-    @IBOutlet weak var hueUpwardsSmoothingSlider: NSSlider!
-    @IBOutlet weak var hueDownwardsSmoothingSlider: NSSlider!
+    @IBOutlet weak var colorUpwardsSmoothingSlider: NSSlider!
+    @IBOutlet weak var colorDownwardsSmoothingSlider: NSSlider!
     
     @IBOutlet weak var gradientView: GradientView!
     
@@ -95,15 +95,15 @@ class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate
             print("error: no item selected")
             return
         }
-        visualizer.setBrightnessDriver(name: driverName)
+        visualizer.brightness.setDriver(withName: driverName)
     }
     
-    @IBAction func hueDriverSelected(_ sender: NSPopUpButton) {
+    @IBAction func colorDriverSelected(_ sender: NSPopUpButton) {
         guard let driverName = sender.selectedItem?.title else {
             print("error: no item selected")
             return
         }
-        visualizer.setHueDriver(name: driverName)
+        visualizer.color.setDriver(withName: driverName)
     }
     
     @IBAction func brightnessMaxChanged(_ sender: NSTextField) {
@@ -114,20 +114,20 @@ class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate
         visualizer.brightness.min = sender.floatValue
     }
     
-    @IBAction func hueMaxChanged(_ sender: NSTextField) {
-        visualizer.hue.max = sender.floatValue
+    @IBAction func colorMaxChanged(_ sender: NSTextField) {
+        visualizer.color.max = sender.floatValue
     }
     
-    @IBAction func hueMinChanged(_ sender: NSTextField) {
-        visualizer.hue.min = sender.floatValue
+    @IBAction func colorMinChanged(_ sender: NSTextField) {
+        visualizer.color.min = sender.floatValue
     }
     
     @IBAction func brightnessInvertPressed(_ sender: NSButton) {
         visualizer.brightness.invert = sender.state.rawValue == 1
     }
     
-    @IBAction func hueInvertPressed(_ sender: NSButton) {
-        visualizer.hue.invert = sender.state.rawValue == 1
+    @IBAction func colorInvertPressed(_ sender: NSButton) {
+        visualizer.color.invert = sender.state.rawValue == 1
     }
     
     @IBAction func brightnessUpwardsSmoothingSliderChanged(_ sender: NSSlider) {
@@ -140,14 +140,19 @@ class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate
         brightnessSmoothingLabelDownwards.stringValue = String(format: "%.2f", sender.floatValue)
     }
     
-    @IBAction func hueUpwardsSmoothingSliderChanged(_ sender: NSSlider) {
-        visualizer.hue.upwardsSmoothing = sender.floatValue
-        hueSmoothingLabelUpwards.stringValue = String(format: "%.2f", sender.floatValue)
+    @IBAction func colorUpwardsSmoothingSliderChanged(_ sender: NSSlider) {
+        visualizer.color.upwardsSmoothing = sender.floatValue
+        colorSmoothingLabelUpwards.stringValue = String(format: "%.2f", sender.floatValue)
     }
     
-    @IBAction func hueDownwardsSmoothingSliderChanged(_ sender: NSSlider) {
-        visualizer.hue.downwardsSmoothing = sender.floatValue
-        hueSmoothingLabelDownwards.stringValue = String(format: "%.2f", sender.floatValue)
+    @IBAction func colorDownwardsSmoothingSliderChanged(_ sender: NSSlider) {
+        visualizer.color.downwardsSmoothing = sender.floatValue
+        colorSmoothingLabelDownwards.stringValue = String(format: "%.2f", sender.floatValue)
+    }
+    
+    @IBAction func resetGradientButtonPressed(_ sender: Any) {
+        visualizer.gradient = VisualizerPreset.defaultPreset.gradient
+        gradientView.gradient = visualizer.gradient
     }
     
     override func setNilValueForKey(_ key: String) {
@@ -160,14 +165,14 @@ class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate
             presetMenu.insertItem(withTitle: presetNames[i], at: 1) // insert at 1 to put after placeholder and before save/delete
         }
         
-        brightnessDriverMenu.addItems(withTitles: visualizer.drivers.map{$0.name})
-        hueDriverMenu.addItems(withTitles: visualizer.drivers.map{$0.name})
+        brightnessDriverMenu.addItems(withTitles: visualizer.brightness.drivers())
+        colorDriverMenu.addItems(withTitles: visualizer.color.drivers())
     }
     
     func refreshView() {
         let v = visualizer!
-        brightnessDriverMenu.selectItem(withTitle: v.brightness.driver.name)
-        hueDriverMenu.selectItem(withTitle: v.hue.driver.name)
+        brightnessDriverMenu.selectItem(withTitle: v.brightness.driverName())
+        colorDriverMenu.selectItem(withTitle: v.color.driverName())
         
         brightnessMaxField.floatValue = v.brightness.max
         brightnessMinField.floatValue = v.brightness.min
@@ -179,34 +184,34 @@ class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate
         brightnessUpwardsSmoothingSliderChanged(brightnessUpwardsSmoothingSlider) // updates slider labels
         brightnessDownwardsSmoothingSliderChanged(brightnessDownwardsSmoothingSlider)
         
-        hueMaxField.floatValue = v.hue.max
-        hueMinField.floatValue = v.hue.min
-        hueInvertCheckbox.state = v.hue.invert ? .on : .off
-        hueAdaptiveCheckbox.state = v.hue.useAdaptiveRange ? .on : .off
+        colorMaxField.floatValue = v.color.max
+        colorMinField.floatValue = v.color.min
+        colorInvertCheckbox.state = v.color.invert ? .on : .off
+        colorAdaptiveCheckbox.state = v.color.useAdaptiveRange ? .on : .off
         
-        hueUpwardsSmoothingSlider.floatValue = v.hue.upwardsSmoothing
-        hueDownwardsSmoothingSlider.floatValue = v.hue.downwardsSmoothing
-        hueUpwardsSmoothingSliderChanged(hueUpwardsSmoothingSlider)
-        hueDownwardsSmoothingSliderChanged(hueDownwardsSmoothingSlider)
+        colorUpwardsSmoothingSlider.floatValue = v.color.upwardsSmoothing
+        colorDownwardsSmoothingSlider.floatValue = v.color.downwardsSmoothing
+        colorUpwardsSmoothingSliderChanged(colorUpwardsSmoothingSlider)
+        colorDownwardsSmoothingSliderChanged(colorDownwardsSmoothingSlider)
         
         gradientView.gradient = v.gradient
     }
     
-    func didVisualizeWithData(brightness: Float, hue: Float, inputBrightness: Float, inputHue: Float) {
+    func didVisualizeWithData(brightness: Float, color: Float, inputBrightness: Float, inputColor: Float) {
         if hidden {
             return
         }
         
-        brightnessInputLevel.updateLevel(level: remapValueToBounds(inputBrightness, min: visualizer.brightness.min, max: visualizer.brightness.max))
-        hueInputLevel.updateLevel(level: remapValueToBounds(inputHue, min: visualizer.hue.min, max: visualizer.hue.max))
+        brightnessInputLevel.level = remapValueToBounds(inputBrightness, min: visualizer.brightness.min, max: visualizer.brightness.max)
+        colorInputLevel.level = remapValueToBounds(inputColor, min: visualizer.color.min, max: visualizer.color.max)
         
-        brightnessOutputLevel.updateLevel(level: brightness)
-        hueOutputLevel.updateLevel(level: hue)
+        brightnessOutputLevel.level = brightness
+        colorOutputLevel.level = color
         
         brightnessOutputLabel.stringValue = String(format: "%.1f", brightness)
         brightnessInputLabel.stringValue = String(format: "%.1f", inputBrightness)
-        hueOutputLabel.stringValue = String(format: "%.1f", hue)
-        hueInputLabel.stringValue = String(format: "%.1f", inputHue)
+        colorOutputLabel.stringValue = String(format: "%.1f", color)
+        colorInputLabel.stringValue = String(format: "%.1f", inputColor)
     }
     
     override func prepare(for segue: NSStoryboardSegue, sender: Any?) {

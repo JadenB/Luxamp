@@ -11,27 +11,60 @@ import Cocoa
 class PreferencesViewController: NSViewController {
 
     @IBOutlet weak var outputDeviceList: NSPopUpButton!
-    var deviceManager = OutputDeviceManager.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear() {
+        let deviceManager = DeviceManager.shared
+        outputDeviceList.addItems(withTitles: deviceManager.getDevices())
         
-        outputDeviceList.addItems(withTitles: OutputDeviceManager.getDevices())
+        if deviceManager.deviceIsSelected() {
+            outputDeviceList.selectItem(withTitle: deviceManager.selectedDevice())
+        }
+        
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(devicesAdded), name: .ORSSerialPortsWereConnected, object: nil)
+        nc.addObserver(self, selector: #selector(devicesRemoved), name: .ORSSerialPortsWereDisconnected, object: nil)
+    }
+    
+    override func viewDidDisappear() {
+        NotificationCenter.default.removeObserver(self)
     }
     
     @IBAction func outputDeviceSelected(_ sender: NSPopUpButton) {
-        if !deviceManager.selectPort(withPath: sender.selectedItem?.title ?? "0") {
+        guard let devicePath = sender.selectedItem?.title else {
+            print("Error: nothing selected")
+            return
+        }
+        
+        if !DeviceManager.shared.selectDevice(withPath: devicePath) {
             outputDeviceList.selectItem(at: 0)
             return
         }
         
-        print(deviceManager.port?.path)
-        deviceManager.port?.open()
-        deviceManager.sendByte(COLOR_BYTE)
-        deviceManager.sendByte(0)
-        deviceManager.sendByte(1)
-        deviceManager.sendByte(0)
-        
-        //deviceManager.port?.close()
+        DeviceManager.shared.activateDevice()
+    }
+    
+    @objc func devicesAdded(_ notification: Notification) {
+        if let userInfo = notification.userInfo {
+            let addedNames = (userInfo[ORSConnectedSerialPortsKey] as! [ORSSerialPort]).map{ $0.path }
+            for name in addedNames {
+                outputDeviceList.insertItem(withTitle: name, at: 1)
+            }
+        }
+    }
+    
+    @objc func devicesRemoved(_ notification: Notification) {
+        if let userInfo = notification.userInfo {
+            let removedNames = (userInfo[ORSDisconnectedSerialPortsKey] as! [ORSSerialPort]).map{ $0.path }
+            for name in removedNames {
+                if name == DeviceManager.shared.selectedDevice() {
+                    outputDeviceList.selectItem(at: 0)
+                }
+                outputDeviceList.removeItem(withTitle: name)
+            }
+        }
     }
 }

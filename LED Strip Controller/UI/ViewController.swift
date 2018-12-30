@@ -15,7 +15,6 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
     
     var audioEngine: AudioEngine!
     var musicVisualizer: Visualizer!
-    var lightController: LightController!
     
     @IBOutlet weak var spectrumView: SpectrumView!
     @IBOutlet weak var totalAmpLevel: LevelView!
@@ -27,7 +26,7 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
     @objc dynamic var manualButtonsEnabled = false
     @objc dynamic var isOn = false
     
-    var currentMode: Mode = .Manual
+    var currentMode: LightMode = .Pattern
     var hidden = true
     
     var levelIIR = BiasedIIRFilter(initialData: [0.0])
@@ -37,9 +36,7 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
         audioEngine = AudioEngine(refreshRate: 43.06640625, bufferSize: UInt32(BUFFER_SIZE))
         audioEngine.delegate = self
         musicVisualizer = Visualizer(withEngine: audioEngine)
-        musicVisualizer.delegate = self
-        
-        lightController = LightController(refreshRate: 60.0)
+        musicVisualizer.outputDelegate = self
         
         spectrumView.min = -48
         spectrumView.max = 4
@@ -76,8 +73,15 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
             return
         }
         
-        isOn = (sender.selectedSegment == 1)
-        manualButtonsEnabled = isOn && currentMode == .Manual
+        if sender.selectedSegment == 1 {
+            isOn = true
+            LightController.shared.turnOn()
+        } else {
+            isOn = false
+            LightController.shared.turnOff()
+        }
+        
+        manualButtonsEnabled = isOn && currentMode == .Pattern
         
         if isOn && currentMode == .Music {
             startAudioVisualization()
@@ -91,13 +95,15 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
             return
         }
         
-        currentMode = Mode(rawValue: sender.selectedSegment)!
-        manualButtonsEnabled = isOn && currentMode == .Manual
+        currentMode = LightMode(rawValue: sender.selectedSegment)!
+        manualButtonsEnabled = isOn && currentMode == .Pattern
         
         if currentMode == .Music {
             startAudioVisualization()
+            LightController.shared.mode = .Music
         } else {
             stopAudioVisualization()
+            LightController.shared.mode = .Pattern
         }
     }
     
@@ -122,23 +128,35 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
         musicVisualizer.visualize()
         
         if !hidden {
-            self.spectrumView.updateSpectrum( spectrum: p.spectrumDecibelData )
+            self.spectrumView.spectrum = p.spectrumDecibelData
             var level = max(p.amplitudeInDecibels(), self.totalAmpLevel.min)
             level = self.levelIIR.applyFilter(toValue: level, atIndex: 0)
-            self.totalAmpLevel.updateLevel(level: level)
+            self.totalAmpLevel.level = level
             self.totalAmpLabel.stringValue = String(format: "%.1f", level)
         }
     }
     
     func didVisualizeIntoColor(_ color: NSColor) {
         colorView.color = color
-        lightController.setColor(color: color)
+        LightController.shared.setColor(color: color)
+    }
+    
+    func audioDeviceChanged() {
+        LightController.shared.setColor(color: .black)
+        let alert = NSAlert()
+        alert.messageText = "Audio Device Changed"
+        alert.informativeText = "The app must be restarted to continue analyzing audio."
+        alert.alertStyle = .warning
+        alert.addButton(withTitle: "Restart")
+        alert.addButton(withTitle: "Quit")
+        alert.beginSheetModal(for: view.window!) { response in
+            if response == .alertFirstButtonReturn {
+                AppManager.restartApp()
+            } else {
+                AppManager.quitApp()
+            }
+        }
     }
 
-}
-
-enum Mode: Int {
-    case Manual = 0
-    case Music = 1
 }
 

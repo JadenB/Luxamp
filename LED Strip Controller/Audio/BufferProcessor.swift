@@ -11,7 +11,7 @@ import GistSwift
 
 class BufferProcessor {
     let gist = Gist(frameSize: BUFFER_SIZE, sampleRate: SAMPLE_RATE)
-    var delegate: BufferProcessorDelegate?
+    weak var delegate: BufferProcessorDelegate?
     
     let fftSize: Int
     var spectrumDecibelData: [Float]
@@ -169,6 +169,6 @@ class BufferProcessor {
     
 }
 
-protocol BufferProcessorDelegate {
+protocol BufferProcessorDelegate: class {
     func didFinishProcessingBuffer(_ bp: BufferProcessor)
 }

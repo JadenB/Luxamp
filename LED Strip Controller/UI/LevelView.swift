@@ -11,14 +11,18 @@ import Cocoa
 @IBDesignable
 class LevelView: NSView {
     
-    var level: Float = -Float.infinity
     @IBInspectable var color: NSColor = .black
     @IBInspectable var backgroundColor: NSColor = .white
     
     @IBInspectable var max: Float = 1.0
     @IBInspectable var min: Float = 0.0
+    var level: Float = -Float.infinity {
+        didSet {
+            needsDisplay = true
+        }
+    }
     
-    private var shouldClear = false
+    private var _shouldClear = false
     
     convenience init(min: Float, max: Float) {
         self.init()
@@ -26,18 +30,13 @@ class LevelView: NSView {
         self.max = max
     }
     
-    func updateLevel(level: Float) {
-        self.level = level
-        needsDisplay = true
-    }
-    
     func disable() {
-        shouldClear = true
+        _shouldClear = true
         needsDisplay = true
     }
     
     func enable() {
-        shouldClear = false
+        _shouldClear = false
     }
     
     override var isOpaque: Bool {
@@ -51,7 +50,7 @@ class LevelView: NSView {
         backgroundColor.setFill()
         bounds.fill()
         
-        if shouldClear {
+        if _shouldClear {
             return
         }
         
@@ -62,19 +61,14 @@ class LevelView: NSView {
         let x = bounds.origin.x
         let y = bounds.origin.y
         let w = bounds.size.width
-        let h = viewHeight * CGFloat(remapValueToBounds(level))
+        let h = viewHeight * CGFloat(remapValueToBounds(level, min: min, max: max))
         
         let r1  = CGRect(x: x, y: y, width: w, height: h)
         r1.fill()
     }
     
-    func remapValueToBounds(_ value: Float) -> Float {
-        let scalingFactor = 1 / (max - min)
-        return (value - min) * scalingFactor
-    }
-    
     override func prepareForInterfaceBuilder() {
-        updateLevel(level: 0.5)
+        level = 0.5
     }
     
 }

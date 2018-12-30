@@ -22,11 +22,12 @@ class AudioEngine: BufferProcessorDelegate {
     var refreshTimer: DispatchSourceTimer?
     let refreshRate: Double
     
-    let av = AVAudioEngine()
+    var av = AVAudioEngine()
     
-    var delegate: AudioEngineDelegate?
+    weak var delegate: AudioEngineDelegate?
     
     private var sendBufferNextCycle = false
+    private var audioDeviceChangedRanOnce = false
     
     init(refreshRate: Double, bufferSize: UInt32 = 1_024) {
         self.bufferSize = bufferSize
@@ -34,6 +35,8 @@ class AudioEngine: BufferProcessorDelegate {
         
         bProcessor = BufferProcessor(bufferSize: BUFFER_SIZE)
         bProcessor.delegate = self
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleConfigurationChange), name: .AVAudioEngineConfigurationChange, object: av)
     }
     
     private func setupBufferTap() {
@@ -112,8 +115,20 @@ class AudioEngine: BufferProcessorDelegate {
             self.delegate?.didRefreshAudioEngine(withProcessor: bp)
         }
     }
+    
+    @objc func handleConfigurationChange(_ notification: Notification) {
+        audioDeviceChangedRanOnce = true
+        if !audioDeviceChangedRanOnce {
+            DispatchQueue.main.async {
+                self.stop()
+                self.delegate?.audioDeviceChanged()
+            }
+        }
+        
+    }
 }
 
-protocol AudioEngineDelegate {
+protocol AudioEngineDelegate: class {
     func didRefreshAudioEngine(withProcessor p: BufferProcessor)
+    func audioDeviceChanged()
 }

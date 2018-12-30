@@ -8,8 +8,8 @@
         <!--Window Controller-->
         <scene sceneID="k8q-fx-Pof">
             <objects>
-                <windowController id="4rk-0I-SOC" sceneMemberID="viewController">
-                    <window key="window" title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="JCx-ZW-uHY">
+                <windowController showSeguePresentationStyle="single" id="4rk-0I-SOC" sceneMemberID="viewController">
+                    <window key="window" title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="preferences" animationBehavior="default" id="JCx-ZW-uHY">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="294" y="313" width="295" height="270"/>
@@ -31,7 +31,7 @@
         <!--Preferences View Controller-->
         <scene sceneID="Hci-w2-fyx">
             <objects>
-                <viewController id="RIm-Mf-YdY" customClass="PreferencesViewController" customModule="LED_Strip_Controller" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController showSeguePresentationStyle="single" id="RIm-Mf-YdY" customClass="PreferencesViewController" customModule="LED_Strip_Controller" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="po3-7n-0hc">
                         <rect key="frame" x="0.0" y="0.0" width="295" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1091,7 +1091,7 @@
                                     <menu key="menu" id="Ise-u3-dqV"/>
                                 </popUpButtonCell>
                                 <connections>
-                                    <action selector="hueDriverSelected:" target="6en-Wh-d3J" id="Hcn-wc-QIh"/>
+                                    <action selector="colorDriverSelected:" target="6en-Wh-d3J" id="Hcn-wc-QIh"/>
                                 </connections>
                             </popUpButton>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nlX-wK-DLg">
@@ -1233,7 +1233,7 @@
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="hueInvertPressed:" target="6en-Wh-d3J" id="xHJ-d5-Qwr"/>
+                                    <action selector="colorInvertPressed:" target="6en-Wh-d3J" id="xHJ-d5-Qwr"/>
                                 </connections>
                             </button>
                             <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ag9-tV-rcH">
@@ -1353,7 +1353,7 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <action selector="hueMaxChanged:" target="6en-Wh-d3J" id="dP1-ox-uW0"/>
+                                    <action selector="colorMaxChanged:" target="6en-Wh-d3J" id="dP1-ox-uW0"/>
                                 </connections>
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NNI-WI-pfo" customClass="VisualizerTextField" customModule="LED_Strip_Controller" customModuleProvider="target">
@@ -1366,7 +1366,7 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <action selector="hueMinChanged:" target="6en-Wh-d3J" id="jp3-7B-CD5"/>
+                                    <action selector="colorMinChanged:" target="6en-Wh-d3J" id="jp3-7B-CD5"/>
                                 </connections>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jyT-bU-9jV">
@@ -1383,7 +1383,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="0.98999999999999999" doubleValue="0.5" tickMarkPosition="above" sliderType="linear" id="fek-MC-hVa"/>
                                 <connections>
-                                    <action selector="hueUpwardsSmoothingSliderChanged:" target="6en-Wh-d3J" id="Ort-BD-Bhi"/>
+                                    <action selector="colorUpwardsSmoothingSliderChanged:" target="6en-Wh-d3J" id="Ort-BD-Bhi"/>
                                 </connections>
                             </slider>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oQb-TP-kCC">
@@ -1427,7 +1427,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="0.98999999999999999" doubleValue="0.5" tickMarkPosition="above" sliderType="linear" id="owE-aN-wX5"/>
                                 <connections>
-                                    <action selector="hueDownwardsSmoothingSliderChanged:" target="6en-Wh-d3J" id="mfe-uh-mft"/>
+                                    <action selector="colorDownwardsSmoothingSliderChanged:" target="6en-Wh-d3J" id="mfe-uh-mft"/>
                                 </connections>
                             </slider>
                             <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="w9o-kd-dFm" customClass="GradientView" customModule="LED_Strip_Controller" customModuleProvider="target">
@@ -1445,6 +1445,9 @@
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="resetGradientButtonPressed:" target="6en-Wh-d3J" id="PG3-X1-pK3"/>
+                                </connections>
                             </button>
                             <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="Wpb-kE-tmr">
                                 <rect key="frame" x="224" y="88" width="222" height="5"/>
@@ -1477,20 +1480,20 @@
                         <outlet property="brightnessSmoothingLabelDownwards" destination="OqD-BG-TF4" id="gV2-nr-RgN"/>
                         <outlet property="brightnessSmoothingLabelUpwards" destination="wdE-jX-r86" id="xum-OZ-TC2"/>
                         <outlet property="brightnessUpwardsSmoothingSlider" destination="ag9-tV-rcH" id="25Z-z9-LOK"/>
+                        <outlet property="colorAdaptiveCheckbox" destination="BWD-1r-ZLN" id="tWp-Ue-7kI"/>
+                        <outlet property="colorDownwardsSmoothingSlider" destination="eC8-Ay-Obl" id="z9Q-XW-HNX"/>
+                        <outlet property="colorDriverMenu" destination="KYp-VG-QYX" id="fFq-M1-hhF"/>
+                        <outlet property="colorInputLabel" destination="Dzm-Zx-7Yx" id="RBf-We-kws"/>
+                        <outlet property="colorInputLevel" destination="5aX-ZI-iVA" id="NJw-2F-Em9"/>
+                        <outlet property="colorInvertCheckbox" destination="ESx-Tc-Ztd" id="Gc7-50-ONe"/>
+                        <outlet property="colorMaxField" destination="ZJu-HC-hxP" id="9ki-wa-VZN"/>
+                        <outlet property="colorMinField" destination="NNI-WI-pfo" id="ndd-Fs-wRt"/>
+                        <outlet property="colorOutputLabel" destination="l2m-Ft-MpQ" id="GUm-sO-Rhz"/>
+                        <outlet property="colorOutputLevel" destination="qjw-ch-9a5" id="5di-HN-WEv"/>
+                        <outlet property="colorSmoothingLabelDownwards" destination="sc6-nB-e43" id="hXX-5i-6iD"/>
+                        <outlet property="colorSmoothingLabelUpwards" destination="hor-WI-PD1" id="XYn-kp-pfs"/>
+                        <outlet property="colorUpwardsSmoothingSlider" destination="EUS-du-VFM" id="4jp-6e-gtO"/>
                         <outlet property="gradientView" destination="w9o-kd-dFm" id="xfZ-Jq-ZGm"/>
-                        <outlet property="hueAdaptiveCheckbox" destination="BWD-1r-ZLN" id="tWp-Ue-7kI"/>
-                        <outlet property="hueDownwardsSmoothingSlider" destination="eC8-Ay-Obl" id="z9Q-XW-HNX"/>
-                        <outlet property="hueDriverMenu" destination="KYp-VG-QYX" id="fFq-M1-hhF"/>
-                        <outlet property="hueInputLabel" destination="Dzm-Zx-7Yx" id="RBf-We-kws"/>
-                        <outlet property="hueInputLevel" destination="5aX-ZI-iVA" id="NJw-2F-Em9"/>
-                        <outlet property="hueInvertCheckbox" destination="ESx-Tc-Ztd" id="Gc7-50-ONe"/>
-                        <outlet property="hueMaxField" destination="ZJu-HC-hxP" id="9ki-wa-VZN"/>
-                        <outlet property="hueMinField" destination="NNI-WI-pfo" id="ndd-Fs-wRt"/>
-                        <outlet property="hueOutputLabel" destination="l2m-Ft-MpQ" id="GUm-sO-Rhz"/>
-                        <outlet property="hueOutputLevel" destination="qjw-ch-9a5" id="5di-HN-WEv"/>
-                        <outlet property="hueSmoothingLabelDownwards" destination="sc6-nB-e43" id="hXX-5i-6iD"/>
-                        <outlet property="hueSmoothingLabelUpwards" destination="hor-WI-PD1" id="XYn-kp-pfs"/>
-                        <outlet property="hueUpwardsSmoothingSlider" destination="EUS-du-VFM" id="4jp-6e-gtO"/>
                         <outlet property="presetMenu" destination="YRv-rx-gbi" id="Jvd-W3-W4C"/>
                     </connections>
                 </viewController>
@@ -1503,11 +1506,13 @@
         <scene sceneID="4aP-Ut-hpg">
             <objects>
                 <windowController id="o5O-tv-4B6" sceneMemberID="viewController">
-                    <window key="window" title="Gradient Editor" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="tlr-jb-D6U">
+                    <window key="window" title="Gradient Editor" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="gradient" animationBehavior="default" id="tlr-jb-D6U">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-                        <rect key="contentRect" x="294" y="313" width="480" height="270"/>
+                        <rect key="contentRect" x="294" y="313" width="480" height="208"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
+                        <value key="minSize" type="size" width="480" height="208"/>
+                        <value key="maxSize" type="size" width="480" height="208"/>
                         <connections>
                             <outlet property="delegate" destination="o5O-tv-4B6" id="6P3-nY-KD9"/>
                         </connections>
@@ -1525,26 +1530,30 @@
             <objects>
                 <viewController id="iO9-Dj-NaA" customClass="GradientEditorViewController" customModule="LED_Strip_Controller" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="b9m-6P-BV4">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="208"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vnJ-8o-TC9">
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vnJ-8o-TC9">
                                 <rect key="frame" x="384" y="13" width="82" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="70" id="oN0-RZ-iaq"/>
+                                </constraints>
                                 <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="FvM-Mt-2W2">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
-                                    <string key="keyEquivalent" base64-UTF8="YES">
-DQ
-</string>
                                 </buttonCell>
                                 <connections>
                                     <action selector="applyButtonPressed:" target="iO9-Dj-NaA" id="Idk-14-95y"/>
                                 </connections>
                             </button>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eZc-p2-5Zw">
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="Isg-sz-mb3" customClass="GradientView" customModule="LED_Strip_Controller" customModuleProvider="target">
+                                <rect key="frame" x="20" y="92" width="440" height="96"/>
+                            </customView>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eZc-p2-5Zw">
                                 <rect key="frame" x="302" y="13" width="82" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="70" id="ILZ-Gq-eyk"/>
+                                </constraints>
                                 <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="5up-Gt-cdu">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -1556,41 +1565,132 @@ Gw
                                     <action selector="cancelButtonPressed:" target="iO9-Dj-NaA" id="cjB-Pu-P4y"/>
                                 </connections>
                             </button>
-                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Isg-sz-mb3" customClass="GradientView" customModule="LED_Strip_Controller" customModuleProvider="target">
-                                <rect key="frame" x="20" y="154" width="440" height="96"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            </customView>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="46s-Ea-Z1h">
-                                <rect key="frame" x="149" y="94" width="108" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="push" title="Blue/Green" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="NGF-1W-HWX">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
+                            <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="C5w-Kf-G6L">
+                                <rect key="frame" x="17" y="18" width="19" height="27"/>
+                                <stepperCell key="cell" continuous="YES" alignment="left" minValue="2" maxValue="5" doubleValue="2" id="vMN-JX-1iB"/>
                                 <connections>
-                                    <action selector="blueGreen:" target="iO9-Dj-NaA" id="9zx-Zh-K3m"/>
+                                    <action selector="stepperChanged:" target="iO9-Dj-NaA" id="Qpo-KA-e2a"/>
                                 </connections>
-                            </button>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hXc-Wt-KEF">
-                                <rect key="frame" x="25" y="94" width="107" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="push" title="Red/Yellow" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="UCl-Ad-dZ8">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            </stepper>
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aD3-ks-cdK">
+                                <rect key="frame" x="41" y="20" width="35" height="22"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="35" id="s9t-ey-OFq"/>
+                                </constraints>
+                                <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="2" drawsBackground="YES" usesSingleLineMode="YES" id="eDj-Dc-jNY">
+                                    <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" allowsFloats="NO" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="-1" id="ZyS-Ju-b8D">
+                                        <real key="minimum" value="1"/>
+                                        <real key="maximum" value="5"/>
+                                    </numberFormatter>
                                     <font key="font" metaFont="system"/>
-                                </buttonCell>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
                                 <connections>
-                                    <action selector="redYellow:" target="iO9-Dj-NaA" id="IzV-oa-5gf"/>
+                                    <action selector="numberFieldChanged:" target="iO9-Dj-NaA" id="Ahu-vG-IrT"/>
                                 </connections>
-                            </button>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qvJ-co-q2q">
+                                <rect key="frame" x="84" y="23" width="44" height="17"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="Colors" id="CNF-0L-iON">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <stackView distribution="equalCentering" orientation="horizontal" alignment="top" spacing="0.0" horizontalStackHuggingPriority="250" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DaS-fa-1ml">
+                                <rect key="frame" x="20" y="61" width="440" height="23"/>
+                                <subviews>
+                                    <colorWell translatesAutoresizingMaskIntoConstraints="NO" id="F9I-XH-e7o">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="23"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" id="NCZ-46-hCK"/>
+                                        </constraints>
+                                        <color key="color" red="0.05813049898" green="0.055541899059999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    </colorWell>
+                                    <colorWell translatesAutoresizingMaskIntoConstraints="NO" id="lOi-jT-5gr">
+                                        <rect key="frame" x="98" y="0.0" width="50" height="23"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" id="XOJ-Se-DPi"/>
+                                        </constraints>
+                                        <color key="color" red="0.05813049898" green="0.055541899059999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    </colorWell>
+                                    <colorWell translatesAutoresizingMaskIntoConstraints="NO" id="d8k-SY-I3Q">
+                                        <rect key="frame" x="195" y="0.0" width="50" height="23"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" id="hNE-65-oYH"/>
+                                        </constraints>
+                                        <color key="color" red="0.05813049898" green="0.055541899059999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    </colorWell>
+                                    <colorWell translatesAutoresizingMaskIntoConstraints="NO" id="A4p-Vf-Uxh">
+                                        <rect key="frame" x="293" y="0.0" width="50" height="23"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" id="B1o-2D-QLJ"/>
+                                        </constraints>
+                                        <color key="color" red="0.05813049898" green="0.055541899059999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    </colorWell>
+                                    <colorWell translatesAutoresizingMaskIntoConstraints="NO" id="Ui0-bO-rMz">
+                                        <rect key="frame" x="390" y="0.0" width="50" height="23"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" id="ftp-Un-Okv"/>
+                                        </constraints>
+                                        <color key="color" red="0.05813049898" green="0.055541899059999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    </colorWell>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="23" id="YnH-0m-0cw"/>
+                                </constraints>
+                                <visibilityPriorities>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                </visibilityPriorities>
+                                <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                </customSpacing>
+                            </stackView>
                         </subviews>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="vnJ-8o-TC9" secondAttribute="bottom" constant="20" id="5Bo-ND-hYA"/>
+                            <constraint firstItem="qvJ-co-q2q" firstAttribute="leading" secondItem="aD3-ks-cdK" secondAttribute="trailing" constant="10" id="5df-jy-VUF"/>
+                            <constraint firstAttribute="bottom" secondItem="qvJ-co-q2q" secondAttribute="bottom" constant="23" id="Phc-C9-vqg"/>
+                            <constraint firstAttribute="bottom" secondItem="aD3-ks-cdK" secondAttribute="bottom" constant="20" id="QXb-cj-3yl"/>
+                            <constraint firstItem="DaS-fa-1ml" firstAttribute="top" secondItem="Isg-sz-mb3" secondAttribute="bottom" constant="8" id="Qmo-OB-goT"/>
+                            <constraint firstAttribute="bottom" secondItem="C5w-Kf-G6L" secondAttribute="bottom" constant="20" id="Rmo-8H-ZF1"/>
+                            <constraint firstItem="Isg-sz-mb3" firstAttribute="leading" secondItem="b9m-6P-BV4" secondAttribute="leading" constant="20" id="aFe-lG-1Ak"/>
+                            <constraint firstAttribute="trailing" secondItem="DaS-fa-1ml" secondAttribute="trailing" constant="20" id="aey-FG-clZ"/>
+                            <constraint firstAttribute="trailing" secondItem="Isg-sz-mb3" secondAttribute="trailing" constant="20" id="cRP-Aw-5Nk"/>
+                            <constraint firstItem="DaS-fa-1ml" firstAttribute="leading" secondItem="b9m-6P-BV4" secondAttribute="leading" constant="20" id="f3M-mt-Fn7"/>
+                            <constraint firstItem="vnJ-8o-TC9" firstAttribute="leading" secondItem="eZc-p2-5Zw" secondAttribute="trailing" constant="12" id="hg0-YT-Vm8"/>
+                            <constraint firstItem="Isg-sz-mb3" firstAttribute="top" secondItem="b9m-6P-BV4" secondAttribute="top" constant="20" id="hgT-28-BVt"/>
+                            <constraint firstAttribute="trailing" secondItem="vnJ-8o-TC9" secondAttribute="trailing" constant="20" id="ixg-lS-Gem"/>
+                            <constraint firstItem="C5w-Kf-G6L" firstAttribute="leading" secondItem="b9m-6P-BV4" secondAttribute="leading" constant="20" id="lXu-j7-sTL"/>
+                            <constraint firstItem="C5w-Kf-G6L" firstAttribute="top" secondItem="DaS-fa-1ml" secondAttribute="bottom" constant="18" id="pV2-7D-VQo"/>
+                            <constraint firstAttribute="bottom" secondItem="eZc-p2-5Zw" secondAttribute="bottom" constant="20" id="rGy-N6-cf7"/>
+                            <constraint firstItem="aD3-ks-cdK" firstAttribute="leading" secondItem="C5w-Kf-G6L" secondAttribute="trailing" constant="8" id="sNE-px-ia5"/>
+                        </constraints>
                     </view>
                     <connections>
+                        <outlet property="colorWell1" destination="F9I-XH-e7o" id="O1i-DG-gHQ"/>
+                        <outlet property="colorWell2" destination="lOi-jT-5gr" id="vj6-tH-ZER"/>
+                        <outlet property="colorWell3" destination="d8k-SY-I3Q" id="dyb-ac-wlI"/>
+                        <outlet property="colorWell4" destination="A4p-Vf-Uxh" id="ZT1-Lw-4zl"/>
+                        <outlet property="colorWell5" destination="Ui0-bO-rMz" id="PzN-2D-Vwb"/>
+                        <outlet property="countField" destination="aD3-ks-cdK" id="hmM-i3-PLS"/>
+                        <outlet property="countStepper" destination="C5w-Kf-G6L" id="8C9-fr-lZb"/>
                         <outlet property="gradientView" destination="Isg-sz-mb3" id="ByX-hz-exY"/>
+                        <outlet property="stackView" destination="DaS-fa-1ml" id="iMa-RY-jeH"/>
                     </connections>
                 </viewController>
                 <customObject id="XMm-M2-Za9" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1486" y="1343"/>
+            <point key="canvasLocation" x="1581" y="1312"/>
         </scene>
     </scenes>
 </document>

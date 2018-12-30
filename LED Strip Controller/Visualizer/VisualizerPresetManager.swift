@@ -13,18 +13,19 @@ fileprivate let USERDEFAULTS_PRESETS_KEY = "presets"
 class VisualizerPresetManager {
     
     var visualizer: Visualizer
-    var presets: [String : VisualizerPreset] = [:]
-    private var orderedPresets: [VisualizerPreset] = []
+    private var _presets: [String : VisualizerPreset] = [:]
+    private var _orderedPresets: [VisualizerPreset] = []
     
     init(withVisualizer v: Visualizer) {
         visualizer = v
         loadPresets()
     }
     
+    /// Attempts to load saved presets from UserDefaults, or creates the default preset if none are found
     func loadPresets() {
         guard let presetData = UserDefaults.standard.object(forKey: USERDEFAULTS_PRESETS_KEY) as? Data else {
-            presets = ["Default":VisualizerPreset.defaultPreset]
-            orderedPresets = [VisualizerPreset.defaultPreset]
+            _presets = ["Default":VisualizerPreset.defaultPreset]
+            _orderedPresets = [VisualizerPreset.defaultPreset]
             return
         }
         
@@ -32,30 +33,35 @@ class VisualizerPresetManager {
             let loadedPresets = try JSONDecoder().decode([VisualizerPreset].self, from: presetData)
             
             for p in loadedPresets {
-                presets[p.name] = p
+                _presets[p.name] = p
             }
-            orderedPresets = loadedPresets
+            _orderedPresets = loadedPresets
         } catch {
             print(error)
         }
     }
     
+    /// Gets the names of all loaded presets
+    ///
+    /// - Returns: The names of loaded presets in the order they were saved
     func getPresetNames() -> [String] {
-        return orderedPresets.map { $0.name }
+        return _orderedPresets.map { $0.name }
     }
     
+    /// Applies the preset with a matching name to the current visualizer
+    ///
+    /// - Parameter name: The name of the preset to apply. Crashes if the preset does not exist.
     func applyPreset(name: String) {
-        guard let preset = presets[name] else {
+        guard let preset = _presets[name] else {
             fatalError("Preset does not exist!")
         }
         
         let brightness = visualizer.brightness
-        let hue = visualizer.hue
+        let color = visualizer.color
         
-        visualizer.setBrightnessDriver(name: preset.brightnessDriverName)
-        visualizer.setHueDriver(name: preset.hueDriverName)
+        visualizer.brightness.setDriver(withName: preset.brightnessDriverName)
+        visualizer.color.setDriver(withName: preset.colorDriverName)
         
-        visualizer.useGradient = preset.useGradient
         visualizer.gradient = preset.gradient
         
         brightness.max = preset.brightnessRangeUpper
@@ -66,25 +72,27 @@ class VisualizerPresetManager {
         brightness.upwardsSmoothing = preset.brightnessUpwardsSmoothing
         brightness.downwardsSmoothing = preset.brightnessDownwardsSmoothing
         
-        hue.max = preset.hueRangeUpper
-        hue.min = preset.hueRangeLower
-        hue.invert = preset.hueInvert
-        hue.useAdaptiveRange = preset.hueAdaptive
+        color.max = preset.colorRangeUpper
+        color.min = preset.colorRangeLower
+        color.invert = preset.colorInvert
+        color.useAdaptiveRange = preset.colorAdaptive
         
-        hue.upwardsSmoothing = preset.hueUpwardsSmoothing
-        hue.downwardsSmoothing = preset.hueDownwardsSmoothing
+        color.upwardsSmoothing = preset.colorUpwardsSmoothing
+        color.downwardsSmoothing = preset.colorDownwardsSmoothing
     }
     
+    /// Saves the settings of the current visualizer as a preset
+    ///
+    /// - Parameter name: The name that the preset should be saved as. Replaces a preset if one with the same name already exists.
     func saveCurrentStateAsPreset(name: String) {
         let brightness = visualizer.brightness
-        let hue = visualizer.hue
+        let color = visualizer.color
         
         let newPreset = VisualizerPreset(name: name)
         
-        newPreset.brightnessDriverName = brightness.driver.name
-        newPreset.hueDriverName = hue.driver.name
+        newPreset.brightnessDriverName = brightness.driverName()
+        newPreset.colorDriverName = color.driverName()
         
-        newPreset.useGradient = visualizer.useGradient
         newPreset.gradient = visualizer.gradient
         
         newPreset.brightnessRangeUpper = brightness.max
@@ -95,31 +103,35 @@ class VisualizerPresetManager {
         newPreset.brightnessUpwardsSmoothing = brightness.upwardsSmoothing
         newPreset.brightnessDownwardsSmoothing = brightness.downwardsSmoothing
         
-        newPreset.hueRangeUpper = hue.max
-        newPreset.hueRangeLower = hue.min
-        newPreset.hueInvert = hue.invert
-        newPreset.hueAdaptive = hue.useAdaptiveRange
+        newPreset.colorRangeUpper = color.max
+        newPreset.colorRangeLower = color.min
+        newPreset.colorInvert = color.invert
+        newPreset.colorAdaptive = color.useAdaptiveRange
         
-        newPreset.hueUpwardsSmoothing = hue.upwardsSmoothing
-        newPreset.hueDownwardsSmoothing = hue.downwardsSmoothing
+        newPreset.colorUpwardsSmoothing = color.upwardsSmoothing
+        newPreset.colorDownwardsSmoothing = color.downwardsSmoothing
         
-        presets[name] = newPreset
-        orderedPresets.append(newPreset)
-        savePresetsToUserDefaults()
+        _presets[name] = newPreset
+        _orderedPresets.append(newPreset)
+        syncPresetsToUserDefaults()
     }
     
-    func savePresetsToUserDefaults() {
-        guard let presetData = try? JSONEncoder().encode(orderedPresets) else {
+    /// Updates the presets in UserDefaults
+    private func syncPresetsToUserDefaults() {
+        guard let presetData = try? JSONEncoder().encode(_orderedPresets) else {
             fatalError("Failed encoding presets!")
         }
         
         UserDefaults.standard.set(presetData, forKey: USERDEFAULTS_PRESETS_KEY)
     }
     
+    /// Deletes a preset
+    ///
+    /// - Parameter name: The name of the preset to delete
     func deletePreset(name: String) {
-        orderedPresets.removeAll() {$0.name == name}
-        presets.removeValue(forKey: name)
-        savePresetsToUserDefaults()
+        _orderedPresets.removeAll() {$0.name == name}
+        _presets.removeValue(forKey: name)
+        syncPresetsToUserDefaults()
     }
 }
 
@@ -137,7 +149,6 @@ class VisualizerPreset: Codable {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             name = try container.decodeIfPresent(String.self, forKey: .name) ?? VisualizerPreset.defaultPreset.name
             
-            useGradient = try container.decodeIfPresent(Bool.self, forKey: .useGradient) ?? VisualizerPreset.defaultPreset.useGradient
             codableGradient = try container.decodeIfPresent(CodableGradient.self, forKey: .codableGradient) ?? VisualizerPreset.defaultPreset.codableGradient
             
             brightnessRangeUpper = try container.decodeIfPresent(Float.self, forKey: .brightnessRangeUpper) ?? VisualizerPreset.defaultPreset.brightnessRangeUpper
@@ -150,21 +161,21 @@ class VisualizerPreset: Codable {
             brightnessUpwardsSmoothing = try container.decodeIfPresent(Float.self, forKey: .brightnessUpwardsSmoothing) ?? VisualizerPreset.defaultPreset.brightnessUpwardsSmoothing
             brightnessDownwardsSmoothing = try container.decodeIfPresent(Float.self, forKey: .brightnessDownwardsSmoothing) ?? VisualizerPreset.defaultPreset.brightnessDownwardsSmoothing
             
-            hueRangeUpper = try container.decodeIfPresent(Float.self, forKey: .hueRangeUpper) ?? VisualizerPreset.defaultPreset.hueRangeUpper
-            hueRangeLower = try container.decodeIfPresent(Float.self, forKey: .hueRangeLower) ?? VisualizerPreset.defaultPreset.hueRangeLower
+            colorRangeUpper = try container.decodeIfPresent(Float.self, forKey: .colorRangeUpper) ?? VisualizerPreset.defaultPreset.colorRangeUpper
+            colorRangeLower = try container.decodeIfPresent(Float.self, forKey: .colorRangeLower) ?? VisualizerPreset.defaultPreset.colorRangeLower
             
-            hueDriverName = try container.decodeIfPresent(String.self, forKey: .hueDriverName) ?? VisualizerPreset.defaultPreset.hueDriverName
-            hueInvert = try container.decodeIfPresent(Bool.self, forKey: .hueInvert) ?? VisualizerPreset.defaultPreset.hueInvert
-            hueAdaptive = try container.decodeIfPresent(Bool.self, forKey: .hueAdaptive) ?? VisualizerPreset.defaultPreset.hueAdaptive
+            colorDriverName = try container.decodeIfPresent(String.self, forKey: .colorDriverName) ?? VisualizerPreset.defaultPreset.colorDriverName
+            colorInvert = try container.decodeIfPresent(Bool.self, forKey: .colorInvert) ?? VisualizerPreset.defaultPreset.colorInvert
+            colorAdaptive = try container.decodeIfPresent(Bool.self, forKey: .colorAdaptive) ?? VisualizerPreset.defaultPreset.colorAdaptive
             
-            hueUpwardsSmoothing = try container.decodeIfPresent(Float.self, forKey: .hueUpwardsSmoothing) ?? VisualizerPreset.defaultPreset.hueUpwardsSmoothing
-            hueDownwardsSmoothing = try container.decodeIfPresent(Float.self, forKey: .hueDownwardsSmoothing) ?? VisualizerPreset.defaultPreset.hueDownwardsSmoothing
+            colorUpwardsSmoothing = try container.decodeIfPresent(Float.self, forKey: .colorUpwardsSmoothing) ?? VisualizerPreset.defaultPreset.colorUpwardsSmoothing
+            colorDownwardsSmoothing = try container.decodeIfPresent(Float.self, forKey: .colorDownwardsSmoothing) ?? VisualizerPreset.defaultPreset.colorDownwardsSmoothing
         } catch {
             fatalError(error.localizedDescription)
         }
     }
     
-    var useGradient: Bool = true
+    fileprivate var codableGradient: CodableGradient = CodableGradient()
     var gradient: NSGradient {
         get {
             return codableGradient.gradient!
@@ -173,7 +184,6 @@ class VisualizerPreset: Codable {
             codableGradient.gradient = newValue
         }
     }
-    fileprivate var codableGradient: CodableGradient = CodableGradient()
     
     /* BRIGHTNESS SETTINGS */
     var brightnessRangeUpper: Float = 1.0
@@ -187,18 +197,19 @@ class VisualizerPreset: Codable {
     var brightnessDownwardsSmoothing: Float = 0.50
     
     /* COLOR SETTINGS */
-    var hueRangeUpper: Float = 1.0
-    var hueRangeLower: Float = 0.0
+    var colorRangeUpper: Float = 1.0
+    var colorRangeLower: Float = 0.0
     
-    var hueDriverName: String = "Low Spectrum"
-    var hueInvert: Bool = false
-    var hueAdaptive: Bool = false
+    var colorDriverName: String = "Low Spectrum"
+    var colorInvert: Bool = false
+    var colorAdaptive: Bool = false
     
-    var hueUpwardsSmoothing: Float = 0.50
-    var hueDownwardsSmoothing: Float = 0.50
+    var colorUpwardsSmoothing: Float = 0.50
+    var colorDownwardsSmoothing: Float = 0.50
 }
 
-class CodableGradient: Codable {
+/// A wrapper around NSGradient that allows it to conform to the Codable protocol
+fileprivate class CodableGradient: Codable {
     var gradient = NSGradient(starting: .red, ending: .yellow)
     
     required init(from decoder: Decoder) throws {
