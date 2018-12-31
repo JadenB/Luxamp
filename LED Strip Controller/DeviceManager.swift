@@ -10,6 +10,7 @@ import Cocoa
 
 let DEVICEMANAGER_DEVICE_PATH_KEY = "devicePath"
 
+// Manages a light controlling device over Serial I/O
 class DeviceManager: NSObject, ORSSerialPortDelegate {
     
     static let shared = DeviceManager()

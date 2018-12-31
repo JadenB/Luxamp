@@ -27,23 +27,41 @@ class Visualizer {
 
     /// Produces a color and sends it to the output delegate. Also sends raw brightness and color values to the data delegate.
     func visualize() {
+        // Setup components of color
         var outputBrightness: CGFloat = 1.0
         var outputHue: CGFloat = 1.0
         var outputSaturation: CGFloat = 1.0
         
+        // Calculate raw values from brightness and color mappers
         brightness.applyMapping()
         color.applyMapping()
-        outputBrightness = CGFloat(brightness.outputVal)
         
+        // Convert raw color mapping to hue and saturation with the gradient
         let gradientColor = gradient.interpolatedColor(atLocation: CGFloat(color.outputVal))
+        
+        // Set the final color components
+        outputBrightness = CGFloat(brightness.outputVal)
         outputHue = gradientColor.hueComponent
         outputSaturation = gradientColor.saturationComponent
         
-        let colorToOutput = NSColor(hue: outputHue, saturation: outputSaturation,
-                         brightness: outputBrightness, alpha: 1.0)
-        
+        // Send the color to the output delegate
+        let colorToOutput = NSColor(hue: outputHue, saturation: outputSaturation, brightness: outputBrightness, alpha: 1.0)
         outputDelegate?.didVisualizeIntoColor(colorToOutput)
-        dataDelegate?.didVisualizeWithData(brightness: brightness.outputVal, color: color.outputVal, inputBrightness: brightness.inputVal, inputColor: color.inputVal)
+        
+        // Send the data to the data delegate
+        let data = VisualizerData()
+        
+        data.outputBrightness = brightness.outputVal
+        data.inputBrightness = brightness.inputVal
+        data.adaptiveBrightnessRange.max = brightness.adaptiveRange.max
+        data.adaptiveBrightnessRange.min = brightness.adaptiveRange.min
+        
+        data.outputColor = color.outputVal
+        data.inputColor = color.inputVal
+        data.adaptiveColorRange.max = color.adaptiveRange.max
+        data.adaptiveColorRange.min = color.adaptiveRange.min
+        
+        dataDelegate?.didVisualizeWithData(data)
     }
 }
 
@@ -73,8 +91,13 @@ class VisualizerMapper {
     var min: Float = 0.0
     var max: Float = 1.0
     
-    var useAdaptiveRange = false
     var invert = false
+    var adaptiveRange = AdaptiveRange()
+    var useAdaptiveRange = false {
+        didSet {
+            if !useAdaptiveRange { adaptiveRange.reset() }
+        }
+    }
     
     var upwardsSmoothing: Float {
         set {
@@ -99,6 +122,7 @@ class VisualizerMapper {
     init(withEngine engine: AudioEngine) {
         self.engine = engine
         driver = orderedDrivers[0]
+        
         preFilter.upwardsAlpha = 0.4
         preFilter.downwardsAlpha = 0.4
         postFilter.upwardsAlpha = 0.707
@@ -135,11 +159,12 @@ class VisualizerMapper {
         inputVal = preFilter.applyFilter(toValue: driver.output(usingEngine: engine), atIndex: 0)
         
         var newVal = postFilter.applyFilter(toValue: inputVal, atIndex: 0)
-        
-        // adaptive range code here
-        
         newVal = remapValueToBounds(newVal, min: min, max: max)
         
+        if useAdaptiveRange {
+            let range = adaptiveRange.calculateRange(forNextValue: newVal)
+            newVal = remapValueToBounds(newVal, min: range.min, max: range.max)
+        }
         
         if invert {
             newVal = 1.0 - newVal
@@ -149,6 +174,17 @@ class VisualizerMapper {
     }
 }
 
+// A container meant to consolidate output data from the visualizer to pass to its data delegate
+class VisualizerData {
+    var inputBrightness: Float = 0.0
+    var outputBrightness: Float = 0.0
+    var adaptiveBrightnessRange: (min: Float, max: Float) = (0,0)
+    
+    var inputColor: Float = 0.0
+    var outputColor: Float = 0.0
+    var adaptiveColorRange: (min: Float, max: Float) = (0,0)
+}
+
 /// The output delegate of a Visualizer object implements this protocol to perform specialized actions when the visualizer produces a color
 protocol VisualizerOutputDelegate: class {
     func didVisualizeIntoColor(_ color: NSColor)
@@ -156,5 +192,5 @@ protocol VisualizerOutputDelegate: class {
 
 /// The data delegate of a Visualizer object implements this protocol to perform specialized actions when the visualizer converts data to color and brightness
 protocol VisualizerDataDelegate: class {
-    func didVisualizeWithData(brightness: Float, color: Float, inputBrightness: Float, inputColor: Float)
+    func didVisualizeWithData(_ data: VisualizerData)
 }

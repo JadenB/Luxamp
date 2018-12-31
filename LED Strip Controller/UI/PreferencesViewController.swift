@@ -11,6 +11,8 @@ import Cocoa
 class PreferencesViewController: NSViewController {
 
     @IBOutlet weak var outputDeviceList: NSPopUpButton!
+    @IBOutlet weak var delayField: NSTextField!
+    @IBOutlet weak var delaySlider: NSSlider!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +47,16 @@ class PreferencesViewController: NSViewController {
         }
         
         DeviceManager.shared.activateDevice()
+    }
+    
+    @IBAction func delayFieldChanged(_ sender: NSTextField) {
+        delaySlider.integerValue = sender.integerValue
+        LightController.shared.delay = sender.integerValue
+    }
+    
+    @IBAction func delaySliderChanged(_ sender: NSSlider) {
+        delayField.integerValue = sender.integerValue
+        LightController.shared.delay = sender.integerValue
     }
     
     @IBAction func resetDefaultsPressed(_ sender: Any) {

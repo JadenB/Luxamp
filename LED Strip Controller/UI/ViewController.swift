@@ -18,7 +18,6 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
     
     @IBOutlet weak var spectrumView: SpectrumView!
     @IBOutlet weak var totalAmpLevel: LevelView!
-    @IBOutlet weak var totalAmpLabel: NSTextField!
     @IBOutlet weak var colorView: NSColorWell!
     
     @IBOutlet weak var rateSliderLabel: NSTextField!
@@ -33,7 +32,7 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        audioEngine = AudioEngine(refreshRate: 43.06640625, bufferSize: UInt32(BUFFER_SIZE))
+        audioEngine = AudioEngine(refreshRate: 43.06640625)
         audioEngine.delegate = self
         musicVisualizer = Visualizer(withEngine: audioEngine)
         musicVisualizer.outputDelegate = self
@@ -117,7 +116,6 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
         audioEngine.stop()
         spectrumView.disable()
         totalAmpLevel.disable()
-        totalAmpLabel.stringValue = "0.0"
     }
     
     func didRefreshAudioEngine(withProcessor p: BufferProcessor) {
@@ -132,13 +130,12 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
             var level = max(p.amplitudeInDecibels(), self.totalAmpLevel.min)
             level = self.levelIIR.applyFilter(toValue: level, atIndex: 0)
             self.totalAmpLevel.level = level
-            self.totalAmpLabel.stringValue = String(format: "%.1f", level)
         }
     }
     
     func didVisualizeIntoColor(_ color: NSColor) {
-        colorView.color = color
         LightController.shared.setColor(color: color)
+        colorView.color = color
     }
     
     func audioDeviceChanged() {

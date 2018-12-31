@@ -16,33 +16,27 @@ let BUFFER_SIZE: Int = 1_024
 let SAMPLE_RATE: Int = 41_000
 
 class AudioEngine: BufferProcessorDelegate {
-    
-    var bufferSize: UInt32
-    var bProcessor: BufferProcessor
-    var refreshTimer: DispatchSourceTimer?
-    let refreshRate: Double
-    
-    var av = AVAudioEngine()
-    
     weak var delegate: AudioEngineDelegate?
+    
+    let bProcessor = BufferProcessor()
+    
+    private var av = AVAudioEngine()
+    private var refreshTimer: DispatchSourceTimer?
+    private let refreshRate: Double
     
     private var sendBufferNextCycle = false
     private var audioDeviceChangedRanOnce = false
     
-    init(refreshRate: Double, bufferSize: UInt32 = 1_024) {
-        self.bufferSize = bufferSize
+    init(refreshRate: Double) {
         self.refreshRate = refreshRate
-        
-        bProcessor = BufferProcessor(bufferSize: BUFFER_SIZE)
         bProcessor.delegate = self
-        
         NotificationCenter.default.addObserver(self, selector: #selector(handleConfigurationChange), name: .AVAudioEngineConfigurationChange, object: av)
     }
     
     private func setupBufferTap() {
         av.inputNode.installTap(
             onBus: 0,
-            bufferSize: bufferSize,
+            bufferSize: UInt32(BUFFER_SIZE),
             format: nil) { [weak self] (buffer, _) in
                 
                 guard let strongSelf = self else {
@@ -50,11 +44,11 @@ class AudioEngine: BufferProcessorDelegate {
                     return
                 }
                 
-                buffer.frameLength = strongSelf.bufferSize
+                buffer.frameLength = UInt32(BUFFER_SIZE)
                 let offset = Int(buffer.frameCapacity - buffer.frameLength)
                 
                 if let tail = buffer.floatChannelData?[0] {
-                    strongSelf.updateBuffer(tail + offset, withBufferSize: strongSelf.bufferSize)
+                    strongSelf.updateBuffer(tail + offset, withBufferSize: BUFFER_SIZE)
                 }
         }
     }
@@ -98,24 +92,6 @@ class AudioEngine: BufferProcessorDelegate {
         av.stop()
     }
     
-    private func updateBuffer(_ buffer: UnsafeMutablePointer<Float>, withBufferSize size: UInt32) {
-        if sendBufferNextCycle {
-            sendBufferNextCycle = false
-            let bufferArray = Array<Float>(UnsafeBufferPointer(start: buffer, count: Int(size)))
-            bProcessor.process(buffer: bufferArray)
-        }
-    }
-    
-    @objc func getBuffer() {
-        sendBufferNextCycle = true
-    }
-    
-    func didFinishProcessingBuffer(_ bp: BufferProcessor) {
-        DispatchQueue.main.async {
-            self.delegate?.didRefreshAudioEngine(withProcessor: bp)
-        }
-    }
-    
     @objc func handleConfigurationChange(_ notification: Notification) {
         audioDeviceChangedRanOnce = true
         if !audioDeviceChangedRanOnce {
@@ -124,7 +100,26 @@ class AudioEngine: BufferProcessorDelegate {
                 self.delegate?.audioDeviceChanged()
             }
         }
-        
+    }
+    
+    @objc private func getBuffer() {
+        sendBufferNextCycle = true
+    }
+    
+    private func updateBuffer(_ buffer: UnsafeMutablePointer<Float>, withBufferSize size: Int) {
+        if sendBufferNextCycle {
+            sendBufferNextCycle = false
+            let bufferArray = Array<Float>(UnsafeBufferPointer(start: buffer, count: size))
+            bProcessor.process(buffer: bufferArray)
+        }
+    }
+    
+    // MARK: - BufferProcessorDelegate
+    
+    func didFinishProcessingBuffer(_ sender: BufferProcessor) {
+        DispatchQueue.main.async {
+            self.delegate?.didRefreshAudioEngine(withProcessor: sender)
+        }
     }
 }
 

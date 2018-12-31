@@ -13,6 +13,7 @@ class LevelView: NSView {
     
     @IBInspectable var color: NSColor = .black
     @IBInspectable var backgroundColor: NSColor = .white
+    @IBInspectable var subrangeColor: NSColor = .green
     
     @IBInspectable var max: Float = 1.0
     @IBInspectable var min: Float = 0.0
@@ -21,6 +22,10 @@ class LevelView: NSView {
             needsDisplay = true
         }
     }
+    
+    @IBInspectable var showSubrange: Bool = false
+    @IBInspectable var subrangeMax: Float = 1.0
+    @IBInspectable var subrangeMin: Float = 0.0
     
     private var _shouldClear = false
     
@@ -40,9 +45,7 @@ class LevelView: NSView {
     }
     
     override var isOpaque: Bool {
-        get {
-            return true
-        }
+        return true
     }
     
     override func draw(_ dirtyRect: NSRect) {
@@ -54,7 +57,7 @@ class LevelView: NSView {
             return
         }
         
-        // Fill spectrum bars
+        // Fill level bar
         color.setFill()
         let viewHeight = CGFloat(bounds.size.height)
 
@@ -65,6 +68,19 @@ class LevelView: NSView {
         
         let r1  = CGRect(x: x, y: y, width: w, height: h)
         r1.fill()
+        
+        if showSubrange {
+            subrangeColor.setFill()
+            let barHeight: CGFloat = 3.0
+            
+            // Fill top subrange bar
+            let topRect = NSRect(x: x, y: viewHeight * CGFloat(subrangeMax), width: w, height: barHeight)
+            topRect.fill()
+            
+            // Fill bottom subrange bar
+            let bottomRect = NSRect(x: x, y: viewHeight * CGFloat(subrangeMin) - barHeight, width: w, height: barHeight)
+            bottomRect.fill()
+        }
     }
     
     override func prepareForInterfaceBuilder() {

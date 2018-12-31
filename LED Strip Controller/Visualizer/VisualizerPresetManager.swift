@@ -213,13 +213,13 @@ class VisualizerPreset: Codable {
 fileprivate class CodableGradient: Codable {
     var gradient = NSGradient(starting: .red, ending: .yellow)
     
+    init() {}
+    
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let gradientData = try container.decode(Data.self, forKey: .gradient)
         gradient = try NSKeyedUnarchiver.unarchivedObject(ofClass: NSGradient.self, from: gradientData)
     }
-    
-    init() {}
     
     func encode(to encoder: Encoder) throws {
         let gradientData = try NSKeyedArchiver.archivedData(withRootObject: gradient!, requiringSecureCoding: false)

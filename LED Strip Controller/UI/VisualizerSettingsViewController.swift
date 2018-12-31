@@ -144,11 +144,21 @@ class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate
     }
     
     @IBAction func brightnessInvertPressed(_ sender: NSButton) {
-        visualizer.brightness.invert = sender.state.rawValue == 1
+        visualizer.brightness.invert = sender.state == .on
     }
     
     @IBAction func colorInvertPressed(_ sender: NSButton) {
-        visualizer.color.invert = sender.state.rawValue == 1
+        visualizer.color.invert = sender.state == .on
+    }
+    
+    @IBAction func brightnessAdaptivePressed(_ sender: NSButton) {
+        visualizer.brightness.useAdaptiveRange = sender.state == .on
+        brightnessInputLevel.showSubrange = visualizer.brightness.useAdaptiveRange
+    }
+    
+    @IBAction func colorAdaptivePressed(_ sender: NSButton) {
+        visualizer.color.useAdaptiveRange = sender.state == .on
+        colorInputLevel.showSubrange = visualizer.color.useAdaptiveRange
     }
     
     @IBAction func brightnessUpwardsSmoothingSliderChanged(_ sender: NSSlider) {
@@ -246,21 +256,26 @@ class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate
     
     // MARK: - VisualizerDataDelegate
     
-    func didVisualizeWithData(brightness: Float, color: Float, inputBrightness: Float, inputColor: Float) {
+    func didVisualizeWithData(_ data: VisualizerData) {
         if hidden {
             return
         }
         
-        brightnessInputLevel.level = remapValueToBounds(inputBrightness, min: visualizer.brightness.min, max: visualizer.brightness.max)
-        colorInputLevel.level = remapValueToBounds(inputColor, min: visualizer.color.min, max: visualizer.color.max)
+        brightnessInputLevel.level = remapValueToBounds(data.inputBrightness, min: visualizer.brightness.min, max: visualizer.brightness.max)
+        brightnessInputLevel.subrangeMax = data.adaptiveBrightnessRange.max
+        brightnessInputLevel.subrangeMin = data.adaptiveBrightnessRange.min
+        colorInputLevel.level = remapValueToBounds(data.inputColor, min: visualizer.color.min, max: visualizer.color.max)
+        colorInputLevel.subrangeMax = data.adaptiveColorRange.max
+        colorInputLevel.subrangeMin = data.adaptiveColorRange.min
         
-        brightnessOutputLevel.level = brightness
-        colorOutputLevel.level = color
+        brightnessOutputLevel.level = data.outputBrightness
+        colorOutputLevel.level = data.outputColor
+        gradientView.level = data.outputColor
         
-        brightnessOutputLabel.stringValue = String(format: "%.1f", brightness)
-        brightnessInputLabel.stringValue = String(format: "%.1f", inputBrightness)
-        colorOutputLabel.stringValue = String(format: "%.1f", color)
-        colorInputLabel.stringValue = String(format: "%.1f", inputColor)
+        brightnessOutputLabel.stringValue = String(format: "%.1f", data.outputBrightness)
+        brightnessInputLabel.stringValue = String(format: "%.1f", data.inputBrightness)
+        colorOutputLabel.stringValue = String(format: "%.1f", data.outputColor)
+        colorInputLabel.stringValue = String(format: "%.1f", data.inputColor)
     }
     
     // MARK: - GradientEditorViewControllerDelegate

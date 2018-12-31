@@ -10,12 +10,13 @@ import Foundation
 import GistSwift
 
 class BufferProcessor {
-    let gist = Gist(frameSize: BUFFER_SIZE, sampleRate: SAMPLE_RATE)
     weak var delegate: BufferProcessorDelegate?
     
-    let fftSize: Int
+    /// The volume in decibels of each frequency bucket produced by the FFT
     var spectrumDecibelData: [Float]
+    let gist = Gist(frameSize: BUFFER_SIZE, sampleRate: SAMPLE_RATE)
     
+    /// The absolute magnitudes of each frequency bucket produced by the FFT
     var spectrumMagnitudeData: [Float] {
         get {
             return gist.magnitudeSpectrum()
@@ -29,6 +30,7 @@ class BufferProcessor {
     var useIIRFilter = true
     var shouldConvertToDb = true
     
+    private let fftSize: Int = BUFFER_SIZE / 2
     private let aWeightFrequency: [Float] = [
         10, 12.5, 16, 20,
         25, 31.5, 40, 50,
@@ -38,9 +40,7 @@ class BufferProcessor {
         1000, 1250, 1600, 2000,
         2500, 3150, 4000, 5000,
         6300, 8000, 10000, 12500,
-        16000, 20000
-    ]
-    
+        16000, 20000 ]
     private let aWeightDecibels: [Float] = [
         -70.4, -63.4, -56.7, -50.5,
         -44.7, -39.4, -34.6, -30.2,
@@ -50,17 +50,18 @@ class BufferProcessor {
         0.0, 0.6, 1.0, 1.2,
         1.3, 1.2, 1.0, 0.5,
         -0.1, -1.1, -2.5, -4.3,
-        -6.6, -9.3
-    ]
+        -6.6, -9.3 ]
     
-    init(bufferSize: Int) {
-        fftSize = bufferSize / 2
+    init() {
         spectrumDecibelData = Array<Float>(repeating: 0.0, count: fftSize)
         filter = BiasedIIRFilter(size: fftSize)
         filter.upwardsAlpha = 0.4
         filter.downwardsAlpha = 0.7
     }
     
+    /// Converts audio into a frequency spectrum
+    ///
+    /// - Parameter buffer: The audio buffer to process
     func process(buffer: [Float]) {
         gist.processAudio(frame: buffer)
         var result = normalizeFFT(gist.magnitudeSpectrum())
@@ -74,69 +75,26 @@ class BufferProcessor {
         }
         
         if shouldConvertToDb {
-            applyDbConversion(fftSize, &result)
+            applyDbConversion(&result)
         }
         
         spectrumDecibelData = result
         delegate?.didFinishProcessingBuffer(self)
     }
     
-    func normalizeFFT(_ fft: [Float]) -> [Float] {
-        var result = fft
-        let normFactor = 2 / Float(fftSize)
-        
-        for i in 0..<fft.count {
-            result[i] = fft[i] * normFactor
-        }
-        
-        return result
-    }
-    
-    func convertToDB(_ value: Float) -> Float {
-        return 20 * log10(value)
-    }
-    
-    func aWeightedValue(dbValue: Float, freq: Float) -> Float {
-        if freq < aWeightFrequency[0] {
-            return dbValue + aWeightDecibels[0]
-        } else if freq > aWeightFrequency[aWeightFrequency.count - 1] {
-            return dbValue + aWeightDecibels[aWeightFrequency.count - 1]
-        }
-        
-        for i in 1..<aWeightFrequency.count {
-            if(aWeightFrequency[i] > freq) {
-                // interpolate linearly between known frequencies
-                return dbValue + aWeightDecibels[i-1] + (freq - aWeightFrequency[i-1]) *
-                    (aWeightDecibels[i] - aWeightDecibels[i-1]) / (aWeightFrequency[i] - aWeightFrequency[i-1])
-            }
-        }
-        
-        return 0.0
-    }
-    
-    private func applyDbConversion(_ fftSize: Int, _ data: inout [Float]) {
-        var frequency: Float = 0
-        let df: Float = Float(SAMPLE_RATE) / Float(fftSize * 2)
-        for i in 0..<fftSize {
-            data[i] = convertToDB(data[i])
-            
-            if useAWeighting {
-                data[i] = aWeightedValue(dbValue: data[i], freq: frequency)
-                frequency += df
-            }
-        }
-    }
-    
-    private func applyHanningWindow(_ data: inout [Float]) {
-        for i in 0..<data.count {
-            data[i] = data[i] * 0.5 * (1.0 - cos(2.0 * Float.pi * Float(i) / Float(data.count)))
-        }
-    }
-    
+    /// Gets the peak volume in decibels of the last processed buffer
+    ///
+    /// - Returns: The volume in decibels
     func amplitudeInDecibels() -> Float {
         return convertToDB(gist.peakEnergy())
     }
     
+    /// Gets the average magnitude of the frequency spectrum in the given frequency bucket range
+    ///
+    /// - Parameters:
+    ///   - range: The frequency buckets to average
+    ///   - falloff: The number of buckets on each side of the range to average with less weight as they get farther from the range
+    /// - Returns: The average magnitude of the given range, with silence being 0.0
     func averageMagOfRange(_ range: ClosedRange<Int>, withFalloff falloff: Int) -> Float {
         var sum: Float = 0.0
         var denom: Float = Float(range.count)
@@ -167,8 +125,79 @@ class BufferProcessor {
         return sum / denom
     } // averageMagOfRange
     
+    /// Normalizes the absolute magnitude of the frequency buckets produced by the FFT so they can later be converted to decibels
+    ///
+    /// - Parameter fft: The frequency buckets produced by the FFT
+    /// - Returns: The normalized frequency buckets
+    private func normalizeFFT(_ fft: [Float]) -> [Float] {
+        var result = fft
+        let normFactor = 2 / Float(fftSize)
+        
+        for i in 0..<fft.count {
+            result[i] = fft[i] * normFactor
+        }
+        
+        return result
+    }
+    
+    /// Converts a single normalized magnitude to decibels
+    ///
+    /// - Parameter value: The normalized magnitude
+    /// - Returns: The decibel value of the input magnitude
+    private func convertToDB(_ value: Float) -> Float {
+        return 20 * log10(value)
+    }
+    
+    /// Applys standard A-weighting to a single decibel value according to its frequency
+    ///
+    /// - Parameters:
+    ///   - dbValue: The decibel value to weight
+    ///   - freq: The frequency position of the value
+    /// - Returns: The A-weighted decibel value
+    private func aWeightedValue(dbValue: Float, freq: Float) -> Float {
+        if freq < aWeightFrequency[0] {
+            return dbValue + aWeightDecibels[0]
+        } else if freq > aWeightFrequency[aWeightFrequency.count - 1] {
+            return dbValue + aWeightDecibels[aWeightFrequency.count - 1]
+        }
+        
+        for i in 1..<aWeightFrequency.count {
+            if(aWeightFrequency[i] > freq) {
+                // interpolate linearly between known frequencies
+                return dbValue + aWeightDecibels[i-1] + (freq - aWeightFrequency[i-1]) *
+                    (aWeightDecibels[i] - aWeightDecibels[i-1]) / (aWeightFrequency[i] - aWeightFrequency[i-1])
+            }
+        }
+        
+        return 0.0
+    }
+    
+    /// Converts a whole spectrum of normalized frequency buckets to decibels, applying A-weighting if useAWeighting is true
+    ///
+    /// - Parameter data: The spectrum to convert. It will be converted in place.
+    private func applyDbConversion(_ data: inout [Float]) {
+        var frequency: Float = 0
+        let df: Float = Float(SAMPLE_RATE) / Float(fftSize * 2)
+        for i in 0..<fftSize {
+            data[i] = convertToDB(data[i])
+            
+            if useAWeighting {
+                data[i] = aWeightedValue(dbValue: data[i], freq: frequency)
+                frequency += df
+            }
+        }
+    }
+    
+    /// Applys a Hanning-window to a spectrum
+    ///
+    /// - Parameter data: The spectrum to be windowed. It will be windowed in place.
+    private func applyHanningWindow(_ data: inout [Float]) {
+        for i in 0..<data.count {
+            data[i] = data[i] * 0.5 * (1.0 - cos(2.0 * Float.pi * Float(i) / Float(data.count)))
+        }
+    }
 }
 
 protocol BufferProcessorDelegate: class {
-    func didFinishProcessingBuffer(_ bp: BufferProcessor)
+    func didFinishProcessingBuffer(_ sender: BufferProcessor)
 }

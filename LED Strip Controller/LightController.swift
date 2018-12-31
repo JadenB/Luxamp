@@ -15,11 +15,15 @@ let PACKET_SIZE = 5
 class LightController: DeviceManagerResponder {
     
     static let shared = LightController()
+    /// How long to wait before sending a color in milliseconds
+    var delay: Int = 0
     
     private let patternRefreshRate: Double = 0.0 // The rate at which the current pattern calls setColor()
     private var _mode: LightMode = .Pattern
     private var _pattern: LightPattern = .Constant
     private var _state: LightState = .Off
+    
+    private let lightSerialQueue = DispatchQueue(label: "lightSerialQueue")
     
     var pattern: LightPattern {
         get {
@@ -66,7 +70,11 @@ class LightController: DeviceManagerResponder {
     /// - Parameter color: The color to set the lights to
     func setColor(color: NSColor) {
         if _state == .On {
-            sendColorToDevice(color: color)
+            if delay == 0 {
+                sendColorToDevice(color: color)
+            } else {
+                lightSerialQueue.asyncAfter(deadline: .now() + .milliseconds(delay)) { self.sendColorToDevice(color: color) }
+            }
         }
     }
     
@@ -74,23 +82,23 @@ class LightController: DeviceManagerResponder {
     ///
     /// - Parameter color: The color to send
     private func sendColorToDevice(color: NSColor) {
-        guard let calibratedColor = color.usingColorSpace(NSColorSpace.deviceRGB) else {
-            print("setColor() failed creating calibrated color")
-            return
-        }
-        
-        let rCom = calibratedColor.redComponent
-        let gCom = calibratedColor.greenComponent
-        let bCom = calibratedColor.blueComponent
-        
-        // for some reason squaring the values gives a more linear-appearing brightness scale
-        let r = UInt8(rCom * rCom * 255)
-        let g = UInt8(gCom * gCom * sqrt(gCom) * 255)
-        let b = UInt8(bCom * bCom * 255)
-        
-        let packet: [UInt8] = [COLOR_BYTE, r, g, b]
-        
-        DeviceManager.shared.sendPacket(packet: packet, size: PACKET_SIZE)
+            guard let calibratedColor = color.usingColorSpace(NSColorSpace.deviceRGB) else {
+                print("setColor() failed creating calibrated color")
+                return
+            }
+            
+            let rCom = calibratedColor.redComponent
+            let gCom = calibratedColor.greenComponent
+            let bCom = calibratedColor.blueComponent
+            
+            // for some reason squaring the values gives a more linear-appearing brightness scale
+            let r = UInt8(rCom * rCom * 255)
+            let g = UInt8(gCom * gCom * sqrt(gCom) * 255)
+            let b = UInt8(bCom * bCom * 255)
+            
+            let packet: [UInt8] = [COLOR_BYTE, r, g, b]
+            
+            DeviceManager.shared.sendPacket(packet: packet, size: PACKET_SIZE)
     }
     
     func deviceBecameActive() {}
