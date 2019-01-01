@@ -7,6 +7,8 @@
 //
 import Cocoa
 
+let USERDEFAULTS_MAX_BRIGHTNESS_KEY = "maxBrightness"
+
 /// Visualizes data from its AudioEngine to an NSColor
 class Visualizer {
     weak var outputDelegate: VisualizerOutputDelegate?
@@ -14,6 +16,13 @@ class Visualizer {
     
     var color: VisualizerMapper
     var brightness: VisualizerMapper
+    
+    var maxBrightness: Float = 1.0 {
+        didSet {
+            UserDefaults.standard.set(maxBrightness, forKey: USERDEFAULTS_MAX_BRIGHTNESS_KEY)
+        }
+    }
+    var minBrightness: Float = 0.0
     
     var gradient: NSGradient! = NSGradient(starting: .red, ending: .green)
     
@@ -23,6 +32,12 @@ class Visualizer {
     init(withEngine engine: AudioEngine) {
         color = VisualizerMapper(withEngine: engine)
         brightness = VisualizerMapper(withEngine: engine)
+        
+        if UserDefaults.standard.object(forKey: USERDEFAULTS_MAX_BRIGHTNESS_KEY) != nil {
+            maxBrightness = UserDefaults.standard.float(forKey: USERDEFAULTS_MAX_BRIGHTNESS_KEY)
+        }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(maxBrightnessChanged), name: .didChangeMaxBrightness, object: nil)
     }
 
     /// Produces a color and sends it to the output delegate. Also sends raw brightness and color values to the data delegate.
@@ -40,7 +55,7 @@ class Visualizer {
         let gradientColor = gradient.interpolatedColor(atLocation: CGFloat(color.outputVal))
         
         // Set the final color components
-        outputBrightness = CGFloat(brightness.outputVal)
+        outputBrightness = CGFloat(remapValueToBounds(brightness.outputVal, inputMin: 0.0, inputMax: 1.0, outputMin: minBrightness, outputMax: maxBrightness))
         outputHue = gradientColor.hueComponent
         outputSaturation = gradientColor.saturationComponent
         
@@ -53,15 +68,21 @@ class Visualizer {
         
         data.outputBrightness = brightness.outputVal
         data.inputBrightness = brightness.inputVal
-        data.adaptiveBrightnessRange.max = brightness.adaptiveRange.max
-        data.adaptiveBrightnessRange.min = brightness.adaptiveRange.min
+        data.dynamicBrightnessRange.max = brightness.dynamicMax
+        data.dynamicBrightnessRange.min = brightness.dynamicMin
         
         data.outputColor = color.outputVal
         data.inputColor = color.inputVal
-        data.adaptiveColorRange.max = color.adaptiveRange.max
-        data.adaptiveColorRange.min = color.adaptiveRange.min
+        data.dynamicColorRange.max = color.dynamicMax
+        data.dynamicColorRange.min = color.dynamicMin
         
         dataDelegate?.didVisualizeWithData(data)
+    }
+    
+    @objc func maxBrightnessChanged(_ notification: Notification) {
+        if let userInfo = notification.userInfo as? [String:Float] {
+            maxBrightness = userInfo["maxBrightness"] ?? 1.0
+        }
     }
 }
 
@@ -83,39 +104,53 @@ class VisualizerMapper {
     
     private var preFilter = BiasedIIRFilter(size: 1)
     private var postFilter = BiasedIIRFilter(size: 1)
-    // var range = AdaptiveRange()
     
+    /// The raw input value from the driver, set when applyMapping() is called
     fileprivate var inputVal: Float = 0.0
+    /// The mapped output value, calculated when applyMapping() is called
     fileprivate var outputVal: Float = 0.0
     
-    var min: Float = 0.0
-    var max: Float = 1.0
+    // TODO: convert these to something like range.max and range.min
+    // The range of input values that applyMapping() remaps to the range 0-1
+    var inputMin: Float = 0.0
+    var inputMax: Float = 1.0
     
+    /// The dynamic subrange between 0 and 1 calculated by applyMapping() when useDynamicRange is true
+    fileprivate var dynamicMin: Float = 0.0
+    fileprivate var dynamicMax: Float = 1.0
+    
+    /// Whether to invert the input range
     var invert = false
-    var adaptiveRange = AdaptiveRange()
-    var useAdaptiveRange = false {
+    
+    /// Whether to use a dynamic subrange on the input range
+    var useDynamicRange = false {
         didSet {
-            if !useAdaptiveRange { adaptiveRange.reset() }
+            if !useDynamicRange { dynamicRange.reset() }
         }
     }
     
+    /// Whether the dynamic subrange calculates a new minimum. Has no effect if useDynamicRange is false
+    var useDynamicMin = true
+    /// Whether the dynamic subrange calculates a new maximum. Has no effect if useDynamicRange is false
+    var useDynamicMax = true
+    
+    var dynamicRange = DynamicRange()
+    
     var upwardsSmoothing: Float {
-        set {
-            postFilter.upwardsAlpha = sqrtf(newValue)
-        }
-        
         get {
             return postFilter.upwardsAlpha * postFilter.upwardsAlpha
+        }
+        set {
+            postFilter.upwardsAlpha = sqrtf(newValue)
         }
     }
     
     var downwardsSmoothing: Float {
-        set {
-            postFilter.downwardsAlpha = sqrtf(newValue)
-        }
-        
         get {
             return postFilter.downwardsAlpha * postFilter.downwardsAlpha
+        }
+        set {
+            postFilter.downwardsAlpha = sqrtf(newValue)
         }
     }
     
@@ -159,10 +194,12 @@ class VisualizerMapper {
         inputVal = preFilter.applyFilter(toValue: driver.output(usingEngine: engine), atIndex: 0)
         
         var newVal = postFilter.applyFilter(toValue: inputVal, atIndex: 0)
-        newVal = remapValueToBounds(newVal, min: min, max: max)
+        newVal = remapValueToBounds(newVal, min: inputMin, max: inputMax)
         
-        if useAdaptiveRange {
-            let range = adaptiveRange.calculateRange(forNextValue: newVal)
+        if useDynamicRange {
+            let range = dynamicRange.calculateRange(forNextValue: newVal)
+            dynamicMin = useDynamicMin ? range.min : 0.0
+            dynamicMax = useDynamicMax ? range.max : 1.0
             newVal = remapValueToBounds(newVal, min: range.min, max: range.max)
         }
         
@@ -178,11 +215,11 @@ class VisualizerMapper {
 class VisualizerData {
     var inputBrightness: Float = 0.0
     var outputBrightness: Float = 0.0
-    var adaptiveBrightnessRange: (min: Float, max: Float) = (0,0)
+    var dynamicBrightnessRange: (min: Float, max: Float) = (0,0)
     
     var inputColor: Float = 0.0
     var outputColor: Float = 0.0
-    var adaptiveColorRange: (min: Float, max: Float) = (0,0)
+    var dynamicColorRange: (min: Float, max: Float) = (0,0)
 }
 
 /// The output delegate of a Visualizer object implements this protocol to perform specialized actions when the visualizer produces a color

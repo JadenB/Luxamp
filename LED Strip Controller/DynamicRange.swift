@@ -1,5 +1,5 @@
 //
-//  AdaptiveRange.swift
+//  DynamicRange.swift
 //  LED Strip Controller
 //
 //  Created by Jaden Bernal on 12/23/18.
@@ -8,15 +8,18 @@
 
 import Foundation
 
-class AdaptiveRange {
+fileprivate let ALPHA_MAX: Float = 0.9995
+fileprivate let ALPHA_MIN: Float = 0.995
+
+class DynamicRange {
     var maxFilter = BiasedIIRFilter(initialData: [1.0])
     var minFilter = BiasedIIRFilter(initialData: [0.0])
     
-    //var upperBound: Float = 1.0
-    //var lowerBound: Float = 0.0
-    
-    var max: Float = 1.0
-    var min: Float = 0.0
+    var aggression: Float = 0.5 {
+        didSet {
+            setAlphas()
+        }
+    }
     
     init() {
         setAlphas()
@@ -25,8 +28,6 @@ class AdaptiveRange {
     func calculateRange(forNextValue val: Float) -> (min: Float, max: Float) {
         let newMax = maxFilter.applyFilter(toValue: val, atIndex: 0)
         let newMin = minFilter.applyFilter(toValue: val, atIndex: 0)
-        max = newMax
-        min = newMin
         return (newMin, newMax)
     }
     
@@ -37,11 +38,13 @@ class AdaptiveRange {
     }
     
     private func setAlphas() {
-        maxFilter.upwardsAlpha = 0.7
-        maxFilter.downwardsAlpha = 0.999
+        maxFilter.upwardsAlpha = 0.6
+        maxFilter.downwardsAlpha = remapValueToBounds(sqrtf(1 - aggression),
+                                                      inputMin: 0.0, inputMax: 1.0,
+                                                      outputMin: ALPHA_MIN, outputMax: ALPHA_MAX)
         
-        minFilter.upwardsAlpha = 0.999
-        minFilter.downwardsAlpha = 0.7
+        minFilter.upwardsAlpha = maxFilter.downwardsAlpha
+        minFilter.downwardsAlpha = maxFilter.upwardsAlpha
     }
 }
 

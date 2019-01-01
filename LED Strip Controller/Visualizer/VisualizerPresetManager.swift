@@ -63,20 +63,27 @@ class VisualizerPresetManager {
         visualizer.brightness.setDriver(withName: preset.brightnessDriverName)
         visualizer.color.setDriver(withName: preset.colorDriverName)
         
+        // NOTE: Currently brightness and color use the same dynamic range settings
         visualizer.gradient = preset.gradient
+        visualizer.brightness.dynamicRange.aggression = preset.dynamicRangeAggression
+        visualizer.color.dynamicRange.aggression = preset.dynamicRangeAggression
+        visualizer.brightness.useDynamicMax = preset.useDynamicMax
+        visualizer.color.useDynamicMax = preset.useDynamicMax
+        visualizer.brightness.useDynamicMin = preset.useDynamicMin
+        visualizer.color.useDynamicMin = preset.useDynamicMin
         
-        brightness.max = preset.brightnessRangeUpper
-        brightness.min = preset.brightnessRangeLower
+        brightness.inputMax = preset.brightnessRangeUpper
+        brightness.inputMin = preset.brightnessRangeLower
         brightness.invert = preset.brightnessInvert
-        brightness.useAdaptiveRange = preset.brightnessAdaptive
+        brightness.useDynamicRange = preset.brightnessUseDynamicRange
         
         brightness.upwardsSmoothing = preset.brightnessUpwardsSmoothing
         brightness.downwardsSmoothing = preset.brightnessDownwardsSmoothing
         
-        color.max = preset.colorRangeUpper
-        color.min = preset.colorRangeLower
+        color.inputMax = preset.colorRangeUpper
+        color.inputMin = preset.colorRangeLower
         color.invert = preset.colorInvert
-        color.useAdaptiveRange = preset.colorAdaptive
+        color.useDynamicRange = preset.colorUseDynamicRange
         
         color.upwardsSmoothing = preset.colorUpwardsSmoothing
         color.downwardsSmoothing = preset.colorDownwardsSmoothing
@@ -95,19 +102,22 @@ class VisualizerPresetManager {
         newPreset.colorDriverName = color.driverName()
         
         newPreset.gradient = visualizer.gradient
+        newPreset.dynamicRangeAggression = visualizer.brightness.dynamicRange.aggression
+        newPreset.useDynamicMax = visualizer.brightness.useDynamicMax
+        newPreset.useDynamicMin = visualizer.brightness.useDynamicMin
         
-        newPreset.brightnessRangeUpper = brightness.max
-        newPreset.brightnessRangeLower = brightness.min
+        newPreset.brightnessRangeUpper = brightness.inputMax
+        newPreset.brightnessRangeLower = brightness.inputMin
         newPreset.brightnessInvert = brightness.invert
-        newPreset.brightnessAdaptive = brightness.useAdaptiveRange
+        newPreset.brightnessUseDynamicRange = brightness.useDynamicRange
         
         newPreset.brightnessUpwardsSmoothing = brightness.upwardsSmoothing
         newPreset.brightnessDownwardsSmoothing = brightness.downwardsSmoothing
         
-        newPreset.colorRangeUpper = color.max
-        newPreset.colorRangeLower = color.min
+        newPreset.colorRangeUpper = color.inputMax
+        newPreset.colorRangeLower = color.inputMin
         newPreset.colorInvert = color.invert
-        newPreset.colorAdaptive = color.useAdaptiveRange
+        newPreset.colorUseDynamicRange = color.useDynamicRange
         
         newPreset.colorUpwardsSmoothing = color.upwardsSmoothing
         newPreset.colorDownwardsSmoothing = color.downwardsSmoothing
@@ -151,13 +161,16 @@ class VisualizerPreset: Codable {
             name = try container.decodeIfPresent(String.self, forKey: .name) ?? VisualizerPreset.defaultPreset.name
             
             codableGradient = try container.decodeIfPresent(CodableGradient.self, forKey: .codableGradient) ?? VisualizerPreset.defaultPreset.codableGradient
+            dynamicRangeAggression = try container.decodeIfPresent(Float.self, forKey: .dynamicRangeAggression) ?? VisualizerPreset.defaultPreset.dynamicRangeAggression
+            useDynamicMin = try container.decodeIfPresent(Bool.self, forKey: .useDynamicMin) ?? VisualizerPreset.defaultPreset.useDynamicMin
+            useDynamicMax = try container.decodeIfPresent(Bool.self, forKey: .useDynamicMax) ?? VisualizerPreset.defaultPreset.useDynamicMax
             
             brightnessRangeUpper = try container.decodeIfPresent(Float.self, forKey: .brightnessRangeUpper) ?? VisualizerPreset.defaultPreset.brightnessRangeUpper
             brightnessRangeLower = try container.decodeIfPresent(Float.self, forKey: .brightnessRangeLower) ?? VisualizerPreset.defaultPreset.brightnessRangeLower
             
             brightnessDriverName = try container.decodeIfPresent(String.self, forKey: .brightnessDriverName) ?? VisualizerPreset.defaultPreset.brightnessDriverName
             brightnessInvert = try container.decodeIfPresent(Bool.self, forKey: .brightnessInvert) ?? VisualizerPreset.defaultPreset.brightnessInvert
-            brightnessAdaptive = try container.decodeIfPresent(Bool.self, forKey: .brightnessAdaptive) ?? VisualizerPreset.defaultPreset.brightnessAdaptive
+            brightnessUseDynamicRange = try container.decodeIfPresent(Bool.self, forKey: .brightnessUseDynamicRange) ?? VisualizerPreset.defaultPreset.brightnessUseDynamicRange
             
             brightnessUpwardsSmoothing = try container.decodeIfPresent(Float.self, forKey: .brightnessUpwardsSmoothing) ?? VisualizerPreset.defaultPreset.brightnessUpwardsSmoothing
             brightnessDownwardsSmoothing = try container.decodeIfPresent(Float.self, forKey: .brightnessDownwardsSmoothing) ?? VisualizerPreset.defaultPreset.brightnessDownwardsSmoothing
@@ -167,7 +180,7 @@ class VisualizerPreset: Codable {
             
             colorDriverName = try container.decodeIfPresent(String.self, forKey: .colorDriverName) ?? VisualizerPreset.defaultPreset.colorDriverName
             colorInvert = try container.decodeIfPresent(Bool.self, forKey: .colorInvert) ?? VisualizerPreset.defaultPreset.colorInvert
-            colorAdaptive = try container.decodeIfPresent(Bool.self, forKey: .colorAdaptive) ?? VisualizerPreset.defaultPreset.colorAdaptive
+            colorUseDynamicRange = try container.decodeIfPresent(Bool.self, forKey: .colorUseDynamicRange) ?? VisualizerPreset.defaultPreset.colorUseDynamicRange
             
             colorUpwardsSmoothing = try container.decodeIfPresent(Float.self, forKey: .colorUpwardsSmoothing) ?? VisualizerPreset.defaultPreset.colorUpwardsSmoothing
             colorDownwardsSmoothing = try container.decodeIfPresent(Float.self, forKey: .colorDownwardsSmoothing) ?? VisualizerPreset.defaultPreset.colorDownwardsSmoothing
@@ -176,6 +189,7 @@ class VisualizerPreset: Codable {
         }
     }
     
+    /* GLOBAL SETTINGS */
     fileprivate var codableGradient: CodableGradient = CodableGradient()
     var gradient: NSGradient {
         get {
@@ -185,6 +199,9 @@ class VisualizerPreset: Codable {
             codableGradient.gradient = newValue
         }
     }
+    var dynamicRangeAggression: Float = 0.50
+    var useDynamicMin: Bool = true
+    var useDynamicMax: Bool = true
     
     /* BRIGHTNESS SETTINGS */
     var brightnessRangeUpper: Float = 1.0
@@ -192,7 +209,7 @@ class VisualizerPreset: Codable {
     
     var brightnessDriverName: String = "Low Spectrum"
     var brightnessInvert: Bool = false
-    var brightnessAdaptive: Bool = false
+    var brightnessUseDynamicRange: Bool = false
     
     var brightnessUpwardsSmoothing: Float = 0.50
     var brightnessDownwardsSmoothing: Float = 0.50
@@ -203,7 +220,7 @@ class VisualizerPreset: Codable {
     
     var colorDriverName: String = "Low Spectrum"
     var colorInvert: Bool = false
-    var colorAdaptive: Bool = false
+    var colorUseDynamicRange: Bool = false
     
     var colorUpwardsSmoothing: Float = 0.50
     var colorDownwardsSmoothing: Float = 0.50

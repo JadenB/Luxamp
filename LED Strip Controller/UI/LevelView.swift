@@ -74,11 +74,11 @@ class LevelView: NSView {
             let barHeight: CGFloat = 3.0
             
             // Fill top subrange bar
-            let topRect = NSRect(x: x, y: viewHeight * CGFloat(subrangeMax), width: w, height: barHeight)
+            let topRect = NSRect(x: x, y: viewHeight * CGFloat(subrangeMax) - barHeight, width: w, height: barHeight)
             topRect.fill()
             
             // Fill bottom subrange bar
-            let bottomRect = NSRect(x: x, y: viewHeight * CGFloat(subrangeMin) - barHeight, width: w, height: barHeight)
+            let bottomRect = NSRect(x: x, y: viewHeight * CGFloat(subrangeMin), width: w, height: barHeight)
             bottomRect.fill()
         }
     }

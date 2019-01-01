@@ -13,9 +13,19 @@ class PreferencesViewController: NSViewController {
     @IBOutlet weak var outputDeviceList: NSPopUpButton!
     @IBOutlet weak var delayField: NSTextField!
     @IBOutlet weak var delaySlider: NSSlider!
+    @IBOutlet weak var maxBrightnessField: NSTextField!
+    @IBOutlet weak var maxBrightnessSlider: NSSlider!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let delay: Int = UserDefaults.standard.integer(forKey: USERDEFAULTS_DELAY_KEY)
+        delayField.integerValue = delay
+        delaySlider.integerValue = delay
+        
+        let maxBrightness: Float = (UserDefaults.standard.object(forKey: USERDEFAULTS_MAX_BRIGHTNESS_KEY) as? Float) ?? 1.0
+        maxBrightnessField.integerValue = Int(100 * maxBrightness)
+        maxBrightnessSlider.integerValue = Int(100 * maxBrightness)
     }
     
     override func viewWillAppear() {
@@ -59,6 +69,18 @@ class PreferencesViewController: NSViewController {
         LightController.shared.delay = sender.integerValue
     }
     
+    @IBAction func maxBrightnessFieldChanged(_ sender: NSTextField) {
+        maxBrightnessSlider.integerValue = sender.integerValue
+        LightController.shared.delay = sender.integerValue
+        NotificationCenter.default.post(name: .didChangeMaxBrightness, object: nil, userInfo: ["maxBrightness":Float(sender.integerValue) * 0.01])
+    }
+    
+    @IBAction func maxBrightnessSliderChanged(_ sender: NSSlider) {
+        maxBrightnessField.integerValue = sender.integerValue
+        LightController.shared.delay = sender.integerValue
+        NotificationCenter.default.post(name: .didChangeMaxBrightness, object: nil, userInfo: ["maxBrightness":Float(sender.integerValue) * 0.01])
+    }
+    
     @IBAction func resetDefaultsPressed(_ sender: Any) {
         let defaults = UserDefaults.standard
         let dictionary = defaults.dictionaryRepresentation()
@@ -87,4 +109,8 @@ class PreferencesViewController: NSViewController {
             }
         }
     }
+}
+
+extension Notification.Name {
+    static let didChangeMaxBrightness = Notification.Name("didChangeMaxBrightness")
 }

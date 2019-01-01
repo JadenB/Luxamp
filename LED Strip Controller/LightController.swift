@@ -11,12 +11,17 @@ import Cocoa
 let COLOR_BYTE: UInt8 = 99 // 'c'
 let POWER_BYTE: UInt8 = 112 // 'p'
 let PACKET_SIZE = 5
+let USERDEFAULTS_DELAY_KEY = "delay"
 
 class LightController: DeviceManagerResponder {
     
     static let shared = LightController()
     /// How long to wait before sending a color in milliseconds
-    var delay: Int = 0
+    var delay: Int = 0 {
+        didSet {
+            UserDefaults.standard.set(delay, forKey: USERDEFAULTS_DELAY_KEY)
+        }
+    }
     
     private let patternRefreshRate: Double = 0.0 // The rate at which the current pattern calls setColor()
     private var _mode: LightMode = .Pattern
@@ -45,6 +50,7 @@ class LightController: DeviceManagerResponder {
     
     private init() {
         DeviceManager.shared.responder = self
+        delay = UserDefaults.standard.integer(forKey: USERDEFAULTS_DELAY_KEY)
     }
     
     /// Turn the lights on
