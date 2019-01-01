@@ -14,7 +14,7 @@
 		7D03140A21D2E0DE00F46D04 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D03140921D2E0DE00F46D04 /* PreferencesViewController.swift */; };
 		7D03140C21D2E30300F46D04 /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D03140B21D2E30300F46D04 /* DeviceManager.swift */; };
 		7D0F4FDD21D63E57006A092B /* LightPatterns.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D0F4FDC21D63E57006A092B /* LightPatterns.swift */; };
-		7D14BC5721D0464700CF199F /* VisualizerSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D14BC5621D0464700CF199F /* VisualizerSettingsViewController.swift */; };
+		7D14BC5721D0464700CF199F /* VisualizerMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D14BC5621D0464700CF199F /* VisualizerMainViewController.swift */; };
 		7D14BC5921D0C1E500CF199F /* VisualizationDrivers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D14BC5821D0C1E500CF199F /* VisualizationDrivers.swift */; };
 		7D33777221CF142A00554841 /* GistSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D33777121CF142A00554841 /* GistSwift.framework */; };
 		7D33777521CF240C00554841 /* GistSwift.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7D33777421CF240C00554841 /* GistSwift.framework.dSYM */; };
@@ -30,6 +30,7 @@
 		7D33778C21D027C500554841 /* Visualizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D884BC721CC47FD00FAD263 /* Visualizer.swift */; };
 		7D33779021D035C800554841 /* DynamicRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D33778F21D035C800554841 /* DynamicRange.swift */; };
 		7D42758521D866760075A325 /* SaveDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D42758421D866760075A325 /* SaveDialogViewController.swift */; };
+		7D55915221DB366200982532 /* VisualizerSideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D55915121DB366200982532 /* VisualizerSideViewController.swift */; };
 		7D5CF64C21DA566200D86666 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5CF64B21DA566200D86666 /* Utility.swift */; };
 		7D5E4E4E21D5B5A60074B129 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5E4E4D21D5B5A60074B129 /* GradientView.swift */; };
 		7D5E4E5021D5C7F50074B129 /* GradientEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5E4E4F21D5C7F50074B129 /* GradientEditorViewController.swift */; };
@@ -91,13 +92,14 @@
 		7D03140B21D2E30300F46D04 /* DeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
 		7D03140D21D2E40100F46D04 /* bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bridge.h; sourceTree = "<group>"; };
 		7D0F4FDC21D63E57006A092B /* LightPatterns.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightPatterns.swift; sourceTree = "<group>"; };
-		7D14BC5621D0464700CF199F /* VisualizerSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizerSettingsViewController.swift; sourceTree = "<group>"; };
+		7D14BC5621D0464700CF199F /* VisualizerMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizerMainViewController.swift; sourceTree = "<group>"; };
 		7D14BC5821D0C1E500CF199F /* VisualizationDrivers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizationDrivers.swift; sourceTree = "<group>"; };
 		7D33777121CF142A00554841 /* GistSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GistSwift.framework; path = Carthage/Build/Mac/GistSwift.framework; sourceTree = "<group>"; };
 		7D33777421CF240C00554841 /* GistSwift.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = GistSwift.framework.dSYM; path = Carthage/Build/Mac/GistSwift.framework.dSYM; sourceTree = "<group>"; };
 		7D33777F21CF2C4900554841 /* BufferProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BufferProcessor.swift; sourceTree = "<group>"; };
 		7D33778F21D035C800554841 /* DynamicRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicRange.swift; sourceTree = "<group>"; };
 		7D42758421D866760075A325 /* SaveDialogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveDialogViewController.swift; sourceTree = "<group>"; };
+		7D55915121DB366200982532 /* VisualizerSideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizerSideViewController.swift; sourceTree = "<group>"; };
 		7D5CF64B21DA566200D86666 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		7D5E4E4D21D5B5A60074B129 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		7D5E4E4F21D5C7F50074B129 /* GradientEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientEditorViewController.swift; sourceTree = "<group>"; };
@@ -155,9 +157,10 @@
 			isa = PBXGroup;
 			children = (
 				7DFE038121CB2C8800D6288F /* ViewController.swift */,
-				7D5E4E4F21D5C7F50074B129 /* GradientEditorViewController.swift */,
-				7D14BC5621D0464700CF199F /* VisualizerSettingsViewController.swift */,
 				7D03140921D2E0DE00F46D04 /* PreferencesViewController.swift */,
+				7D14BC5621D0464700CF199F /* VisualizerMainViewController.swift */,
+				7D55915121DB366200982532 /* VisualizerSideViewController.swift */,
+				7D5E4E4F21D5C7F50074B129 /* GradientEditorViewController.swift */,
 				7D42758421D866760075A325 /* SaveDialogViewController.swift */,
 				7D884BD321CCC36B00FAD263 /* SpectrumView.swift */,
 				7DFE03AD21CB304900D6288F /* ColorView.swift */,
@@ -398,7 +401,7 @@
 				7D33778621D027BC00554841 /* AudioEngine.swift in Sources */,
 				7D03140421D2539D00F46D04 /* LightController.swift in Sources */,
 				7D33778C21D027C500554841 /* Visualizer.swift in Sources */,
-				7D14BC5721D0464700CF199F /* VisualizerSettingsViewController.swift in Sources */,
+				7D14BC5721D0464700CF199F /* VisualizerMainViewController.swift in Sources */,
 				7D33778A21D027C200554841 /* AppDelegate.swift in Sources */,
 				7D14BC5921D0C1E500CF199F /* VisualizationDrivers.swift in Sources */,
 				7D33778B21D027C400554841 /* ViewController.swift in Sources */,
@@ -413,6 +416,7 @@
 				7D5CF64C21DA566200D86666 /* Utility.swift in Sources */,
 				7D42758521D866760075A325 /* SaveDialogViewController.swift in Sources */,
 				7D33778721D027BF00554841 /* SpectrumView.swift in Sources */,
+				7D55915221DB366200982532 /* VisualizerSideViewController.swift in Sources */,
 				7DB5D6E821D46E92000E7B6C /* VisualizerPresetManager.swift in Sources */,
 				7D33779021D035C800554841 /* DynamicRange.swift in Sources */,
 				7D33778421D027BA00554841 /* BufferProcessor.swift in Sources */,

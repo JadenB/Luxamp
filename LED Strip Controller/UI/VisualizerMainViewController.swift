@@ -12,24 +12,17 @@ let DEFAULT_PRESET_INDEX = 1
 
 
 // TODO: Split color and brightness side controls into seperate subviews run off the same viewcontroller
-class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate, GradientEditorViewControllerDelegate, SaveDialogDelegate {
+class VisualizerMainViewController: NSViewController, VisualizerDataDelegate, GradientEditorViewControllerDelegate, SaveDialogDelegate {
     
     var visualizer: Visualizer!
     var presetManager: VisualizerPresetManager!
     
+    var brightnessSide: VisualizerSideViewController!
+    var colorSide: VisualizerSideViewController!
+    
     var hidden = true
     
     /* DYNAMICALLY SET ELEMENTS */
-    @IBOutlet weak var brightnessInputLevel: LevelView!
-    @IBOutlet weak var brightnessOutputLevel: LevelView!
-    @IBOutlet weak var colorInputLevel: LevelView!
-    @IBOutlet weak var colorOutputLevel: LevelView!
-    
-    @IBOutlet weak var brightnessInputLabel: NSTextField!
-    @IBOutlet weak var brightnessOutputLabel: NSTextField!
-    @IBOutlet weak var colorInputLabel: NSTextField!
-    @IBOutlet weak var colorOutputLabel: NSTextField!
-    
     @IBOutlet weak var brightnessSmoothingLabelUpwards: NSTextField!
     @IBOutlet weak var brightnessSmoothingLabelDownwards: NSTextField!
     @IBOutlet weak var colorSmoothingLabelUpwards: NSTextField!
@@ -41,18 +34,6 @@ class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate
     /* USER SET ELEMENTS */
     @IBOutlet weak var presetMenu: NSPopUpButton!
     @IBOutlet weak var presetMenuDeleteItem: NSMenuItem!
-    
-    @IBOutlet weak var brightnessDriverMenu: NSPopUpButton!
-    @IBOutlet weak var brightnessMaxField: VisualizerTextField!
-    @IBOutlet weak var brightnessMinField: VisualizerTextField!
-    @IBOutlet weak var brightnessInvertCheckbox: NSButton!
-    @IBOutlet weak var brightnessDynamicCheckbox: NSButton!
-    
-    @IBOutlet weak var colorDriverMenu: NSPopUpButton!
-    @IBOutlet weak var colorMaxField: VisualizerTextField!
-    @IBOutlet weak var colorMinField: VisualizerTextField!
-    @IBOutlet weak var colorInvertCheckbox: NSButton!
-    @IBOutlet weak var colorDynamicCheckbox: NSButton!
     
     @IBOutlet weak var brightnessUpwardsSmoothingSlider: NSSlider!
     @IBOutlet weak var brightnessDownwardsSmoothingSlider: NSSlider!
@@ -94,33 +75,16 @@ class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate
         for i in (0..<presetNames.count).reversed() {
             presetMenu.insertItem(withTitle: presetNames[i], at: 1) // insert at 1 to put after title and before save/delete
         }
-        
         presetMenu.selectItem(at: 1)
-        brightnessDriverMenu.addItems(withTitles: visualizer.brightness.drivers())
-        colorDriverMenu.addItems(withTitles: visualizer.color.drivers())
     }
     
     func refreshView() {
         let v = visualizer!
-        brightnessDriverMenu.selectItem(withTitle: v.brightness.driverName())
-        colorDriverMenu.selectItem(withTitle: v.color.driverName())
-        
-        brightnessMaxField.floatValue = v.brightness.inputMax
-        brightnessMinField.floatValue = v.brightness.inputMin
-        brightnessInvertCheckbox.state = v.brightness.invert ? .on : .off
-        brightnessDynamicCheckbox.state = v.brightness.useDynamicRange ? .on : .off
-        brightnessInputLevel.showSubrange = v.brightness.useDynamicRange
         
         brightnessUpwardsSmoothingSlider.floatValue = v.brightness.upwardsSmoothing
         brightnessDownwardsSmoothingSlider.floatValue = v.brightness.downwardsSmoothing
         brightnessUpwardsSmoothingSliderChanged(brightnessUpwardsSmoothingSlider) // updates slider label
         brightnessDownwardsSmoothingSliderChanged(brightnessDownwardsSmoothingSlider) // updates slider label
-        
-        colorMaxField.floatValue = v.color.inputMax
-        colorMinField.floatValue = v.color.inputMin
-        colorInvertCheckbox.state = v.color.invert ? .on : .off
-        colorDynamicCheckbox.state = v.color.useDynamicRange ? .on : .off
-        colorInputLevel.showSubrange = v.color.useDynamicRange
         
         colorUpwardsSmoothingSlider.floatValue = v.color.upwardsSmoothing
         colorDownwardsSmoothingSlider.floatValue = v.color.downwardsSmoothing
@@ -134,14 +98,31 @@ class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate
         dynamicRangeBottomCheckbox.state = v.brightness.useDynamicMin ? .on : .off
     }
     
+    func refreshAllViews() {
+        brightnessSide.refreshView()
+        colorSide.refreshView()
+        refreshView()
+    }
+    
     override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
-        if segue.identifier == "SaveDialogSegue" {
-            let saveDialogController = segue.destinationController as! SaveDialogViewController
-            saveDialogController.delegate = self
-        } else if segue.identifier == "GradientEditorSegue" {
+        switch segue.identifier {
+        case "gradientEditorSegue":
             let gradientEditor = (segue.destinationController as! NSWindowController).contentViewController as! GradientEditorViewController
             gradientEditor.gradient = visualizer.gradient
             gradientEditor.delegate = self
+        case "saveDialogSegue":
+            let saveDialogController = segue.destinationController as! SaveDialogViewController
+            saveDialogController.delegate = self
+        case "brightnessSideViewSegue":
+            brightnessSide = segue.destinationController as? VisualizerSideViewController
+            brightnessSide.mapper = visualizer.brightness
+            brightnessSide.name = "Brightness"
+        case "colorSideViewSegue":
+            colorSide = segue.destinationController as? VisualizerSideViewController
+            colorSide.mapper = visualizer.color
+            colorSide.name = "Color"
+        default:
+            print("error: unidentified segue \(segue.identifier ?? "no identifier")")
         }
     }
     
@@ -173,7 +154,7 @@ class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate
                 lastSelectedPresetName = sender.selectedItem!.title
             }
             
-            refreshView()
+            refreshAllViews()
         }
     }
     
@@ -189,58 +170,6 @@ class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate
         presetManager.deletePreset(name: name)
         presetMenu.removeItem(withTitle: name)
         presetSelected(presetMenu)
-    }
-    
-    // MARK: - Brightness/Color Side Controls
-    
-    @IBAction func brightnessDriverSelected(_ sender: NSPopUpButton) {
-        guard let driverName = sender.selectedItem?.title else {
-            print("error: no item selected")
-            return
-        }
-        visualizer.brightness.setDriver(withName: driverName)
-    }
-    
-    @IBAction func colorDriverSelected(_ sender: NSPopUpButton) {
-        guard let driverName = sender.selectedItem?.title else {
-            print("error: no item selected")
-            return
-        }
-        visualizer.color.setDriver(withName: driverName)
-    }
-    
-    @IBAction func brightnessMaxChanged(_ sender: NSTextField) {
-        visualizer.brightness.inputMax = sender.floatValue
-    }
-    
-    @IBAction func brightnessMinChanged(_ sender: NSTextField) {
-        visualizer.brightness.inputMin = sender.floatValue
-    }
-    
-    @IBAction func colorMaxChanged(_ sender: NSTextField) {
-        visualizer.color.inputMax = sender.floatValue
-    }
-    
-    @IBAction func colorMinChanged(_ sender: NSTextField) {
-        visualizer.color.inputMin = sender.floatValue
-    }
-    
-    @IBAction func brightnessInvertPressed(_ sender: NSButton) {
-        visualizer.brightness.invert = sender.state == .on
-    }
-    
-    @IBAction func colorInvertPressed(_ sender: NSButton) {
-        visualizer.color.invert = sender.state == .on
-    }
-    
-    @IBAction func brightnessAdaptivePressed(_ sender: NSButton) {
-        visualizer.brightness.useDynamicRange = sender.state == .on
-        brightnessInputLevel.showSubrange = sender.state == .on
-    }
-    
-    @IBAction func colorAdaptivePressed(_ sender: NSButton) {
-        visualizer.color.useDynamicRange = sender.state == .on
-        colorInputLevel.showSubrange = sender.state == .on
     }
     
     // MARK: - Center Controls
@@ -294,26 +223,14 @@ class VisualizerSettingsViewController: NSViewController, VisualizerDataDelegate
     
     // MARK: - VisualizerDataDelegate
     
-    func didVisualizeWithData(_ data: VisualizerData) {
+    func didVisualizeWithData(brightnessData: VisualizerData, colorData: VisualizerData) {
         if hidden {
             return
         }
         
-        brightnessInputLevel.level = remapValueToBounds(data.inputBrightness, min: visualizer.brightness.inputMin, max: visualizer.brightness.inputMax)
-        brightnessInputLevel.subrangeMax = data.dynamicBrightnessRange.max
-        brightnessInputLevel.subrangeMin = data.dynamicBrightnessRange.min
-        colorInputLevel.level = remapValueToBounds(data.inputColor, min: visualizer.color.inputMin, max: visualizer.color.inputMax)
-        colorInputLevel.subrangeMax = data.dynamicColorRange.max
-        colorInputLevel.subrangeMin = data.dynamicColorRange.min
-        
-        brightnessOutputLevel.level = data.outputBrightness
-        colorOutputLevel.level = data.outputColor
-        gradientView.level = data.outputColor
-        
-        brightnessOutputLabel.stringValue = String(format: "%.1f", data.outputBrightness)
-        brightnessInputLabel.stringValue = String(format: "%.1f", data.inputBrightness)
-        colorOutputLabel.stringValue = String(format: "%.1f", data.outputColor)
-        colorInputLabel.stringValue = String(format: "%.1f", data.inputColor)
+        brightnessSide.updateWithData(brightnessData)
+        colorSide.updateWithData(colorData)
+        gradientView.level = colorData.outputVal
     }
     
     // MARK: - GradientEditorViewControllerDelegate

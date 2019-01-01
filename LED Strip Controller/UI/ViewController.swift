@@ -58,7 +58,7 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
     }
     
     override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
-        guard let visualizationController = segue.destinationController as? VisualizerSettingsViewController else { return }
+        guard let visualizationController = segue.destinationController as? VisualizerMainViewController else { return }
         
         visualizationController.visualizer = musicVisualizer
     }

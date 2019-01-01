@@ -64,19 +64,20 @@ class Visualizer {
         outputDelegate?.didVisualizeIntoColor(colorToOutput)
         
         // Send the data to the data delegate
-        let data = VisualizerData()
+        let brightnessData = VisualizerData()
+        let colorData = VisualizerData()
         
-        data.outputBrightness = brightness.outputVal
-        data.inputBrightness = brightness.inputVal
-        data.dynamicBrightnessRange.max = brightness.dynamicMax
-        data.dynamicBrightnessRange.min = brightness.dynamicMin
+        brightnessData.outputVal = brightness.outputVal
+        brightnessData.inputVal = brightness.inputVal
+        brightnessData.dynamicRange.max = brightness.dynamicMax
+        brightnessData.dynamicRange.min = brightness.dynamicMin
         
-        data.outputColor = color.outputVal
-        data.inputColor = color.inputVal
-        data.dynamicColorRange.max = color.dynamicMax
-        data.dynamicColorRange.min = color.dynamicMin
+        colorData.outputVal = color.outputVal
+        colorData.inputVal = color.inputVal
+        colorData.dynamicRange.max = color.dynamicMax
+        colorData.dynamicRange.min = color.dynamicMin
         
-        dataDelegate?.didVisualizeWithData(data)
+        dataDelegate?.didVisualizeWithData(brightnessData: brightnessData, colorData: colorData)
     }
     
     @objc func maxBrightnessChanged(_ notification: Notification) {
@@ -213,13 +214,9 @@ class VisualizerMapper {
 
 // A container meant to consolidate output data from the visualizer to pass to its data delegate
 class VisualizerData {
-    var inputBrightness: Float = 0.0
-    var outputBrightness: Float = 0.0
-    var dynamicBrightnessRange: (min: Float, max: Float) = (0,0)
-    
-    var inputColor: Float = 0.0
-    var outputColor: Float = 0.0
-    var dynamicColorRange: (min: Float, max: Float) = (0,0)
+    var inputVal: Float = 0.0
+    var outputVal: Float = 0.0
+    var dynamicRange: (min: Float, max: Float) = (0,0)
 }
 
 /// The output delegate of a Visualizer object implements this protocol to perform specialized actions when the visualizer produces a color
@@ -229,5 +226,5 @@ protocol VisualizerOutputDelegate: class {
 
 /// The data delegate of a Visualizer object implements this protocol to perform specialized actions when the visualizer converts data to color and brightness
 protocol VisualizerDataDelegate: class {
-    func didVisualizeWithData(_ data: VisualizerData)
+    func didVisualizeWithData(brightnessData: VisualizerData, colorData: VisualizerData)
 }
