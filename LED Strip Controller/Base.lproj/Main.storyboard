@@ -878,6 +878,12 @@
                                     <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
                                         <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="max">
+                                        <real key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="min">
+                                        <real key="value" value="-48"/>
+                                    </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </customView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="3z1-i0-Pb7" customClass="LevelView" customModule="LED_Strip_Controller" customModuleProvider="target">
@@ -891,6 +897,12 @@
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
                                         <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="max">
+                                        <real key="value" value="2"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="min">
+                                        <real key="value" value="-72"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </customView>
@@ -928,6 +940,7 @@
                                 </constraints>
                                 <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
+                                    <action selector="colorWellChanged:" target="XfG-lQ-9wD" id="Ysb-i0-YyJ"/>
                                     <binding destination="XfG-lQ-9wD" name="enabled" keyPath="self.manualButtonsEnabled" id="jdy-sF-58Q"/>
                                 </connections>
                             </colorWell>
@@ -955,7 +968,7 @@
                                 </segmentedCell>
                                 <connections>
                                     <action selector="manualMusicSegChanged:" target="XfG-lQ-9wD" id="9re-hp-c9r"/>
-                                    <binding destination="XfG-lQ-9wD" name="enabled" keyPath="self.isOn" id="QSL-5x-8AI"/>
+                                    <binding destination="XfG-lQ-9wD" name="enabled" keyPath="self.modeSegEnabled" id="faT-KE-aM1"/>
                                 </connections>
                             </segmentedControl>
                             <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="iec-wg-LGv">
@@ -963,7 +976,7 @@
                             </box>
                             <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="q86-gd-HzW">
                                 <rect key="frame" x="18" y="18" width="164" height="19"/>
-                                <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="0.10000000000000001" maxValue="10" doubleValue="2" tickMarkPosition="above" sliderType="linear" id="YfR-xZ-DQW"/>
+                                <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="0.10000000000000001" maxValue="5" doubleValue="1" tickMarkPosition="above" sliderType="linear" id="YfR-xZ-DQW"/>
                                 <connections>
                                     <action selector="rateSliderChanged:" target="XfG-lQ-9wD" id="IKb-IO-x5v"/>
                                     <binding destination="XfG-lQ-9wD" name="enabled" keyPath="self.manualButtonsEnabled" id="htK-Ye-8Ca"/>
@@ -976,6 +989,7 @@
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
+                                    <action selector="strobePressed:" target="XfG-lQ-9wD" id="5eD-Cn-V3Y"/>
                                     <binding destination="XfG-lQ-9wD" name="enabled" keyPath="self.manualButtonsEnabled" id="bJ9-HR-bou"/>
                                 </connections>
                             </button>
@@ -986,6 +1000,7 @@
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
+                                    <action selector="fadePressed:" target="XfG-lQ-9wD" id="KXD-yb-ef1"/>
                                     <binding destination="XfG-lQ-9wD" name="enabled" keyPath="self.manualButtonsEnabled" id="4oR-S0-b5a"/>
                                 </connections>
                             </button>
@@ -996,6 +1011,7 @@
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
+                                    <action selector="jumpPressed:" target="XfG-lQ-9wD" id="KtH-it-OgT"/>
                                     <binding destination="XfG-lQ-9wD" name="enabled" keyPath="self.manualButtonsEnabled" id="Fas-x2-jMa"/>
                                 </connections>
                             </button>
@@ -1006,18 +1022,16 @@
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
+                                    <action selector="candlePressed:" target="XfG-lQ-9wD" id="irv-S2-c5K"/>
                                     <binding destination="XfG-lQ-9wD" name="enabled" keyPath="self.manualButtonsEnabled" id="thV-rj-pi5"/>
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Dnh-Yq-lOL">
                                 <rect key="frame" x="14" y="56" width="172" height="32"/>
-                                <buttonCell key="cell" type="push" title="Custom..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="F2L-gT-SN4">
+                                <buttonCell key="cell" type="push" title="Custom..." bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="F2L-gT-SN4">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
-                                <connections>
-                                    <binding destination="XfG-lQ-9wD" name="enabled" keyPath="self.manualButtonsEnabled" id="CB3-Le-teS"/>
-                                </connections>
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KZs-mb-iJL">
                                 <rect key="frame" x="18" y="38" width="39" height="17"/>
@@ -1028,8 +1042,8 @@
                                 </textFieldCell>
                             </textField>
                             <textField canDrawConcurrently="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ZFp-fb-rdw">
-                                <rect key="frame" x="159" y="38" width="23" height="17"/>
-                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="2 s" id="r75-oj-5Xa">
+                                <rect key="frame" x="150" y="38" width="32" height="17"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="1.0 s" id="r75-oj-5Xa">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1091,6 +1105,9 @@
                     </view>
                     <connections>
                         <outlet property="colorView" destination="fO0-Cr-Kw4" id="YFI-ey-bkv"/>
+                        <outlet property="modeSeg" destination="m7N-6g-AiH" id="su0-gF-N4d"/>
+                        <outlet property="onOffSeg" destination="9PG-Ef-INy" id="2Oi-hM-tIm"/>
+                        <outlet property="rateSlider" destination="q86-gd-HzW" id="CVS-al-A9O"/>
                         <outlet property="rateSliderLabel" destination="ZFp-fb-rdw" id="fPC-rn-Mzq"/>
                         <outlet property="spectrumView" destination="hVK-5L-wPq" id="D4F-Wf-abd"/>
                         <outlet property="totalAmpLevel" destination="3z1-i0-Pb7" id="9uZ-LC-Xnl"/>

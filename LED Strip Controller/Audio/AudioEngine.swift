@@ -19,6 +19,7 @@ class AudioEngine: BufferProcessorDelegate {
     weak var delegate: AudioEngineDelegate?
     
     let bProcessor = BufferProcessor()
+    var isActive = false
     
     private var av = AVAudioEngine()
     private var refreshTimer: DispatchSourceTimer?
@@ -58,10 +59,13 @@ class AudioEngine: BufferProcessorDelegate {
     }
     
     func start() {
+        if isActive { return }
+        
         do {
             setupBufferTap()
             av.prepare()
             try av.start()
+            isActive = true
             
             guard let timer = refreshTimer else {
                 refreshTimer = DispatchSource.makeTimerSource()
@@ -82,14 +86,16 @@ class AudioEngine: BufferProcessorDelegate {
             return
         }
         
-        
     }
     
     func stop() {
+        if !isActive { return }
+        
         removeBufferTap()
         refreshTimer?.suspend()
         sendBufferNextCycle = false
         av.stop()
+        isActive = false
     }
     
     @objc func handleConfigurationChange(_ notification: Notification) {

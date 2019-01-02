@@ -143,7 +143,7 @@ class VisualizerMainViewController: NSViewController, VisualizerDataDelegate, Gr
             }
             
         } else if sender.indexOfSelectedItem == sender.numberOfItems - 2 {
-            performSegue(withIdentifier: "SaveDialogSegue", sender: self)
+            performSegue(withIdentifier: "saveDialogSegue", sender: self)
         } else {
             presetManager.applyPreset(name: sender.selectedItem?.title ?? PRESETMANAGER_DEFAULT_PRESET_NAME)
             presetMenu.title = "Preset: " + (presetMenu.selectedItem?.title ?? "Error")

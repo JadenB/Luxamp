@@ -16,35 +16,24 @@ let USERDEFAULTS_DELAY_KEY = "delay"
 class LightController: DeviceManagerResponder {
     
     static let shared = LightController()
-    /// How long to wait before sending a color in milliseconds
+    
+    private let lightSerialQueue = DispatchQueue(label: "lightSerialQueue")
+    private var state: LightState = .Off
+    private var ignoreDelayColorQueued = false
+    private var ignoreDelayColor: NSColor = .black
+    private var delayedColorsQueued: UInt = 0 {
+        didSet {
+            if ignoreDelayColorQueued && delayedColorsQueued == 0 {
+                ignoreDelayColorQueued = false
+                setColorIgnoreDelay(color: ignoreDelayColor)
+            }
+        }
+    }
+    
+    /// How long to wait before sending a custom color in milliseconds
     var delay: Int = 0 {
         didSet {
             UserDefaults.standard.set(delay, forKey: USERDEFAULTS_DELAY_KEY)
-        }
-    }
-    
-    private let patternRefreshRate: Double = 0.0 // The rate at which the current pattern calls setColor()
-    private var _mode: LightMode = .Pattern
-    private var _pattern: LightPattern = .Constant
-    private var _state: LightState = .Off
-    
-    private let lightSerialQueue = DispatchQueue(label: "lightSerialQueue")
-    
-    var pattern: LightPattern {
-        get {
-            return _pattern
-        }
-        set {
-            _pattern = newValue // TODO: implement switching patterns
-        }
-    }
-    
-    var mode: LightMode {
-        get {
-            return _mode
-        }
-        set {
-            _mode = newValue // TODO: implement switching modes
         }
     }
     
@@ -55,32 +44,48 @@ class LightController: DeviceManagerResponder {
     
     /// Turn the lights on
     func turnOn() {
-        _state = .On
+        state = .On
         DeviceManager.shared.sendPacket(packet: [POWER_BYTE, 1, 0, 0], size: 4)
     }
     
     /// Turn the lights off
     func turnOff() {
-        _state = .Off
+        state = .Off
         sendColorToDevice(color: .black)
         DeviceManager.shared.sendPacket(packet: [POWER_BYTE, 0, 0, 0], size: 4)
     }
     
     /// The current on/off status of the lights
     func isOn() -> Bool {
-        return _state == .On
+        return state == .On
     }
     
     /// Sets the color of the lights. Only works if they are on
     ///
     /// - Parameter color: The color to set the lights to
     func setColor(color: NSColor) {
-        if _state == .On {
+        if state == .On {
             if delay == 0 {
                 sendColorToDevice(color: color)
             } else {
-                lightSerialQueue.asyncAfter(deadline: .now() + .milliseconds(delay)) { self.sendColorToDevice(color: color) }
+                delayedColorsQueued += 1
+                lightSerialQueue.asyncAfter(deadline: .now() + .milliseconds(delay)) {
+                    self.sendColorToDevice(color: color)
+                    self.delayedColorsQueued -= 1
+                }
             }
+        }
+    }
+    
+    /// Sets the color of the lights ignoring the set delay. Waits until all previously set colors with delay have finished.
+    ///
+    /// - Parameter color: The color to set the lights to
+    func setColorIgnoreDelay(color: NSColor) {
+        if state == .On && delayedColorsQueued == 0 {
+            sendColorToDevice(color: color)
+        } else if state == .On {
+            ignoreDelayColorQueued = true
+            ignoreDelayColor = color
         }
     }
     
@@ -107,13 +112,15 @@ class LightController: DeviceManagerResponder {
             DeviceManager.shared.sendPacket(packet: packet, size: PACKET_SIZE)
     }
     
+    // MARK: - DeviceManagerResponder
+    
     func deviceBecameActive() {}
     
     func deviceBecameInactive() {}
     
     /// Called by DeviceManager when a color is sent to the lights while they are off
     func deviceRespondedWithOffStatus() {
-        if _state == .On {
+        if state == .On {
             turnOn() // if the state is on but the lights are off, turn them on to get back in sync
         }
     }
@@ -122,17 +129,4 @@ class LightController: DeviceManagerResponder {
 fileprivate enum LightState {
     case On
     case Off
-}
-
-enum LightMode: Int {
-    case Pattern = 0
-    case Music = 1
-}
-
-enum LightPattern {
-    case Constant
-    case Strobe
-    case Fade
-    case Jump
-    case Candle
 }

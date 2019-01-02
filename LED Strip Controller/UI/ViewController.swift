@@ -9,26 +9,44 @@
 import Cocoa
 import GistSwift
 
-typealias AudioProcessor = BufferProcessor
-
-class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDelegate {
+class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDelegate, LightPatternManagerDelegate {
     
     var audioEngine: AudioEngine!
     var musicVisualizer: Visualizer!
+    var patternManager = LightPatternManager()
     
     @IBOutlet weak var spectrumView: SpectrumView!
     @IBOutlet weak var totalAmpLevel: LevelView!
     @IBOutlet weak var colorView: NSColorWell!
     
+    @IBOutlet weak var onOffSeg: NSSegmentedControl!
+    @IBOutlet weak var modeSeg: NSSegmentedControl!
+    
+    @IBOutlet weak var rateSlider: NSSlider!
     @IBOutlet weak var rateSliderLabel: NSTextField!
     
     @objc dynamic var manualButtonsEnabled = false
-    @objc dynamic var isOn = false
+    @objc dynamic var modeSegEnabled = false
     
-    var currentMode: LightMode = .Pattern
     var hidden = true
-    
     var levelIIR = BiasedIIRFilter(initialData: [0.0])
+    
+    var state: AppState = .Off {
+        didSet {
+            if state == .On {
+                AppManager.disableSleep()
+            } else {
+                AppManager.enableSleep()
+            }
+            patternManager.stop()
+        }
+    }
+    
+    var mode: AppMode = .Constant {
+        didSet {
+            patternManager.stop()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,12 +54,7 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
         audioEngine.delegate = self
         musicVisualizer = Visualizer(withEngine: audioEngine)
         musicVisualizer.outputDelegate = self
-        
-        spectrumView.min = -48
-        spectrumView.max = 4
-        
-        totalAmpLevel.min = -72
-        totalAmpLevel.max = 2
+        patternManager.delegate = self
         
         levelIIR.upwardsAlpha = 0.5
         levelIIR.downwardsAlpha = 0.8
@@ -63,48 +76,78 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
         visualizationController.visualizer = musicVisualizer
     }
     
+    @IBAction func colorWellChanged(_ sender: NSColorWell) {
+        mode = .Constant
+        LightController.shared.setColor(color: sender.color)
+    }
+    
     @IBAction func rateSliderChanged(_ sender: NSSlider) {
-        rateSliderLabel.stringValue = String(format: "%.1f", sender.floatValue)
+        rateSliderLabel.stringValue = String(format: "%.1f s", sender.floatValue)
+        patternManager.start(withPattern: patternManager.pattern, andPeriod: sender.doubleValue)
     }
     
     @IBAction func offOnSegChanged(_ sender: NSSegmentedControl) {
-        if (sender.selectedSegment == 1) == isOn {
-            return
+        let newState: AppState = (onOffSeg.selectedSegment == 1) ? .On : .Off
+        if newState == state {
+            return // don't run if reselecting same segement
+        } else {
+            state = newState
         }
         
-        if sender.selectedSegment == 1 {
-            isOn = true
+        if state == .On {
             LightController.shared.turnOn()
         } else {
-            isOn = false
             LightController.shared.turnOff()
         }
         
-        manualButtonsEnabled = isOn && currentMode == .Pattern
+        manualButtonsEnabled = (state == .On && mode != .Music)
+        modeSegEnabled = (state == .On)
         
-        if isOn && currentMode == .Music {
+        if state == .On && mode == .Music {
             startAudioVisualization()
-        } else if !isOn && currentMode == .Music {
+        } else if state == .Off && mode == .Music {
             stopAudioVisualization()
         }
     }
     
     @IBAction func manualMusicSegChanged(_ sender: NSSegmentedControl) {
-        if sender.selectedSegment == currentMode.rawValue {
-            return
+        let newMode: AppMode = (sender.selectedSegment == 0) ? .Constant : .Music
+        if newMode == mode {
+            return // don't run if reselecting segment (switches to constant if a pattern is running and 'Manual' is pressed again)
+        } else {
+            mode = newMode
         }
         
-        currentMode = LightMode(rawValue: sender.selectedSegment)!
-        manualButtonsEnabled = isOn && currentMode == .Pattern
         
-        if currentMode == .Music {
+        manualButtonsEnabled = (state == .On && mode != .Music)
+        
+        if state == .On && mode == .Music {
             startAudioVisualization()
-            LightController.shared.mode = .Music
-        } else {
+        } else if state == .On && mode != .Music {
             stopAudioVisualization()
-            LightController.shared.mode = .Pattern
         }
     }
+    
+    @IBAction func strobePressed(_ sender: NSButton) {
+        mode = .Pattern
+        patternManager.start(withPattern: .Strobe, andPeriod: rateSlider.doubleValue)
+    }
+    
+    @IBAction func fadePressed(_ sender: NSButton) {
+        mode = .Pattern
+        patternManager.start(withPattern: .Fade, andPeriod: rateSlider.doubleValue)
+    }
+    
+    @IBAction func jumpPressed(_ sender: NSButton) {
+        mode = .Pattern
+        patternManager.start(withPattern: .Jump, andPeriod: rateSlider.doubleValue)
+    }
+    
+    @IBAction func candlePressed(_ sender: NSButton) {
+        mode = .Pattern
+        patternManager.start(withPattern: .Candle, andPeriod: rateSlider.doubleValue)
+    }
+    
     
     func startAudioVisualization() {
         audioEngine.start()
@@ -118,8 +161,10 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
         totalAmpLevel.disable()
     }
     
+    // MARK: - AudioEngineDelegate
+    
     func didRefreshAudioEngine(withProcessor p: BufferProcessor) {
-        if !isOn || currentMode != .Music {
+        if state == .Off || mode != .Music {
             return
         }
         
@@ -131,11 +176,6 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
             level = self.levelIIR.applyFilter(toValue: level, atIndex: 0)
             self.totalAmpLevel.level = level
         }
-    }
-    
-    func didVisualizeIntoColor(_ color: NSColor) {
-        LightController.shared.setColor(color: color)
-        colorView.color = color
     }
     
     func audioDeviceChanged() {
@@ -154,6 +194,35 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
             }
         }
     }
+    
+    // MARK: - VisualizerOutputDelegate
+    
+    func didVisualizeIntoColor(_ color: NSColor) {
+        if mode == .Music {
+            LightController.shared.setColor(color: color)
+            colorView.color = color
+        }
+    }
 
+    // MARK: - LightPatternManagerDelegate
+    
+    func didGenerateColorFromPattern(_ color: NSColor) {
+        if mode == .Pattern {
+            LightController.shared.setColorIgnoreDelay(color: color)
+            colorView.color = color
+        }
+    }
+    
+}
+
+enum AppState {
+    case On
+    case Off
+}
+
+enum AppMode {
+    case Constant
+    case Pattern
+    case Music
 }
 
