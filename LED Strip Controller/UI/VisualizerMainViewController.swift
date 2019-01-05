@@ -106,8 +106,8 @@ class VisualizerMainViewController: NSViewController, VisualizerDataDelegate, Gr
     
     override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
         switch segue.identifier {
-        case "gradientEditorSegue":
-            let gradientEditor = (segue.destinationController as! NSWindowController).contentViewController as! GradientEditorViewController
+        case "gradientPopoverSegue":
+            let gradientEditor = segue.destinationController as! GradientEditorViewController
             gradientEditor.gradient = visualizer.gradient
             gradientEditor.delegate = self
         case "saveDialogSegue":

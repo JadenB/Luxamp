@@ -201,7 +201,7 @@ class VisualizerMapper {
             let range = dynamicRange.calculateRange(forNextValue: newVal)
             dynamicMin = useDynamicMin ? range.min : 0.0
             dynamicMax = useDynamicMax ? range.max : 1.0
-            newVal = remapValueToBounds(newVal, min: range.min, max: range.max)
+            newVal = remapValueToBounds(newVal, min: dynamicMin, max: dynamicMax)
         }
         
         if invert {

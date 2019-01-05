@@ -87,7 +87,7 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <action selector="delayFieldChanged:" target="RIm-Mf-YdY" id="bCz-Nz-Cos"/>
+                                    <action selector="delayFieldChanged:" target="RIm-Mf-YdY" id="CxQ-tr-JVC"/>
                                 </connections>
                             </textField>
                             <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GQo-UJ-ZkI">
@@ -95,7 +95,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <sliderCell key="cell" state="on" alignment="left" maxValue="1000" tickMarkPosition="above" sliderType="linear" id="SZc-k6-pmz"/>
                                 <connections>
-                                    <action selector="delaySliderChanged:" target="RIm-Mf-YdY" id="eXh-TX-uIo"/>
+                                    <action selector="delaySliderChanged:" target="RIm-Mf-YdY" id="RjS-pc-tns"/>
                                 </connections>
                             </slider>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V0e-Dd-nY6">
@@ -120,7 +120,7 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <action selector="maxBrightnessFieldChanged:" target="RIm-Mf-YdY" id="l5V-sg-bEf"/>
+                                    <action selector="maxBrightnessFieldChanged:" target="RIm-Mf-YdY" id="q6o-7L-U0A"/>
                                 </connections>
                             </textField>
                             <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YJO-no-pnI">
@@ -128,7 +128,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <sliderCell key="cell" state="on" alignment="left" maxValue="100" doubleValue="100" tickMarkPosition="above" sliderType="linear" id="3C7-qO-p7A"/>
                                 <connections>
-                                    <action selector="maxBrightnessSliderChanged:" target="RIm-Mf-YdY" id="Dge-wb-xzY"/>
+                                    <action selector="maxBrightnessSliderChanged:" target="RIm-Mf-YdY" id="OUf-mN-XcQ"/>
                                 </connections>
                             </slider>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bei-zt-cQH">
@@ -145,10 +145,10 @@
                         </subviews>
                     </view>
                     <connections>
-                        <outlet property="delayField" destination="B3Y-tf-6bU" id="LSg-V2-5bw"/>
-                        <outlet property="delaySlider" destination="GQo-UJ-ZkI" id="nIS-1r-jXi"/>
-                        <outlet property="maxBrightnessField" destination="EWT-Qa-ka2" id="Bf2-PP-eUK"/>
-                        <outlet property="maxBrightnessSlider" destination="YJO-no-pnI" id="PIn-Hf-mau"/>
+                        <outlet property="delayField" destination="B3Y-tf-6bU" id="woD-kV-wyi"/>
+                        <outlet property="delaySlider" destination="GQo-UJ-ZkI" id="FZt-1E-QyH"/>
+                        <outlet property="maxBrightnessField" destination="EWT-Qa-ka2" id="9aW-33-CAX"/>
+                        <outlet property="maxBrightnessSlider" destination="YJO-no-pnI" id="DqM-6h-Zpq"/>
                         <outlet property="outputDeviceList" destination="LH4-0j-q65" id="SEf-d4-N7d"/>
                     </connections>
                 </viewController>
@@ -1299,7 +1299,7 @@
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <segue destination="o5O-tv-4B6" kind="modal" identifier="gradientEditorSegue" id="qx2-uU-I5I"/>
+                                    <segue destination="iO9-Dj-NaA" kind="popover" identifier="gradientPopoverSegue" popoverAnchorView="2JD-PV-20Z" popoverBehavior="t" preferredEdge="maxY" id="cTB-e8-KZH"/>
                                 </connections>
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="YE3-bI-uXA">
@@ -1475,29 +1475,6 @@
                 <userDefaultsController id="BY1-ZY-pRg"/>
             </objects>
             <point key="canvasLocation" x="128" y="1568"/>
-        </scene>
-        <!--Window Controller-->
-        <scene sceneID="4aP-Ut-hpg">
-            <objects>
-                <windowController id="o5O-tv-4B6" sceneMemberID="viewController">
-                    <window key="window" title="Gradient Editor" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="gradient" animationBehavior="default" id="tlr-jb-D6U">
-                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
-                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-                        <rect key="contentRect" x="294" y="313" width="480" height="208"/>
-                        <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
-                        <value key="minSize" type="size" width="480" height="208"/>
-                        <value key="maxSize" type="size" width="480" height="208"/>
-                        <connections>
-                            <outlet property="delegate" destination="o5O-tv-4B6" id="6P3-nY-KD9"/>
-                        </connections>
-                    </window>
-                    <connections>
-                        <segue destination="iO9-Dj-NaA" kind="relationship" relationship="window.shadowedContentViewController" id="9Za-Ln-2XU"/>
-                    </connections>
-                </windowController>
-                <customObject id="Ptm-q5-te1" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="855" y="1472"/>
         </scene>
         <!--Save Dialog View Controller-->
         <scene sceneID="Ojz-o1-50l">
@@ -1745,7 +1722,7 @@ Gw
                 </viewController>
                 <customObject id="XMm-M2-Za9" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1581" y="1312"/>
+            <point key="canvasLocation" x="836" y="1457"/>
         </scene>
         <!--Visualizer Side View Controller-->
         <scene sceneID="GAQ-M4-BJG">

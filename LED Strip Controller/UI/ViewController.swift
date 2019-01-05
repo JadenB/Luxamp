@@ -78,12 +78,15 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
     
     @IBAction func colorWellChanged(_ sender: NSColorWell) {
         mode = .Constant
-        LightController.shared.setColor(color: sender.color)
+        LightController.shared.setColorIgnoreDelay(color: sender.color)
     }
     
     @IBAction func rateSliderChanged(_ sender: NSSlider) {
         rateSliderLabel.stringValue = String(format: "%.1f s", sender.floatValue)
-        patternManager.start(withPattern: patternManager.pattern, andPeriod: sender.doubleValue)
+        
+        if mode == .Pattern {
+            patternManager.start(withPattern: patternManager.pattern, andPeriod: sender.doubleValue)
+        }
     }
     
     @IBAction func offOnSegChanged(_ sender: NSSegmentedControl) {
@@ -96,6 +99,7 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
         
         if state == .On {
             LightController.shared.turnOn()
+            LightController.shared.setColorIgnoreDelay(color: colorView.color)
         } else {
             LightController.shared.turnOff()
         }

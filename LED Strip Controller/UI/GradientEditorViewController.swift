@@ -13,12 +13,7 @@ let MAX_GRADIENT_COLORS = 5
 class GradientEditorViewController: NSViewController {
     
     @IBOutlet weak var stackView: NSStackView!
-    var gradient: NSGradient! = NSGradient(starting: .black, ending: .white) {
-        didSet {
-            gradientView.gradient = gradient
-            setColorCount(count: gradient.numberOfColorStops)
-        }
-    }
+    var gradient: NSGradient! = NSGradient(starting: .black, ending: .white)
     
     @IBOutlet weak var gradientView: GradientView!
     @IBOutlet weak var countStepper: NSStepper!
@@ -38,6 +33,8 @@ class GradientEditorViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupColorWells()
+        gradientView.gradient = gradient
+        setColorCount(count: gradient.numberOfColorStops)
     }
     
     override func viewDidAppear() {
@@ -87,6 +84,7 @@ class GradientEditorViewController: NSViewController {
         }
         
         gradient = NSGradient(colors: colors)
+        gradientView.gradient = gradient
     }
     
     func setColorCount(count: Int) {

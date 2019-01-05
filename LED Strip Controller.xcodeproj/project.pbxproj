@@ -31,7 +31,7 @@
 		7D33779021D035C800554841 /* DynamicRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D33778F21D035C800554841 /* DynamicRange.swift */; };
 		7D42758521D866760075A325 /* SaveDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D42758421D866760075A325 /* SaveDialogViewController.swift */; };
 		7D55915221DB366200982532 /* VisualizerSideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D55915121DB366200982532 /* VisualizerSideViewController.swift */; };
-		7D5CF64C21DA566200D86666 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5CF64B21DA566200D86666 /* Utility.swift */; };
+		7D5CF64C21DA566200D86666 /* Remap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5CF64B21DA566200D86666 /* Remap.swift */; };
 		7D5E4E4E21D5B5A60074B129 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5E4E4D21D5B5A60074B129 /* GradientView.swift */; };
 		7D5E4E5021D5C7F50074B129 /* GradientEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5E4E4F21D5C7F50074B129 /* GradientEditorViewController.swift */; };
 		7D5E4E5221D602370074B129 /* AppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5E4E5121D602370074B129 /* AppManager.swift */; };
@@ -100,7 +100,7 @@
 		7D33778F21D035C800554841 /* DynamicRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicRange.swift; sourceTree = "<group>"; };
 		7D42758421D866760075A325 /* SaveDialogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveDialogViewController.swift; sourceTree = "<group>"; };
 		7D55915121DB366200982532 /* VisualizerSideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizerSideViewController.swift; sourceTree = "<group>"; };
-		7D5CF64B21DA566200D86666 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		7D5CF64B21DA566200D86666 /* Remap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remap.swift; sourceTree = "<group>"; };
 		7D5E4E4D21D5B5A60074B129 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		7D5E4E4F21D5C7F50074B129 /* GradientEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientEditorViewController.swift; sourceTree = "<group>"; };
 		7D5E4E5121D602370074B129 /* AppManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppManager.swift; sourceTree = "<group>"; };
@@ -181,6 +181,26 @@
 			path = Audio;
 			sourceTree = "<group>";
 		};
+		7D3BDE8221DCAEE700E434BE /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				7D5E4E5121D602370074B129 /* AppManager.swift */,
+				7D33778F21D035C800554841 /* DynamicRange.swift */,
+				7D5CF64B21DA566200D86666 /* Remap.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		7D3BDE8321DCAEF800E434BE /* Lights */ = {
+			isa = PBXGroup;
+			children = (
+				7D03140B21D2E30300F46D04 /* DeviceManager.swift */,
+				7D0F4FDC21D63E57006A092B /* LightPatternManager.swift */,
+				7D03140321D2539D00F46D04 /* LightController.swift */,
+			);
+			path = Lights;
+			sourceTree = "<group>";
+		};
 		7DB5D6E921D4ABA3000E7B6C /* Visualizer */ = {
 			isa = PBXGroup;
 			children = (
@@ -218,16 +238,12 @@
 			children = (
 				7DFE038521CB2C8900D6288F /* Main.storyboard */,
 				7DFE037F21CB2C8800D6288F /* AppDelegate.swift */,
-				7D5E4E5121D602370074B129 /* AppManager.swift */,
 				7D03140D21D2E40100F46D04 /* bridge.h */,
-				7D03140B21D2E30300F46D04 /* DeviceManager.swift */,
-				7D0F4FDC21D63E57006A092B /* LightPatternManager.swift */,
-				7D03140321D2539D00F46D04 /* LightController.swift */,
-				7D33778F21D035C800554841 /* DynamicRange.swift */,
-				7D5CF64B21DA566200D86666 /* Utility.swift */,
+				7D3BDE8321DCAEF800E434BE /* Lights */,
 				7DB5D6E921D4ABA3000E7B6C /* Visualizer */,
 				7D33778121D0274600554841 /* UI */,
 				7D33778221D0277600554841 /* Audio */,
+				7D3BDE8221DCAEE700E434BE /* Utility */,
 				7DFE038821CB2C8900D6288F /* Info.plist */,
 				7DFE038321CB2C8900D6288F /* Assets.xcassets */,
 				7DFE038921CB2C8900D6288F /* LED_Strip_Controller.entitlements */,
@@ -413,7 +429,7 @@
 				7D03140C21D2E30300F46D04 /* DeviceManager.swift in Sources */,
 				7D03140221D24ABE00F46D04 /* VisualizerTextField.swift in Sources */,
 				7D03140A21D2E0DE00F46D04 /* PreferencesViewController.swift in Sources */,
-				7D5CF64C21DA566200D86666 /* Utility.swift in Sources */,
+				7D5CF64C21DA566200D86666 /* Remap.swift in Sources */,
 				7D42758521D866760075A325 /* SaveDialogViewController.swift in Sources */,
 				7D33778721D027BF00554841 /* SpectrumView.swift in Sources */,
 				7D55915221DB366200982532 /* VisualizerSideViewController.swift in Sources */,

@@ -88,4 +88,12 @@ class SpectrumView: NSView {
         
     }
     
+    override func prepareForInterfaceBuilder() {
+        spectrum = [Float](repeating: 0.0, count: 256)
+        
+        for i in 0..<spectrum.count {
+            spectrum[i] = min + (max - min) * Float(arc4random()) / Float(UINT32_MAX)
+        }
+    }
+    
 }
