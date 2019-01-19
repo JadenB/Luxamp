@@ -53,12 +53,19 @@ class VisualizerSideViewController: NSViewController {
     
     func updateWithData(_ data: VisualizerData) {
         inputLevel.level = remapValueToBounds(data.inputVal, min: mapper.inputMin, max: mapper.inputMax)
-        inputLevel.subrangeMax = data.dynamicRange.max
-        inputLevel.subrangeMin = data.dynamicRange.min
+        inputLevel.subrangeMax = data.dynamicInputRange.max
+        inputLevel.subrangeMin = data.dynamicInputRange.min
         inputLabel.stringValue = String(format: "%.1f", data.inputVal)
         
         outputLevel.level = data.outputVal
         outputLabel.stringValue = String(format: "%.1f", data.outputVal)
+    }
+    
+    override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
+        if segue.identifier == "dynamicRangePopoverSegue" {
+            let dynamicEditor = segue.destinationController as! DynamicRangeViewController
+            dynamicEditor.dynamicRange = mapper.dynamicRange
+        }
     }
     
     @IBAction func maxChanged(_ sender: VisualizerTextField) {
@@ -76,6 +83,10 @@ class VisualizerSideViewController: NSViewController {
     @IBAction func dynamicChanged(_ sender: NSButton) {
         mapper.useDynamicRange = (sender.state == .on)
         inputLevel.showSubrange = mapper.useDynamicRange
+        
+        if sender.state == .on {
+            performSegue(withIdentifier: "dynamicRangePopoverSegue", sender: sender)
+        }
     }
     
     @IBAction func driverSelected(_ sender: NSPopUpButton) {

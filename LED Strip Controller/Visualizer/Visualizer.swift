@@ -24,7 +24,22 @@ class Visualizer {
     }
     var minBrightness: Float = 0.0
     
-    var gradient: NSGradient! = NSGradient(starting: .red, ending: .green)
+    /// The gradient used to map the output color
+    var gradient: NSGradient! = NSGradient(starting: .red, ending: .yellow)
+    /// Whether to gradually shift the overall hue over time
+    var useEvolvingColor = true
+    /// The amount to change the color every time visualize() is called
+    var evolvingColorRate: Float {
+        get {
+            return Float(cgEvolvingColorRate)
+        }
+        set {
+            cgEvolvingColorRate = CGFloat(newValue) // setting a CGFloat version of this variable to avoid converting types each run
+        }
+    }
+    private var cgEvolvingColorRate: CGFloat = 1.0
+    private var evolvingColorOffset: CGFloat = 0.0
+    private var lastColorVal: Float = 0.0
     
     /// Initializes a Visualizer
     ///
@@ -38,14 +53,16 @@ class Visualizer {
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(maxBrightnessChanged), name: .didChangeMaxBrightness, object: nil)
+        
+        evolvingColorRate = 0.3
     }
 
     /// Produces a color and sends it to the output delegate. Also sends raw brightness and color values to the data delegate.
     func visualize() {
         // Setup components of color
         var outputBrightness: CGFloat = 1.0
-        var outputHue: CGFloat = 1.0
         var outputSaturation: CGFloat = 1.0
+        var outputHue: CGFloat = 1.0
         
         // Calculate raw values from brightness and color mappers
         brightness.applyMapping()
@@ -54,10 +71,25 @@ class Visualizer {
         // Convert raw color mapping to hue and saturation with the gradient
         let gradientColor = gradient.interpolatedColor(atLocation: CGFloat(color.outputVal))
         
-        // Set the final color components
+        // Set the final color components, ignoring brightness of gradient
         outputBrightness = CGFloat(remapValueToBounds(brightness.outputVal, inputMin: 0.0, inputMax: 1.0, outputMin: minBrightness, outputMax: maxBrightness))
-        outputHue = gradientColor.hueComponent
         outputSaturation = gradientColor.saturationComponent
+        outputHue = gradientColor.hueComponent
+        
+        if useEvolvingColor {
+            let colorDiff = color.outputVal - lastColorVal
+            if colorDiff > 0.0 {
+                evolvingColorOffset += CGFloat(colorDiff) * cgEvolvingColorRate * (1/7)
+            }
+            
+            outputHue += evolvingColorOffset
+            
+            if outputHue > 1.0 {
+                outputHue = outputHue.truncatingRemainder(dividingBy: 1.0)
+            }
+            
+            lastColorVal = color.outputVal // save the last value so the difference can be computed for the next cycle
+        }
         
         // Send the color to the output delegate
         let colorToOutput = NSColor(hue: outputHue, saturation: outputSaturation, brightness: outputBrightness, alpha: 1.0)
@@ -69,13 +101,13 @@ class Visualizer {
         
         brightnessData.outputVal = brightness.outputVal
         brightnessData.inputVal = brightness.inputVal
-        brightnessData.dynamicRange.max = brightness.dynamicMax
-        brightnessData.dynamicRange.min = brightness.dynamicMin
+        brightnessData.dynamicInputRange.max = brightness.dynamicMax
+        brightnessData.dynamicInputRange.min = brightness.dynamicMin
         
         colorData.outputVal = color.outputVal
         colorData.inputVal = color.inputVal
-        colorData.dynamicRange.max = color.dynamicMax
-        colorData.dynamicRange.min = color.dynamicMin
+        colorData.dynamicInputRange.max = color.dynamicMax
+        colorData.dynamicInputRange.min = color.dynamicMin
         
         dataDelegate?.didVisualizeWithData(brightnessData: brightnessData, colorData: colorData)
     }
@@ -126,14 +158,9 @@ class VisualizerMapper {
     /// Whether to use a dynamic subrange on the input range
     var useDynamicRange = false {
         didSet {
-            if !useDynamicRange { dynamicRange.reset() }
+            if !useDynamicRange { dynamicRange.resetRange() }
         }
     }
-    
-    /// Whether the dynamic subrange calculates a new minimum. Has no effect if useDynamicRange is false
-    var useDynamicMin = true
-    /// Whether the dynamic subrange calculates a new maximum. Has no effect if useDynamicRange is false
-    var useDynamicMax = true
     
     var dynamicRange = DynamicRange()
     
@@ -199,9 +226,9 @@ class VisualizerMapper {
         
         if useDynamicRange {
             let range = dynamicRange.calculateRange(forNextValue: newVal)
-            dynamicMin = useDynamicMin ? range.min : 0.0
-            dynamicMax = useDynamicMax ? range.max : 1.0
-            newVal = remapValueToBounds(newVal, min: dynamicMin, max: dynamicMax)
+            newVal = remapValueToBounds(newVal, min: range.min, max: range.max)
+            dynamicMin = range.min
+            dynamicMax = range.max
         }
         
         if invert {
@@ -216,7 +243,8 @@ class VisualizerMapper {
 class VisualizerData {
     var inputVal: Float = 0.0
     var outputVal: Float = 0.0
-    var dynamicRange: (min: Float, max: Float) = (0,0)
+    var dynamicInputRange: (min: Float, max: Float) = (0, 0)
+    var outputRange: (min: Float, max: Float) = (0, 0)
 }
 
 /// The output delegate of a Visualizer object implements this protocol to perform specialized actions when the visualizer produces a color

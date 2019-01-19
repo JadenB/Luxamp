@@ -10,6 +10,6 @@
 #define bridge_h
 
 #import <ORSSerial/ORSSerial.h>
-
+#import "AngleGradientLayer.h"
 
 #endif /* bridge_h */

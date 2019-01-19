@@ -22,6 +22,7 @@ class BufferProcessor {
             return gist.magnitudeSpectrum()
         }
     }
+    var spectrumNormalizedMagnitudeData: [Float]
     
     var filter: BiasedIIRFilter
     
@@ -54,6 +55,7 @@ class BufferProcessor {
     
     init() {
         spectrumDecibelData = Array<Float>(repeating: 0.0, count: fftSize)
+        spectrumNormalizedMagnitudeData = Array<Float>(repeating: 0.0, count: fftSize)
         filter = BiasedIIRFilter(size: fftSize)
         filter.upwardsAlpha = 0.4
         filter.downwardsAlpha = 0.7
@@ -65,6 +67,7 @@ class BufferProcessor {
     func process(buffer: [Float]) {
         gist.processAudio(frame: buffer)
         var result = normalizeFFT(gist.magnitudeSpectrum())
+        spectrumNormalizedMagnitudeData = result // save the normalized spectrum data for later access
         
         if useIIRFilter {
             filter.applyFilter(toData: &result)

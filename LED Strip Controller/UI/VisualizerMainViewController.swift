@@ -28,9 +28,6 @@ class VisualizerMainViewController: NSViewController, VisualizerDataDelegate, Gr
     @IBOutlet weak var colorSmoothingLabelUpwards: NSTextField!
     @IBOutlet weak var colorSmoothingLabelDownwards: NSTextField!
     
-    @IBOutlet weak var dynamicRangeAggressionLabel: NSTextField!
-    
-    
     /* USER SET ELEMENTS */
     @IBOutlet weak var presetMenu: NSPopUpButton!
     @IBOutlet weak var presetMenuDeleteItem: NSMenuItem!
@@ -41,9 +38,6 @@ class VisualizerMainViewController: NSViewController, VisualizerDataDelegate, Gr
     @IBOutlet weak var colorDownwardsSmoothingSlider: NSSlider!
     
     @IBOutlet weak var gradientView: GradientView!
-    @IBOutlet weak var dynamicRangeAggressionSlider: NSSlider!
-    @IBOutlet weak var dynamicRangeTopCheckbox: NSButton!
-    @IBOutlet weak var dynamicRangeBottomCheckbox: NSButton!
     
     private var lastSelectedPresetName: String = "" // Needed for when 'Delete Preset' is clicked and the pulldown menu changes
     
@@ -92,10 +86,6 @@ class VisualizerMainViewController: NSViewController, VisualizerDataDelegate, Gr
         colorDownwardsSmoothingSliderChanged(colorDownwardsSmoothingSlider) // updates slider label
         
         gradientView.gradient = v.gradient
-        dynamicRangeAggressionSlider.floatValue = v.brightness.dynamicRange.aggression
-        dyanamicRangeAggressionSliderChanged(dynamicRangeAggressionSlider) // updates slider label
-        dynamicRangeTopCheckbox.state = v.brightness.useDynamicMax ? .on : .off
-        dynamicRangeBottomCheckbox.state = v.brightness.useDynamicMin ? .on : .off
     }
     
     func refreshAllViews() {
@@ -197,24 +187,6 @@ class VisualizerMainViewController: NSViewController, VisualizerDataDelegate, Gr
     @IBAction func resetGradientButtonPressed(_ sender: Any) {
         visualizer.gradient = VisualizerPreset.defaultPreset.gradient
         gradientView.gradient = visualizer.gradient
-    }
-    
-    @IBAction func dyanamicRangeAggressionSliderChanged(_ sender: NSSlider) {
-        visualizer.brightness.dynamicRange.aggression = sender.floatValue
-        visualizer.color.dynamicRange.aggression = sender.floatValue
-        dynamicRangeAggressionLabel.stringValue = String(format: "%.2f", sender.floatValue)
-    }
-    
-    @IBAction func dynamicRangeTopPressed(_ sender: NSButton) {
-        let state = (sender.state == .on)
-        visualizer.brightness.useDynamicMax = state
-        visualizer.color.useDynamicMax = state
-    }
-    
-    @IBAction func dynamicRangeBottomPressed(_ sender: NSButton) {
-        let state = (sender.state == .on)
-        visualizer.brightness.useDynamicMin = state
-        visualizer.color.useDynamicMin = state
     }
     
     override func setNilValueForKey(_ key: String) {

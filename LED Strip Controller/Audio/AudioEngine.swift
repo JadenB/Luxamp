@@ -31,14 +31,13 @@ class AudioEngine: BufferProcessorDelegate {
     init(refreshRate: Double) {
         self.refreshRate = refreshRate
         bProcessor.delegate = self
-        NotificationCenter.default.addObserver(self, selector: #selector(handleConfigurationChange), name: .AVAudioEngineConfigurationChange, object: av)
     }
     
-    private func setupBufferTap() {
+    private func installBufferTap() {
         av.inputNode.installTap(
             onBus: 0,
             bufferSize: UInt32(BUFFER_SIZE),
-            format: nil) { [weak self] (buffer, _) in
+            format: av.inputNode.inputFormat(forBus: 0)) { [weak self] (buffer, _) in
                 
                 guard let strongSelf = self else {
                     print("Unable to create strong reference to self")
@@ -62,9 +61,10 @@ class AudioEngine: BufferProcessorDelegate {
         if isActive { return }
         
         do {
-            setupBufferTap()
+            installBufferTap()
             av.prepare()
             try av.start()
+            NotificationCenter.default.addObserver(self, selector: #selector(handleConfigurationChange), name: .AVAudioEngineConfigurationChange, object: av)
             isActive = true
             
             guard let timer = refreshTimer else {
@@ -95,10 +95,12 @@ class AudioEngine: BufferProcessorDelegate {
         refreshTimer?.suspend()
         sendBufferNextCycle = false
         av.stop()
+        NotificationCenter.default.removeObserver(self)
         isActive = false
     }
     
     @objc func handleConfigurationChange(_ notification: Notification) {
+        print("audio configuration changed")
         audioDeviceChangedRanOnce = true
         if !audioDeviceChangedRanOnce {
             DispatchQueue.main.async {

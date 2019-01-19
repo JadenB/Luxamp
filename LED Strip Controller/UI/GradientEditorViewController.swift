@@ -37,10 +37,6 @@ class GradientEditorViewController: NSViewController {
         setColorCount(count: gradient.numberOfColorStops)
     }
     
-    override func viewDidAppear() {
-        super.viewDidAppear()
-    }
-    
     @IBAction func stepperChanged(_ sender: NSStepper) {
         setColorCount(count: sender.integerValue)
     }

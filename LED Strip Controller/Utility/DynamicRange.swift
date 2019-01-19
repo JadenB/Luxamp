@@ -15,6 +15,11 @@ class DynamicRange {
     var maxFilter = BiasedIIRFilter(initialData: [1.0])
     var minFilter = BiasedIIRFilter(initialData: [0.0])
     
+    /// Whether the dynamic subrange calculates a new maximum.
+    var useMax = true 
+    /// Whether the dynamic subrange calculates a new minimum.
+    var useMin = true
+    
     var aggression: Float = 0.5 {
         didSet {
             setAlphas()
@@ -26,12 +31,22 @@ class DynamicRange {
     }
     
     func calculateRange(forNextValue val: Float) -> (min: Float, max: Float) {
-        let newMax = maxFilter.applyFilter(toValue: val, atIndex: 0)
-        let newMin = minFilter.applyFilter(toValue: val, atIndex: 0)
+        var newMax: Float = 1.0
+        var newMin: Float = 0.0
+        
+        if useMax {
+            newMax = maxFilter.applyFilter(toValue: val, atIndex: 0)
+        }
+        
+        if useMin {
+            newMin = minFilter.applyFilter(toValue: val, atIndex: 0)
+        }
+        
+        
         return (newMin, newMax)
     }
     
-    func reset() {
+    func resetRange() {
         maxFilter = BiasedIIRFilter(initialData: [1.0])
         minFilter = BiasedIIRFilter(initialData: [0.0])
         setAlphas()

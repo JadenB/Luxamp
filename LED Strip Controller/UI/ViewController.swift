@@ -50,7 +50,7 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        audioEngine = AudioEngine(refreshRate: 43.06640625)
+        audioEngine = AudioEngine(refreshRate: Double(SAMPLE_RATE) / Double(BUFFER_SIZE))
         audioEngine.delegate = self
         musicVisualizer = Visualizer(withEngine: audioEngine)
         musicVisualizer.outputDelegate = self
