@@ -1,0 +1,21 @@
+{
+  "Mac" : [
+    {
+      "name" : "GistSwift",
+      "hash" : "33416f98bfefac23cd6ec0ce5ddbcea219b7b35b3c8be82de8962fef373a4f96"
+    }
+  ],
+  "watchOS" : [
+
+  ],
+  "tvOS" : [
+
+  ],
+  "commitish" : "0.1.0",
+  "iOS" : [
+    {
+      "name" : "GistSwift",
+      "hash" : "6c65d9ea71647e9423ab082d03679159a6dde45ec10d5fd8c3352efbbb385955"
+    }
+  ]
+}
