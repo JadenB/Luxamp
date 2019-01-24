@@ -28,7 +28,7 @@ class CircularColorWell: NSColorWell {
         get { return true }
         set { return }
     }
-
+    
     override func makeBackingLayer() -> CALayer {
         let l = circleLayer
         l.frame = bounds

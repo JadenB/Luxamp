@@ -5,7 +5,7 @@
 //  Created by Jaden Bernal on 1/15/19.
 //  Copyright © 2019 Jaden Bernal. All rights reserved.
 //
-/*
+
 import Cocoa
 
 @IBDesignable
@@ -13,9 +13,8 @@ class ArcLevelView: NSView {
     
     // MARK: - Variables
     
-    private var mask = CAShapeLayer()
-    private var arcGradientLayer = AngleGradientArcLayer()
-    private var levelLayer = LevelIndicatorArcLayer()
+    private var colorArcLayer = AngleGradientArcLayer()
+    private var brightnessArcLayer = AngleGradientArcLayer()
     
     private var colors: [CGColor] = [NSColor.red.cgColor, NSColor.yellow.cgColor] {
         didSet {
@@ -36,70 +35,68 @@ class ArcLevelView: NSView {
     
     // MARK: - Visible Attributes
     
-    @IBInspectable var gradient: NSGradient! = NSGradient(starting: .black, ending: .white) {
+    @IBInspectable var arcWidth: CGFloat = 2.0 {
         didSet {
-            let colorCount = gradient.numberOfColorStops
-            var newColors = [CGColor]()
-            newColors.reserveCapacity(colorCount)
-            for i in 0..<colorCount {
-                newColors.append( gradient.interpolatedColor(atLocation: CGFloat(i) * 1 / (CGFloat(colorCount) - 1)).cgColor )
-            }
-            colors = newColors
-        }
-    }
-    
-    @IBInspectable var arcWidth: CGFloat = 6 {
-        didSet {
-            setupMask()
+            brightnessArcLayer.arcWidth = arcWidth
+            colorArcLayer.arcWidth = arcWidth
         }
     }
     
     @IBInspectable var arcStartAngle: CGFloat = 0 {
         didSet {
-            updateAngles()
+            brightnessArcLayer.arcEndAngle = 180 - arcStartAngle
+            colorArcLayer.arcStartAngle = arcStartAngle
         }
     }
     
     @IBInspectable var arcEndAngle: CGFloat = 360 {
         didSet {
-            updateAngles()
+            brightnessArcLayer.arcStartAngle = 180 - arcEndAngle
+            colorArcLayer.arcEndAngle = arcEndAngle
         }
     }
     
-    // MARK: - Utility Functions
-    
-    private func setupMask() {
-        mask.frame = bounds
-        let arcPath = NSBezierPath()
-        let center = NSPoint(x: bounds.midX, y: bounds.midY)
-        arcPath.appendArc(withCenter: center, radius: (bounds.size.width - arcWidth) / 2, startAngle: arcStartAngle, endAngle: arcEndAngle, clockwise: false)
-        mask.path = arcPath.cgPath.copy(strokingWithWidth: arcWidth, lineCap: .butt, lineJoin: .bevel, miterLimit: 0)
+    @IBInspectable var levelLineWidth: CGFloat = 4.0 {
+        didSet {
+            colorArcLayer.levelWidth = levelLineWidth
+            brightnessArcLayer.levelWidth = levelLineWidth
+        }
     }
     
-    private func updateAngles() {
-        arcGradientLayer.arcStartAngle = arcStartAngle
-        arcGradientLayer.arcEndAngle = arcEndAngle
-        
-        levelLayer.startAngle = arcStartAngle
-        levelLayer.endAngle = arcEndAngle
+    var colorGradient: NSGradient! = NSGradient(starting: .black, ending: .white) {
+        didSet {
+            colorArcLayer.gradient = colorGradient
+        }
+    }
+    
+    func setLevels(blevel: Float, clevel: Float) {
+        brightnessArcLayer.level = blevel
+        colorArcLayer.level = clevel
     }
     
     // MARK: - Overrides
     
     override func makeBackingLayer() -> CALayer {
-        setupMask()
+        let l = CALayer()
+        l.needsDisplayOnBoundsChange = true
+        l.backgroundColor = CGColor.clear
+        l.frame = bounds
         
-        let l = arcGradientLayer
-        l.colors = colors
-        l.arcWidth = arcWidth
-        l.arcMaskLayer = mask
+        brightnessArcLayer.frame = bounds
+        brightnessArcLayer.gradient = NSGradient(starting: .black , ending: .white)
+        brightnessArcLayer.invert = true
+        brightnessArcLayer.level = 0.0
+        l.addSublayer(brightnessArcLayer)
         
-        let subl = levelLayer
-        subl.frame = bounds
-        subl.mask = mask
-        l.addSublayer(subl)
+        colorArcLayer.frame = bounds
+        colorArcLayer.gradient = NSGradient(starting: .red, ending: .yellow)
+        colorArcLayer.level = 0.0
+        l.addSublayer(colorArcLayer)
         
-        updateAngles()
+        let mask = CAShapeLayer()
+        mask.frame = bounds
+        mask.path = CGPath(rect: CGRect(x: bounds.midX - 20, y: bounds.minY, width: 40, height: bounds.height), transform: nil)
+        l.mask = mask
         return l
     }
     
@@ -109,15 +106,30 @@ class ArcLevelView: NSView {
     
     override func mouseDown(with event: NSEvent) {
         let p = convert(event.locationInWindow, from: window?.contentView)
-        if mask.path?.contains(p) ?? false {
-            print("hit")
+        if brightnessArcLayer.contains(p) {
+            print("hit brightess")
+        } else if colorArcLayer.contains(p) {
+            print("hit color")
         } else {
             print("no hit")
         }
+        
+        super.mouseDown(with: event)
     }
     
     override func viewDidChangeBackingProperties() {
         layer?.contentsScale = window!.backingScaleFactor
+    }
+    
+    override func layout() {
+        super.layout()
+        layer?.frame = frame
+        layer?.layoutSublayers()
+    }
+    
+    override func prepareForInterfaceBuilder() {
+        colorArcLayer.level = 1
+        brightnessArcLayer.level = 1
     }
     
 }
@@ -144,4 +156,3 @@ extension NSBezierPath {
         return path
     }
 }
-*/

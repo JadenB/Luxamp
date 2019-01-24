@@ -33,10 +33,9 @@
 		7D6BFD9B21F98E9C00E17012 /* AngleLineLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D6BFD9A21F98E9C00E17012 /* AngleLineLayer.swift */; };
 		7D6BFD9D21F98EA700E17012 /* CircularColorWell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D6BFD9C21F98EA700E17012 /* CircularColorWell.swift */; };
 		7D6BFD9F21F98EB700E17012 /* SmoothingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D6BFD9E21F98EB700E17012 /* SmoothingView.swift */; };
-		7D6D4DE221F2C9CC00553E11 /* LevelIndicatorArcLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D6D4DE121F2C9CC00553E11 /* LevelIndicatorArcLayer.swift */; };
+		7D6D4DE221F2C9CC00553E11 /* AngleGradientArcLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D6D4DE121F2C9CC00553E11 /* AngleGradientArcLayer.swift */; };
 		7DB5D6E821D46E92000E7B6C /* VisualizerPresetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB5D6E721D46E92000E7B6C /* VisualizerPresetManager.swift */; };
 		7DEBB55021EE916800878309 /* AngleGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DEBB54F21EE916800878309 /* AngleGradientLayer.m */; };
-		7DEBB55321EE92CD00878309 /* AngleGradientArcLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DEBB55221EE92CD00878309 /* AngleGradientArcLayer.swift */; };
 		7DEBB55521EE977400878309 /* ArcLevelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DEBB55421EE977400878309 /* ArcLevelView.swift */; };
 		7DF0C41E21E44DDB0007FD31 /* DynamicRangeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DF0C41D21E44DDB0007FD31 /* DynamicRangeViewController.swift */; };
 		7DF1B65C21F9893200FC818E /* GistSwift.framework.dSYM in Resources */ = {isa = PBXBuildFile; fileRef = 7DF1B65B21F9893200FC818E /* GistSwift.framework.dSYM */; };
@@ -111,7 +110,7 @@
 		7D6BFD9A21F98E9C00E17012 /* AngleLineLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AngleLineLayer.swift; sourceTree = "<group>"; };
 		7D6BFD9C21F98EA700E17012 /* CircularColorWell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularColorWell.swift; sourceTree = "<group>"; };
 		7D6BFD9E21F98EB700E17012 /* SmoothingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmoothingView.swift; sourceTree = "<group>"; };
-		7D6D4DE121F2C9CC00553E11 /* LevelIndicatorArcLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelIndicatorArcLayer.swift; sourceTree = "<group>"; };
+		7D6D4DE121F2C9CC00553E11 /* AngleGradientArcLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AngleGradientArcLayer.swift; sourceTree = "<group>"; };
 		7D884BC721CC47FD00FAD263 /* Visualizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visualizer.swift; sourceTree = "<group>"; };
 		7D884BD321CCC36B00FAD263 /* SpectrumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrumView.swift; sourceTree = "<group>"; };
 		7D884BD521CCD8EE00FAD263 /* LevelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelView.swift; sourceTree = "<group>"; };
@@ -119,7 +118,6 @@
 		7DB5D6E721D46E92000E7B6C /* VisualizerPresetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizerPresetManager.swift; sourceTree = "<group>"; };
 		7DEBB54F21EE916800878309 /* AngleGradientLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AngleGradientLayer.m; sourceTree = "<group>"; };
 		7DEBB55121EE917100878309 /* AngleGradientLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AngleGradientLayer.h; sourceTree = "<group>"; };
-		7DEBB55221EE92CD00878309 /* AngleGradientArcLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AngleGradientArcLayer.swift; sourceTree = "<group>"; };
 		7DEBB55421EE977400878309 /* ArcLevelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArcLevelView.swift; sourceTree = "<group>"; };
 		7DF0C41D21E44DDB0007FD31 /* DynamicRangeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicRangeViewController.swift; sourceTree = "<group>"; };
 		7DF1B65B21F9893200FC818E /* GistSwift.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = GistSwift.framework.dSYM; path = Frameworks/GistSwift.framework.dSYM; sourceTree = "<group>"; };
@@ -232,9 +230,8 @@
 				7D03140121D24ABE00F46D04 /* VisualizerTextField.swift */,
 				7D884BD521CCD8EE00FAD263 /* LevelView.swift */,
 				7D5E4E4D21D5B5A60074B129 /* GradientView.swift */,
-				7DEBB55221EE92CD00878309 /* AngleGradientArcLayer.swift */,
 				7D6BFD9A21F98E9C00E17012 /* AngleLineLayer.swift */,
-				7D6D4DE121F2C9CC00553E11 /* LevelIndicatorArcLayer.swift */,
+				7D6D4DE121F2C9CC00553E11 /* AngleGradientArcLayer.swift */,
 				7DEBB55421EE977400878309 /* ArcLevelView.swift */,
 				7D6BFD9E21F98EB700E17012 /* SmoothingView.swift */,
 			);
@@ -465,7 +462,6 @@
 			files = (
 				7D0F4FDD21D63E57006A092B /* LightPatternManager.swift in Sources */,
 				7D6BFD9F21F98EB700E17012 /* SmoothingView.swift in Sources */,
-				7DEBB55321EE92CD00878309 /* AngleGradientArcLayer.swift in Sources */,
 				7D33778621D027BC00554841 /* AudioEngine.swift in Sources */,
 				7D03140421D2539D00F46D04 /* LightController.swift in Sources */,
 				7D6BFD9D21F98EA700E17012 /* CircularColorWell.swift in Sources */,
@@ -480,7 +476,7 @@
 				7D33778921D027C100554841 /* LevelView.swift in Sources */,
 				7DF0C41E21E44DDB0007FD31 /* DynamicRangeViewController.swift in Sources */,
 				7DEBB55521EE977400878309 /* ArcLevelView.swift in Sources */,
-				7D6D4DE221F2C9CC00553E11 /* LevelIndicatorArcLayer.swift in Sources */,
+				7D6D4DE221F2C9CC00553E11 /* AngleGradientArcLayer.swift in Sources */,
 				7D5E4E5221D602370074B129 /* AppManager.swift in Sources */,
 				7D03140C21D2E30300F46D04 /* DeviceManager.swift in Sources */,
 				7D03140221D24ABE00F46D04 /* VisualizerTextField.swift in Sources */,

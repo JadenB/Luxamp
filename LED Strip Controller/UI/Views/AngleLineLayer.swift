@@ -41,7 +41,6 @@ class AngleLineLayer: CALayer {
     }
     
     private func commonInit() {
-        drawsAsynchronously = true
         needsDisplayOnBoundsChange = true
     }
     

@@ -14,15 +14,10 @@ class Visualizer {
     weak var outputDelegate: VisualizerOutputDelegate?
     weak var dataDelegate: VisualizerDataDelegate?
     
+    var presets: VisualizerPresetManager
+    
     var color: VisualizerMapper
     var brightness: VisualizerMapper
-    
-    var maxBrightness: Float = 1.0 {
-        didSet {
-            UserDefaults.standard.set(maxBrightness, forKey: USERDEFAULTS_MAX_BRIGHTNESS_KEY)
-        }
-    }
-    var minBrightness: Float = 0.0
     
     /// The gradient used to map the output color
     var gradient: NSGradient! = NSGradient(starting: .red, ending: .yellow)
@@ -37,7 +32,7 @@ class Visualizer {
             cgEvolvingColorRate = CGFloat(newValue) // setting a CGFloat version of this variable to avoid converting types each run
         }
     }
-    private var cgEvolvingColorRate: CGFloat = 1.0
+    private var cgEvolvingColorRate: CGFloat = 0.3
     private var evolvingColorOffset: CGFloat = 0.0
     private var lastColorVal: Float = 0.0
     
@@ -47,16 +42,11 @@ class Visualizer {
     init(withEngine engine: AudioEngine) {
         color = VisualizerMapper(withEngine: engine)
         brightness = VisualizerMapper(withEngine: engine)
-        
-        if UserDefaults.standard.object(forKey: USERDEFAULTS_MAX_BRIGHTNESS_KEY) != nil {
-            maxBrightness = UserDefaults.standard.float(forKey: USERDEFAULTS_MAX_BRIGHTNESS_KEY)
-        }
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(maxBrightnessChanged), name: .didChangeMaxBrightness, object: nil)
-        
-        evolvingColorRate = 0.3
+        presets = VisualizerPresetManager()
+        presets.visualizer = self
+        presets.apply(name: PRESETMANAGER_DEFAULT_PRESET_NAME)
     }
-
+    
     /// Produces a color and sends it to the output delegate. Also sends raw brightness and color values to the data delegate.
     func visualize() {
         // Setup components of color
@@ -72,7 +62,7 @@ class Visualizer {
         let gradientColor = gradient.interpolatedColor(atLocation: CGFloat(color.outputVal))
         
         // Set the final color components, ignoring brightness of gradient
-        outputBrightness = CGFloat(remapValueToBounds(brightness.outputVal, inputMin: 0.0, inputMax: 1.0, outputMin: minBrightness, outputMax: maxBrightness))
+        outputBrightness = CGFloat(brightness.outputVal)
         outputSaturation = gradientColor.saturationComponent
         outputHue = gradientColor.hueComponent
         
@@ -111,25 +101,19 @@ class Visualizer {
         
         dataDelegate?.didVisualizeWithData(brightnessData: brightnessData, colorData: colorData)
     }
-    
-    @objc func maxBrightnessChanged(_ notification: Notification) {
-        if let userInfo = notification.userInfo as? [String:Float] {
-            maxBrightness = userInfo["maxBrightness"] ?? 1.0
-        }
-    }
 }
 
 /// Implemented by the Visualizer class to handle brightness and color values seperately. Should not be instantiated outside of a Visualizer.
 class VisualizerMapper {
     private var orderedDrivers: [VisualizationDriver] = [PeakEnergyDriver(),
-                                                   RootMeanSquareDriver(),
-                                                   PitchDriver(),
-                                                   SpectralDifferenceDriver(),
-                                                   SpectralCrestDriver(),
-                                                   VeryLowSpectrumDriver(),
-                                                   LowSpectrumDriver(),
-                                                   MidSpectrumDriver(),
-                                                   HighSpectrumDriver()]
+                                                         RootMeanSquareDriver(),
+                                                         PitchDriver(),
+                                                         SpectralDifferenceDriver(),
+                                                         SpectralCrestDriver(),
+                                                         VeryLowSpectrumDriver(),
+                                                         LowSpectrumDriver(),
+                                                         MidSpectrumDriver(),
+                                                         HighSpectrumDriver()]
     private var driverDict: [String : VisualizationDriver] = [:]
     
     private var driver: VisualizationDriver

@@ -28,7 +28,7 @@ class SmoothingView: NSView {
         get { return Float(smoothLayer.lineWidth) }
         set { smoothLayer.lineWidth = CGFloat(newValue) }
     }
-
+    
     override var wantsUpdateLayer: Bool {
         return true
     }

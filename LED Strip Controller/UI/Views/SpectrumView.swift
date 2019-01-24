@@ -44,7 +44,7 @@ class SpectrumView: NSView {
             return true
         }
     }
-
+    
     override func draw(_ dirtyRect: NSRect) {
         let bitmapWidth = spectrum.count
         

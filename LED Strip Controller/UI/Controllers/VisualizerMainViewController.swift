@@ -8,7 +8,7 @@
 
 import Cocoa
 
-let DEFAULT_PRESET_INDEX = 1
+fileprivate let DEFAULT_PRESET_INDEX = 1
 
 
 // TODO: Split color and brightness side controls into seperate subviews run off the same viewcontroller
@@ -47,8 +47,8 @@ class VisualizerMainViewController: NSViewController, VisualizerDataDelegate, Gr
         super.viewDidLoad()
         visualizer.dataDelegate = self
         
-        presetManager = VisualizerPresetManager(withVisualizer: visualizer)
-        presetManager.applyPreset(name: VisualizerPreset.defaultPreset.name)
+        presetManager = VisualizerPresetManager()
+        presetManager.apply(name: VisualizerPreset.defaultPreset.name)
         
         populateMenus()
         refreshView()
@@ -135,7 +135,7 @@ class VisualizerMainViewController: NSViewController, VisualizerDataDelegate, Gr
         } else if sender.indexOfSelectedItem == sender.numberOfItems - 2 {
             performSegue(withIdentifier: "saveDialogSegue", sender: self)
         } else {
-            presetManager.applyPreset(name: sender.selectedItem?.title ?? PRESETMANAGER_DEFAULT_PRESET_NAME)
+            presetManager.apply(name: sender.selectedItem?.title ?? PRESETMANAGER_DEFAULT_PRESET_NAME)
             presetMenu.title = "Preset: " + (presetMenu.selectedItem?.title ?? "Error")
             if sender.selectedItem?.title == PRESETMANAGER_DEFAULT_PRESET_NAME {
                 presetMenuDeleteItem.isEnabled = false
@@ -149,7 +149,7 @@ class VisualizerMainViewController: NSViewController, VisualizerDataDelegate, Gr
     }
     
     func savePreset(withName name: String) {
-        presetManager.saveCurrentStateAsPreset(name: name)
+        presetManager.saveCurrentSettings(name: name)
         presetMenu.insertItem(withTitle: name, at: presetMenu.numberOfItems - 3)
         presetMenu.selectItem(withTitle: name)
         presetSelected(presetMenu)
@@ -157,7 +157,7 @@ class VisualizerMainViewController: NSViewController, VisualizerDataDelegate, Gr
     
     func deletePreset(withName name: String) {
         presetMenu.selectItem(at: 1)
-        presetManager.deletePreset(name: name)
+        presetManager.delete(name: name)
         presetMenu.removeItem(withTitle: name)
         presetSelected(presetMenu)
     }

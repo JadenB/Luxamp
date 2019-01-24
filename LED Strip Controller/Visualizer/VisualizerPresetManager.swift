@@ -13,17 +13,16 @@ let PRESETMANAGER_DEFAULT_PRESET_NAME = "Default"
 
 class VisualizerPresetManager {
     
-    var visualizer: Visualizer
+    weak var visualizer: Visualizer!
     private var presets: [String : VisualizerPreset] = [:]
     private var orderedPresets: [VisualizerPreset] = []
     
-    init(withVisualizer v: Visualizer) {
-        visualizer = v
-        loadPresets()
+    init() {
+        loadPresetsFromDisk()
     }
     
     /// Attempts to load saved presets from UserDefaults, or creates the default preset if none are found
-    func loadPresets() {
+    private func loadPresetsFromDisk() {
         guard let presetData = UserDefaults.standard.object(forKey: USERDEFAULTS_PRESETS_KEY) as? Data else {
             presets = [PRESETMANAGER_DEFAULT_PRESET_NAME:VisualizerPreset.defaultPreset]
             orderedPresets = [VisualizerPreset.defaultPreset]
@@ -52,14 +51,14 @@ class VisualizerPresetManager {
     /// Applies the preset with a matching name to the current visualizer
     ///
     /// - Parameter name: The name of the preset to apply. Crashes if the preset does not exist.
-    func applyPreset(name: String) {
+    func apply(name: String) {
         guard let preset = presets[name] else {
             fatalError("Preset does not exist!")
         }
         
         let brightness = visualizer.brightness
         let color = visualizer.color
-    
+        
         visualizer.gradient = preset.gradient
         
         /* BRIGHTNESS */
@@ -96,7 +95,7 @@ class VisualizerPresetManager {
     /// Saves the settings of the current visualizer as a preset
     ///
     /// - Parameter name: The name that the preset should be saved as. Replaces a preset if one with the same name already exists.
-    func saveCurrentStateAsPreset(name: String) {
+    func saveCurrentSettings(name: String) {
         let brightness = visualizer.brightness
         let color = visualizer.color
         
@@ -136,11 +135,11 @@ class VisualizerPresetManager {
         
         presets[name] = newPreset
         orderedPresets.append(newPreset)
-        syncPresetsToUserDefaults()
+        syncToUserDefaults()
     }
     
     /// Updates the presets in UserDefaults
-    private func syncPresetsToUserDefaults() {
+    private func syncToUserDefaults() {
         guard let presetData = try? JSONEncoder().encode(orderedPresets) else {
             fatalError("Failed encoding presets!")
         }
@@ -151,10 +150,10 @@ class VisualizerPresetManager {
     /// Deletes a preset
     ///
     /// - Parameter name: The name of the preset to delete
-    func deletePreset(name: String) {
+    func delete(name: String) {
         orderedPresets.removeAll() {$0.name == name}
         presets.removeValue(forKey: name)
-        syncPresetsToUserDefaults()
+        syncToUserDefaults()
     }
 }
 

@@ -26,7 +26,7 @@ class VisualizerSideViewController: NSViewController {
     
     @IBOutlet weak var driverMenu: NSPopUpButton!
     @IBOutlet weak var driverLabel: NSTextField!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         populateMenus()
