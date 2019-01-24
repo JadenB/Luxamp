@@ -1,7 +1,0 @@
-framework module GistSwift {
-    header "GistSwift.h"
-}
-
-framework module GistSwiftWrapper {
-    header "GistSwiftWrapper.h"
-}

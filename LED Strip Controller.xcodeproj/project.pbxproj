@@ -9,16 +9,11 @@
 /* Begin PBXBuildFile section */
 		7D03140221D24ABE00F46D04 /* VisualizerTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D03140121D24ABE00F46D04 /* VisualizerTextField.swift */; };
 		7D03140421D2539D00F46D04 /* LightController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D03140321D2539D00F46D04 /* LightController.swift */; };
-		7D03140621D2E06800F46D04 /* ORSSerial.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D03140521D2E06800F46D04 /* ORSSerial.framework */; };
-		7D03140821D2E09400F46D04 /* ORSSerial.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7D03140521D2E06800F46D04 /* ORSSerial.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7D03140A21D2E0DE00F46D04 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D03140921D2E0DE00F46D04 /* PreferencesViewController.swift */; };
 		7D03140C21D2E30300F46D04 /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D03140B21D2E30300F46D04 /* DeviceManager.swift */; };
 		7D0F4FDD21D63E57006A092B /* LightPatternManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D0F4FDC21D63E57006A092B /* LightPatternManager.swift */; };
 		7D14BC5721D0464700CF199F /* VisualizerMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D14BC5621D0464700CF199F /* VisualizerMainViewController.swift */; };
 		7D14BC5921D0C1E500CF199F /* VisualizationDrivers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D14BC5821D0C1E500CF199F /* VisualizationDrivers.swift */; };
-		7D33777221CF142A00554841 /* GistSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D33777121CF142A00554841 /* GistSwift.framework */; };
-		7D33777521CF240C00554841 /* GistSwift.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7D33777421CF240C00554841 /* GistSwift.framework.dSYM */; };
-		7D33777721CF244300554841 /* GistSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7D33777121CF142A00554841 /* GistSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7D33778421D027BA00554841 /* BufferProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D33777F21CF2C4900554841 /* BufferProcessor.swift */; };
 		7D33778521D027BB00554841 /* IIRFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D884BD921CEEB9000FAD263 /* IIRFilter.swift */; };
 		7D33778621D027BC00554841 /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE03B421CB6F8C00D6288F /* AudioEngine.swift */; };
@@ -41,6 +36,11 @@
 		7DEBB55321EE92CD00878309 /* AngleGradientArcLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DEBB55221EE92CD00878309 /* AngleGradientArcLayer.swift */; };
 		7DEBB55521EE977400878309 /* ArcLevelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DEBB55421EE977400878309 /* ArcLevelView.swift */; };
 		7DF0C41E21E44DDB0007FD31 /* DynamicRangeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DF0C41D21E44DDB0007FD31 /* DynamicRangeViewController.swift */; };
+		7DF1B65C21F9893200FC818E /* GistSwift.framework.dSYM in Resources */ = {isa = PBXBuildFile; fileRef = 7DF1B65B21F9893200FC818E /* GistSwift.framework.dSYM */; };
+		7DF1B66121F9895900FC818E /* GistSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DF1B65E21F9895300FC818E /* GistSwift.framework */; };
+		7DF1B66221F9895900FC818E /* GistSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7DF1B65E21F9895300FC818E /* GistSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		7DF1B66321F9895900FC818E /* ORSSerial.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DF1B65D21F9895300FC818E /* ORSSerial.framework */; };
+		7DF1B66421F9895900FC818E /* ORSSerial.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7DF1B65D21F9895300FC818E /* ORSSerial.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7DFE038421CB2C8900D6288F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7DFE038321CB2C8900D6288F /* Assets.xcassets */; };
 		7DFE038721CB2C8900D6288F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DFE038521CB2C8900D6288F /* Main.storyboard */; };
 		7DFE039321CB2C8900D6288F /* LED_Strip_ControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE039221CB2C8900D6288F /* LED_Strip_ControllerTests.swift */; };
@@ -71,7 +71,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
-				7D33777521CF240C00554841 /* GistSwift.framework.dSYM in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,8 +80,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				7D33777721CF244300554841 /* GistSwift.framework in Embed Frameworks */,
-				7D03140821D2E09400F46D04 /* ORSSerial.framework in Embed Frameworks */,
+				7DF1B66221F9895900FC818E /* GistSwift.framework in Embed Frameworks */,
+				7DF1B66421F9895900FC818E /* ORSSerial.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -92,15 +91,12 @@
 /* Begin PBXFileReference section */
 		7D03140121D24ABE00F46D04 /* VisualizerTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizerTextField.swift; sourceTree = "<group>"; };
 		7D03140321D2539D00F46D04 /* LightController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightController.swift; sourceTree = "<group>"; };
-		7D03140521D2E06800F46D04 /* ORSSerial.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ORSSerial.framework; sourceTree = "<group>"; };
 		7D03140921D2E0DE00F46D04 /* PreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
 		7D03140B21D2E30300F46D04 /* DeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
 		7D03140D21D2E40100F46D04 /* bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bridge.h; sourceTree = "<group>"; };
 		7D0F4FDC21D63E57006A092B /* LightPatternManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightPatternManager.swift; sourceTree = "<group>"; };
 		7D14BC5621D0464700CF199F /* VisualizerMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizerMainViewController.swift; sourceTree = "<group>"; };
 		7D14BC5821D0C1E500CF199F /* VisualizationDrivers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizationDrivers.swift; sourceTree = "<group>"; };
-		7D33777121CF142A00554841 /* GistSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GistSwift.framework; path = Carthage/Build/Mac/GistSwift.framework; sourceTree = "<group>"; };
-		7D33777421CF240C00554841 /* GistSwift.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = GistSwift.framework.dSYM; path = Carthage/Build/Mac/GistSwift.framework.dSYM; sourceTree = "<group>"; };
 		7D33777F21CF2C4900554841 /* BufferProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BufferProcessor.swift; sourceTree = "<group>"; };
 		7D33778F21D035C800554841 /* DynamicRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicRange.swift; sourceTree = "<group>"; };
 		7D42758421D866760075A325 /* SaveDialogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveDialogViewController.swift; sourceTree = "<group>"; };
@@ -120,6 +116,9 @@
 		7DEBB55221EE92CD00878309 /* AngleGradientArcLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AngleGradientArcLayer.swift; sourceTree = "<group>"; };
 		7DEBB55421EE977400878309 /* ArcLevelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArcLevelView.swift; sourceTree = "<group>"; };
 		7DF0C41D21E44DDB0007FD31 /* DynamicRangeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicRangeViewController.swift; sourceTree = "<group>"; };
+		7DF1B65B21F9893200FC818E /* GistSwift.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = GistSwift.framework.dSYM; path = Frameworks/GistSwift.framework.dSYM; sourceTree = "<group>"; };
+		7DF1B65D21F9895300FC818E /* ORSSerial.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ORSSerial.framework; path = Frameworks/ORSSerial.framework; sourceTree = "<group>"; };
+		7DF1B65E21F9895300FC818E /* GistSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GistSwift.framework; path = Frameworks/GistSwift.framework; sourceTree = "<group>"; };
 		7DFE037C21CB2C8800D6288F /* LED Strip Controller.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LED Strip Controller.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DFE037F21CB2C8800D6288F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7DFE038121CB2C8800D6288F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -142,8 +141,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7D33777221CF142A00554841 /* GistSwift.framework in Frameworks */,
-				7D03140621D2E06800F46D04 /* ORSSerial.framework in Frameworks */,
+				7DF1B66121F9895900FC818E /* GistSwift.framework in Frameworks */,
+				7DF1B66321F9895900FC818E /* ORSSerial.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,7 +238,7 @@
 		7DFE037321CB2C8800D6288F = {
 			isa = PBXGroup;
 			children = (
-				7D33777421CF240C00554841 /* GistSwift.framework.dSYM */,
+				7DF1B65B21F9893200FC818E /* GistSwift.framework.dSYM */,
 				7DFE037E21CB2C8800D6288F /* LED Strip Controller */,
 				7DFE039121CB2C8900D6288F /* LED Strip ControllerTests */,
 				7DFE039C21CB2C8900D6288F /* LED Strip ControllerUITests */,
@@ -297,8 +296,8 @@
 		7DFE03AF21CB6D4400D6288F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7D03140521D2E06800F46D04 /* ORSSerial.framework */,
-				7D33777121CF142A00554841 /* GistSwift.framework */,
+				7DF1B65E21F9895300FC818E /* GistSwift.framework */,
+				7DF1B65D21F9895300FC818E /* ORSSerial.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -413,6 +412,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7DFE038421CB2C8900D6288F /* Assets.xcassets in Resources */,
+				7DF1B65C21F9893200FC818E /* GistSwift.framework.dSYM in Resources */,
 				7DFE038721CB2C8900D6288F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -636,7 +636,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/Carthage/Build/Mac",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				GCC_OPTIMIZATION_LEVEL = fast;
 				INFOPLIST_FILE = "LED Strip Controller/Info.plist";
@@ -666,7 +666,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/Carthage/Build/Mac",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				GCC_OPTIMIZATION_LEVEL = fast;
 				INFOPLIST_FILE = "LED Strip Controller/Info.plist";
