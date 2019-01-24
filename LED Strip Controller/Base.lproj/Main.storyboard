@@ -1314,10 +1314,6 @@
                                     <segue destination="mIL-zs-6im" kind="embed" identifier="colorSideViewSegue" id="3wr-W7-VDn"/>
                                 </connections>
                             </containerView>
-                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qb9-9T-Lnx" customClass="ArcLevelView" customModule="LED_Strip_Controller" customModuleProvider="target">
-                                <rect key="frame" x="304" y="20" width="64" height="64"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            </customView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="jyT-bU-9jV" firstAttribute="centerX" secondItem="aID-oR-hH9" secondAttribute="centerX" id="1GA-AL-7fx"/>

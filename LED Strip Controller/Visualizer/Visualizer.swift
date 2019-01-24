@@ -27,7 +27,7 @@ class Visualizer {
     /// The gradient used to map the output color
     var gradient: NSGradient! = NSGradient(starting: .red, ending: .yellow)
     /// Whether to gradually shift the overall hue over time
-    var useEvolvingColor = true
+    var useEvolvingColor = false
     /// The amount to change the color every time visualize() is called
     var evolvingColorRate: Float {
         get {
