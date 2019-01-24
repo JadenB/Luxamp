@@ -6,7 +6,7 @@
 //  Copyright © 2019 Jaden Bernal. All rights reserved.
 //
 
-import Cocoa
+/*import Cocoa
 
 class LevelIndicatorArcLayer: CALayer {
     var startAngle: CGFloat = 0.0
@@ -49,4 +49,4 @@ class LevelIndicatorArcLayer: CALayer {
     }
     
     
-}
+}*/
