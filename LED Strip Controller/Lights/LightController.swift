@@ -19,16 +19,7 @@ class LightController: DeviceManagerResponder {
     private let lightSerialQueue = DispatchQueue(label: "lightSerialQueue")
     private var state: LightState = .Off
     private var maxBrightness: CGFloat = 1.0
-    private var ignoreDelayColorQueued = false
-    private var ignoreDelayColor: NSColor = .black
-    private var delayedColorsQueued: UInt = 0 {
-        didSet {
-            if ignoreDelayColorQueued && delayedColorsQueued == 0 {
-                ignoreDelayColorQueued = false
-                setColorIgnoreDelay(color: ignoreDelayColor)
-            }
-        }
-    }
+    private var currentColorIgnoresDelay = false
     
     /// How long to wait before sending a custom color in milliseconds
     var delay: Int = 0 {
@@ -89,15 +80,16 @@ class LightController: DeviceManagerResponder {
     ///
     /// - Parameter color: The color to set the lights to
     func setColor(color: NSColor) {
-        if state == .On {
-            if delay == 0 {
-                sendColorToDevice(color: color)
-            } else {
-                delayedColorsQueued += 1
-                lightSerialQueue.asyncAfter(deadline: .now() + .milliseconds(delay)) {
-                    self.sendColorToDevice(color: color)
-                    self.delayedColorsQueued -= 1
-                }
+        if state == .Off {
+            return
+        }
+        
+        if delay == 0 {
+            sendColorToDevice(color: color)
+        } else {
+            currentColorIgnoresDelay = false
+            lightSerialQueue.asyncAfter(deadline: .now() + .milliseconds(delay)) {
+                if !self.currentColorIgnoresDelay { self.sendColorToDevice(color: color) }
             }
         }
     }
@@ -106,12 +98,12 @@ class LightController: DeviceManagerResponder {
     ///
     /// - Parameter color: The color to set the lights to
     func setColorIgnoreDelay(color: NSColor) {
-        if state == .On && delayedColorsQueued == 0 {
-            sendColorToDevice(color: color)
-        } else if state == .On {
-            ignoreDelayColorQueued = true
-            ignoreDelayColor = color
+        if state == .Off {
+            return
         }
+        
+        currentColorIgnoresDelay = true
+        sendColorToDevice(color: color)
     }
     
     /// Calibrates the color for the lights and sends the device a packet containing the RGB values

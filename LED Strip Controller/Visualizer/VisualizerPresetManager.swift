@@ -13,9 +13,7 @@ let PRESETMANAGER_DEFAULT_PRESET_NAME = "Default"
 
 class VisualizerPresetManager {
     
-    var defaultP: VisualizerPreset {
-        return VisualizerPreset.defaultPreset
-    }
+    let defaultP = VisualizerPreset.defaultPreset
     
     weak var visualizer: Visualizer!
     private var presets: [String : VisualizerPreset] = [:]

@@ -866,44 +866,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="960" height="540"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zN6-KV-T0H" customClass="SmoothingView" customModule="LED_Strip_Controller" customModuleProvider="target">
-                                <rect key="frame" x="20" y="43" width="163" height="96"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="smoothing">
-                                        <real key="value" value="1"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </customView>
-                            <segmentedControl verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="m7N-6g-AiH">
-                                <rect key="frame" x="30" y="227" width="164" height="24"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <segmentedCell key="cell" borderStyle="border" alignment="left" segmentDistribution="fillProportionally" style="rounded" trackingMode="selectOne" id="Mzp-ij-f9j">
-                                    <font key="font" metaFont="system"/>
-                                    <segments>
-                                        <segment label="Manual" width="81" selected="YES"/>
-                                        <segment label="Music" width="76" tag="1"/>
-                                    </segments>
-                                </segmentedCell>
-                                <connections>
-                                    <action selector="manualMusicSegChanged:" target="XfG-lQ-9wD" id="9re-hp-c9r"/>
-                                    <binding destination="XfG-lQ-9wD" name="enabled" keyPath="self.modeSegEnabled" id="faT-KE-aM1"/>
-                                </connections>
-                            </segmentedControl>
-                            <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BWs-J9-obk">
-                                <rect key="frame" x="18" y="18" width="167" height="19"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="1" doubleValue="1" tickMarkPosition="above" sliderType="linear" id="3KB-ex-SBP"/>
-                                <connections>
-                                    <action selector="smoothingslider:" target="XfG-lQ-9wD" id="gu3-K1-JOe"/>
-                                </connections>
-                            </slider>
                             <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eHf-pn-RXR" customClass="SpectrumView" customModule="LED_Strip_Controller" customModuleProvider="target">
                                 <rect key="frame" x="20" y="405" width="920" height="115"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="max">
-                                        <real key="value" value="10"/>
+                                        <real key="value" value="2"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="number" keyPath="min">
                                         <real key="value" value="-72"/>
@@ -949,14 +917,28 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </customView>
+                            <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wJQ-XF-OEo" userLabel="Preset Menu">
+                                <rect key="frame" x="365" y="361" width="230" height="25"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <popUpButtonCell key="cell" type="push" title="Preset: Default" bezelStyle="rounded" alignment="center" lineBreakMode="truncatingTail" borderStyle="border" inset="2" pullsDown="YES" arrowPosition="arrowAtCenter" autoenablesItems="NO" selectedItem="n2m-IT-s2h" id="dRQ-Ao-G1b">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="menu"/>
+                                    <menu key="menu" autoenablesItems="NO" id="Qqu-Rl-ovD">
+                                        <items>
+                                            <menuItem title="Preset: Default" hidden="YES" id="n2m-IT-s2h"/>
+                                            <menuItem isSeparatorItem="YES" id="TCJ-fd-5j5"/>
+                                            <menuItem title="Save Preset..." id="jtE-7Y-icp"/>
+                                            <menuItem title="Delete Preset" enabled="NO" id="vcN-Qa-xBW" userLabel="Delete Preset"/>
+                                        </items>
+                                    </menu>
+                                </popUpButtonCell>
+                            </popUpButton>
                         </subviews>
                     </view>
                     <connections>
                         <outlet property="centerCircleView" destination="PTS-23-40h" id="5jz-bR-OD1"/>
                         <outlet property="colorView" destination="ZzZ-uH-Nmo" id="qLm-70-TL0"/>
-                        <outlet property="modeSeg" destination="m7N-6g-AiH" id="su0-gF-N4d"/>
                         <outlet property="powerButton" destination="cC1-fh-cqM" id="PAf-TY-v55"/>
-                        <outlet property="smoothingView" destination="zN6-KV-T0H" id="haq-Zp-hFI"/>
                         <outlet property="spectrum" destination="eHf-pn-RXR" id="2wY-4k-GD0"/>
                     </connections>
                 </viewController>
@@ -1794,6 +1776,18 @@ Gw
                 <customObject id="KPK-Go-8NU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="208" y="2062"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="fbq-8I-DYZ">
+            <objects>
+                <viewController id="YRj-eI-Uvn" sceneMemberID="viewController">
+                    <view key="view" id="2vE-qq-um8">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="dxt-iD-U14" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
         </scene>
     </scenes>
     <resources>

@@ -82,12 +82,16 @@ class PreferencesViewController: NSViewController {
     
     @IBAction func maxBrightnessFieldChanged(_ sender: NSTextField) {
         maxBrightnessSlider.integerValue = sender.integerValue
-        NotificationCenter.default.post(name: .didChangeMaxBrightness, object: nil, userInfo: [PREFERENCES_MAX_BRIGHTNESS_KEY:Float(sender.integerValue) * 0.01])
+        let newMaxBrightness = Float(sender.integerValue) * 0.01
+        UserDefaults.standard.set(newMaxBrightness, forKey: PREFERENCES_MAX_BRIGHTNESS_KEY)
+        NotificationCenter.default.post(name: .didChangeMaxBrightness, object: nil, userInfo: [PREFERENCES_MAX_BRIGHTNESS_KEY : newMaxBrightness])
     }
     
     @IBAction func maxBrightnessSliderChanged(_ sender: NSSlider) {
         maxBrightnessField.integerValue = sender.integerValue
-        NotificationCenter.default.post(name: .didChangeMaxBrightness, object: nil, userInfo: [PREFERENCES_MAX_BRIGHTNESS_KEY:Float(sender.integerValue) * 0.01])
+        let newMaxBrightness = Float(sender.integerValue) * 0.01
+        UserDefaults.standard.set(newMaxBrightness, forKey: PREFERENCES_MAX_BRIGHTNESS_KEY)
+        NotificationCenter.default.post(name: .didChangeMaxBrightness, object: nil, userInfo: [PREFERENCES_MAX_BRIGHTNESS_KEY : newMaxBrightness])
     }
     
     @IBAction func resetDefaultsPressed(_ sender: Any) {

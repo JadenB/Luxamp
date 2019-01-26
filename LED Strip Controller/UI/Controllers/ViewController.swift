@@ -15,15 +15,11 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
     var musicVisualizer: Visualizer!
     var patternManager = LightPatternManager()
     
-    @IBOutlet weak var modeSeg: NSSegmentedControl!
     @IBOutlet weak var powerButton: NSButton!
     @IBOutlet weak var spectrum: SpectrumView!
     
     @IBOutlet weak var centerCircleView: ArcLevelView!
     @IBOutlet weak var colorView: CircularColorWell!
-    
-    @objc dynamic var manualButtonsEnabled = false
-    @objc dynamic var modeSegEnabled = false
     
     var hidden = true
     
@@ -34,12 +30,6 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
             } else {
                 AppManager.enableSleep()
             }
-            patternManager.stop()
-        }
-    }
-    
-    var mode: AppMode = .Constant {
-        didSet {
             patternManager.stop()
         }
     }
@@ -70,51 +60,23 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
     }
     
     @IBAction func colorWellChanged(_ sender: NSColorWell) {
-        mode = .Constant
         LightController.shared.setColorIgnoreDelay(color: sender.color)
     }
     
     @IBAction func powerButtonPressed(_ sender: NSButton) {
-        let newState: AppState = (sender.state == .on) ? .On : .Off
-        if newState == state {
-            return // don't run if reselecting same segement
-        } else {
-            state = newState
-        }
+        state = (sender.state == .on) ? .On : .Off
         
         if state == .On {
             LightController.shared.turnOn()
             LightController.shared.setColorIgnoreDelay(color: colorView.color)
+            startAudioVisualization()
+            
+            colorView.isEnabled = false
         } else {
             LightController.shared.turnOff()
-        }
-        
-        manualButtonsEnabled = (state == .On && mode != .Music)
-        modeSegEnabled = (state == .On)
-        
-        if state == .On && mode == .Music {
-            startAudioVisualization()
-        } else if state == .Off && mode == .Music {
             stopAudioVisualization()
         }
-    }
-    
-    @IBAction func manualMusicSegChanged(_ sender: NSSegmentedControl) {
-        let newMode: AppMode = (sender.selectedSegment == 0) ? .Constant : .Music
-        if newMode == mode {
-            return // don't run if reselecting segment (switches to constant if a pattern is running and 'Manual' is pressed again)
-        } else {
-            mode = newMode
-        }
         
-        
-        manualButtonsEnabled = (state == .On && mode != .Music)
-        
-        if state == .On && mode == .Music {
-            startAudioVisualization()
-        } else if state == .On && mode != .Music {
-            stopAudioVisualization()
-        }
     }
     
     func startAudioVisualization() {
@@ -128,7 +90,7 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
     // MARK: - AudioEngineDelegate
     
     func didRefreshAudioEngine(withProcessor p: BufferProcessor) {
-        if state == .Off || mode != .Music {
+        if state == .Off {
             return
         }
         
@@ -164,10 +126,9 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
     // MARK: - VisualizerOutputDelegate
     
     func didVisualizeIntoColor(_ color: NSColor, brightnessVal: Float, colorVal: Float) {
-        if mode == .Music {
-            LightController.shared.setColor(color: color)
-            colorView.color = color
-        }
+        
+        LightController.shared.setColor(color: color)
+        colorView.color = color
         
         centerCircleView.setBrightnessLevel(to: brightnessVal)
         centerCircleView.setColorLevel(to: colorVal)
@@ -176,21 +137,15 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
     // MARK: - LightPatternManagerDelegate
     
     func didGenerateColorFromPattern(_ color: NSColor) {
-        if mode == .Pattern {
-            LightController.shared.setColorIgnoreDelay(color: color)
-            colorView.color = color
-        }
-    }
-    
-    @IBOutlet weak var smoothingView: SmoothingView!
-    @IBAction func smoothingslider(_ sender: NSSlider) {
-        smoothingView.smoothing = CGFloat(sender.floatValue)
+        LightController.shared.setColorIgnoreDelay(color: color)
+        colorView.color = color
     }
     
     // MARK: - ArcLevelViewDelegate
     
     func arcLevelColorResetClicked() {
-        //
+        musicVisualizer.gradient = musicVisualizer.presets.defaultP.gradient
+        centerCircleView.colorGradient = musicVisualizer.gradient
     }
     
     func arcLevelColorClicked(with event: NSEvent) {
@@ -202,11 +157,5 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
 enum AppState {
     case On
     case Off
-}
-
-enum AppMode {
-    case Constant
-    case Pattern
-    case Music
 }
 
