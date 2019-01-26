@@ -13,6 +13,8 @@ class ArcLevelView: NSView {
     
     // MARK: - Variables
     
+    weak var delegate: ArcLevelViewDelegate?
+    
     private var colorArcLayer = AngleGradientArcLayer()
     private var brightnessArcLayer = AngleGradientArcLayer()
     
@@ -69,8 +71,11 @@ class ArcLevelView: NSView {
         }
     }
     
-    func setLevels(blevel: Float, clevel: Float) {
+    func setBrightnessLevel(to blevel: Float) {
         brightnessArcLayer.level = blevel
+    }
+    
+    func setColorLevel(to clevel: Float) {
         colorArcLayer.level = clevel
     }
     
@@ -109,12 +114,27 @@ class ArcLevelView: NSView {
         if brightnessArcLayer.contains(p) {
             print("hit brightess")
         } else if colorArcLayer.contains(p) {
-            print("hit color")
+            delegate?.arcLevelColorClicked(with: event)
         } else {
             print("no hit")
         }
         
         super.mouseDown(with: event)
+    }
+    
+    override func rightMouseDown(with event: NSEvent) {
+        let p = convert(event.locationInWindow, from: window?.contentView)
+        if brightnessArcLayer.contains(p) {
+            print("right hit brightess")
+        } else if colorArcLayer.contains(p) {
+            let popupMenu = NSMenu(title: "Context Menu")
+            popupMenu.addItem(withTitle: "Reset", action: #selector(resetColorPressed), keyEquivalent: "")
+            NSMenu.popUpContextMenu(popupMenu, with: event, for: self)
+        } else {
+            print("right no hit")
+        }
+        
+        super.rightMouseDown(with: event)
     }
     
     override func viewDidChangeBackingProperties() {
@@ -132,27 +152,16 @@ class ArcLevelView: NSView {
         brightnessArcLayer.level = 1
     }
     
+    // MARK: - Selectors
+    
+    @objc private func resetColorPressed() {
+        delegate?.arcLevelColorResetClicked()
+    }
+    
 }
 
-extension NSBezierPath {
-    public var cgPath: CGPath {
-        let path = CGMutablePath()
-        var points = [CGPoint](repeating: .zero, count: 3)
-        
-        for i in 0 ..< self.elementCount {
-            let type = self.element(at: i, associatedPoints: &points)
-            switch type {
-            case .moveTo:
-                path.move(to: points[0])
-            case .lineTo:
-                path.addLine(to: points[0])
-            case .curveTo:
-                path.addCurve(to: points[2], control1: points[0], control2: points[1])
-            case .closePath:
-                path.closeSubpath()
-            }
-        }
-        
-        return path
-    }
+
+protocol ArcLevelViewDelegate: class {
+    func arcLevelColorResetClicked()
+    func arcLevelColorClicked(with event: NSEvent)
 }

@@ -15,7 +15,7 @@
 		7D14BC5721D0464700CF199F /* VisualizerMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D14BC5621D0464700CF199F /* VisualizerMainViewController.swift */; };
 		7D14BC5921D0C1E500CF199F /* VisualizationDrivers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D14BC5821D0C1E500CF199F /* VisualizationDrivers.swift */; };
 		7D33778421D027BA00554841 /* BufferProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D33777F21CF2C4900554841 /* BufferProcessor.swift */; };
-		7D33778521D027BB00554841 /* IIRFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D884BD921CEEB9000FAD263 /* IIRFilter.swift */; };
+		7D33778521D027BB00554841 /* BiasedIIRFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D884BD921CEEB9000FAD263 /* BiasedIIRFilter.swift */; };
 		7D33778621D027BC00554841 /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE03B421CB6F8C00D6288F /* AudioEngine.swift */; };
 		7D33778721D027BF00554841 /* SpectrumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D884BD321CCC36B00FAD263 /* SpectrumView.swift */; };
 		7D33778821D027C000554841 /* ColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE03AD21CB304900D6288F /* ColorView.swift */; };
@@ -30,7 +30,6 @@
 		7D5E4E4E21D5B5A60074B129 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5E4E4D21D5B5A60074B129 /* GradientView.swift */; };
 		7D5E4E5021D5C7F50074B129 /* GradientEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5E4E4F21D5C7F50074B129 /* GradientEditorViewController.swift */; };
 		7D5E4E5221D602370074B129 /* AppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5E4E5121D602370074B129 /* AppManager.swift */; };
-		7D6BFD9B21F98E9C00E17012 /* AngleLineLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D6BFD9A21F98E9C00E17012 /* AngleLineLayer.swift */; };
 		7D6BFD9D21F98EA700E17012 /* CircularColorWell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D6BFD9C21F98EA700E17012 /* CircularColorWell.swift */; };
 		7D6BFD9F21F98EB700E17012 /* SmoothingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D6BFD9E21F98EB700E17012 /* SmoothingView.swift */; };
 		7D6D4DE221F2C9CC00553E11 /* AngleGradientArcLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D6D4DE121F2C9CC00553E11 /* AngleGradientArcLayer.swift */; };
@@ -107,14 +106,13 @@
 		7D5E4E4D21D5B5A60074B129 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		7D5E4E4F21D5C7F50074B129 /* GradientEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientEditorViewController.swift; sourceTree = "<group>"; };
 		7D5E4E5121D602370074B129 /* AppManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppManager.swift; sourceTree = "<group>"; };
-		7D6BFD9A21F98E9C00E17012 /* AngleLineLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AngleLineLayer.swift; sourceTree = "<group>"; };
 		7D6BFD9C21F98EA700E17012 /* CircularColorWell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularColorWell.swift; sourceTree = "<group>"; };
 		7D6BFD9E21F98EB700E17012 /* SmoothingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmoothingView.swift; sourceTree = "<group>"; };
 		7D6D4DE121F2C9CC00553E11 /* AngleGradientArcLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AngleGradientArcLayer.swift; sourceTree = "<group>"; };
 		7D884BC721CC47FD00FAD263 /* Visualizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visualizer.swift; sourceTree = "<group>"; };
 		7D884BD321CCC36B00FAD263 /* SpectrumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrumView.swift; sourceTree = "<group>"; };
 		7D884BD521CCD8EE00FAD263 /* LevelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelView.swift; sourceTree = "<group>"; };
-		7D884BD921CEEB9000FAD263 /* IIRFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IIRFilter.swift; sourceTree = "<group>"; };
+		7D884BD921CEEB9000FAD263 /* BiasedIIRFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiasedIIRFilter.swift; sourceTree = "<group>"; };
 		7DB5D6E721D46E92000E7B6C /* VisualizerPresetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizerPresetManager.swift; sourceTree = "<group>"; };
 		7DEBB54F21EE916800878309 /* AngleGradientLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AngleGradientLayer.m; sourceTree = "<group>"; };
 		7DEBB55121EE917100878309 /* AngleGradientLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AngleGradientLayer.h; sourceTree = "<group>"; };
@@ -181,7 +179,7 @@
 			isa = PBXGroup;
 			children = (
 				7D33777F21CF2C4900554841 /* BufferProcessor.swift */,
-				7D884BD921CEEB9000FAD263 /* IIRFilter.swift */,
+				7D884BD921CEEB9000FAD263 /* BiasedIIRFilter.swift */,
 				7DFE03B421CB6F8C00D6288F /* AudioEngine.swift */,
 			);
 			path = Audio;
@@ -190,7 +188,6 @@
 		7D3BDE8221DCAEE700E434BE /* Utility */ = {
 			isa = PBXGroup;
 			children = (
-				7D5E4E5121D602370074B129 /* AppManager.swift */,
 				7D33778F21D035C800554841 /* DynamicRange.swift */,
 				7D5CF64B21DA566200D86666 /* Remap.swift */,
 			);
@@ -230,10 +227,9 @@
 				7D03140121D24ABE00F46D04 /* VisualizerTextField.swift */,
 				7D884BD521CCD8EE00FAD263 /* LevelView.swift */,
 				7D5E4E4D21D5B5A60074B129 /* GradientView.swift */,
-				7D6BFD9A21F98E9C00E17012 /* AngleLineLayer.swift */,
-				7D6D4DE121F2C9CC00553E11 /* AngleGradientArcLayer.swift */,
 				7DEBB55421EE977400878309 /* ArcLevelView.swift */,
 				7D6BFD9E21F98EB700E17012 /* SmoothingView.swift */,
+				7D6D4DE121F2C9CC00553E11 /* AngleGradientArcLayer.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -284,6 +280,7 @@
 			children = (
 				7DFE038521CB2C8900D6288F /* Main.storyboard */,
 				7DFE037F21CB2C8800D6288F /* AppDelegate.swift */,
+				7D5E4E5121D602370074B129 /* AppManager.swift */,
 				7D03140D21D2E40100F46D04 /* bridge.h */,
 				7D3BDE8321DCAEF800E434BE /* Lights */,
 				7DB5D6E921D4ABA3000E7B6C /* Visualizer */,
@@ -482,7 +479,6 @@
 				7D03140221D24ABE00F46D04 /* VisualizerTextField.swift in Sources */,
 				7D03140A21D2E0DE00F46D04 /* PreferencesViewController.swift in Sources */,
 				7DEBB55021EE916800878309 /* AngleGradientLayer.m in Sources */,
-				7D6BFD9B21F98E9C00E17012 /* AngleLineLayer.swift in Sources */,
 				7D5CF64C21DA566200D86666 /* Remap.swift in Sources */,
 				7D42758521D866760075A325 /* SaveDialogViewController.swift in Sources */,
 				7D33778721D027BF00554841 /* SpectrumView.swift in Sources */,
@@ -490,7 +486,7 @@
 				7DB5D6E821D46E92000E7B6C /* VisualizerPresetManager.swift in Sources */,
 				7D33779021D035C800554841 /* DynamicRange.swift in Sources */,
 				7D33778421D027BA00554841 /* BufferProcessor.swift in Sources */,
-				7D33778521D027BB00554841 /* IIRFilter.swift in Sources */,
+				7D33778521D027BB00554841 /* BiasedIIRFilter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

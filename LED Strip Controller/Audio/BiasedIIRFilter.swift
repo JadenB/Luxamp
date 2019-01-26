@@ -1,5 +1,12 @@
-/* Applies a different alpha to an IIR Filter for increasing and decreasing values */
+//
+//  BiasedIIRFilter.swift
+//  LED Strip Controller
+//
+//  Created by Jaden Bernal on 12/22/18.
+//  Copyright © 2018 Jaden Bernal. All rights reserved.
+//
 
+/// Applies a different alpha to an IIR Filter for increasing and decreasing values
 class BiasedIIRFilter {
     
     var downwardsAlpha: Float = 0.5 {

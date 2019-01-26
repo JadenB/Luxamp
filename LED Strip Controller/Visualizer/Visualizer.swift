@@ -7,8 +7,6 @@
 //
 import Cocoa
 
-let USERDEFAULTS_MAX_BRIGHTNESS_KEY = "maxBrightness"
-
 /// Visualizes data from its AudioEngine to an NSColor
 class Visualizer {
     weak var outputDelegate: VisualizerOutputDelegate?
@@ -83,7 +81,7 @@ class Visualizer {
         
         // Send the color to the output delegate
         let colorToOutput = NSColor(hue: outputHue, saturation: outputSaturation, brightness: outputBrightness, alpha: 1.0)
-        outputDelegate?.didVisualizeIntoColor(colorToOutput)
+        outputDelegate?.didVisualizeIntoColor(colorToOutput, brightnessVal: brightness.outputVal, colorVal: color.outputVal)
         
         // Send the data to the data delegate
         let brightnessData = VisualizerData()
@@ -233,7 +231,7 @@ class VisualizerData {
 
 /// The output delegate of a Visualizer object implements this protocol to perform specialized actions when the visualizer produces a color
 protocol VisualizerOutputDelegate: class {
-    func didVisualizeIntoColor(_ color: NSColor)
+    func didVisualizeIntoColor(_ color: NSColor, brightnessVal: Float, colorVal: Float)
 }
 
 /// The data delegate of a Visualizer object implements this protocol to perform specialized actions when the visualizer converts data to color and brightness

@@ -11,7 +11,6 @@ import Cocoa
 let COLOR_BYTE: UInt8 = 99 // 'c'
 let POWER_BYTE: UInt8 = 112 // 'p'
 let PACKET_SIZE = 5
-let USERDEFAULTS_DELAY_KEY = "delay"
 
 class LightController: DeviceManagerResponder {
     
@@ -19,6 +18,7 @@ class LightController: DeviceManagerResponder {
     
     private let lightSerialQueue = DispatchQueue(label: "lightSerialQueue")
     private var state: LightState = .Off
+    private var maxBrightness: CGFloat = 1.0
     private var ignoreDelayColorQueued = false
     private var ignoreDelayColor: NSColor = .black
     private var delayedColorsQueued: UInt = 0 {
@@ -33,7 +33,7 @@ class LightController: DeviceManagerResponder {
     /// How long to wait before sending a custom color in milliseconds
     var delay: Int = 0 {
         didSet {
-            UserDefaults.standard.set(delay, forKey: USERDEFAULTS_DELAY_KEY)
+            UserDefaults.standard.set(delay, forKey: PREFERENCES_DELAY_KEY)
         }
     }
     
@@ -59,7 +59,12 @@ class LightController: DeviceManagerResponder {
     
     private init() {
         DeviceManager.shared.responder = self
-        delay = UserDefaults.standard.integer(forKey: USERDEFAULTS_DELAY_KEY)
+        delay = UserDefaults.standard.integer(forKey: PREFERENCES_DELAY_KEY)
+        
+        if UserDefaults.standard.object(forKey: PREFERENCES_MAX_BRIGHTNESS_KEY) != nil {
+            maxBrightness = CGFloat(UserDefaults.standard.float(forKey: PREFERENCES_MAX_BRIGHTNESS_KEY))
+        }
+        NotificationCenter.default.addObserver(self, selector: #selector(maxBrightnessChanged), name: .didChangeMaxBrightness, object: nil)
     }
     
     /// Turn the lights on
@@ -113,23 +118,28 @@ class LightController: DeviceManagerResponder {
     ///
     /// - Parameter color: The color to send
     private func sendColorToDevice(color: NSColor) {
-            guard let calibratedColor = color.usingColorSpace(NSColorSpace.genericRGB) else {
-                print("setColor() failed creating calibrated color")
-                return
-            }
-            
-            let rCom = Int(calibratedColor.redComponent * 255)
-            let gCom = Int(calibratedColor.greenComponent * 255)
-            let bCom = Int(calibratedColor.blueComponent * 255)
-            
-            // for some reason squaring the values gives a more linear-appearing brightness scale
-            let r = gammaLookup[rCom] //UInt8(rCom * rCom * 255)
-            let g = gammaLookup[gCom] //UInt8(gCom * gCom * sqrt(gCom) * 255)
-            let b = gammaLookup[bCom] //UInt8(bCom * bCom * 255)
-            
-            let packet: [UInt8] = [COLOR_BYTE, r, g, b]
-            
-            DeviceManager.shared.sendPacket(packet: packet, size: PACKET_SIZE)
+        guard let calibratedColor = color.usingColorSpace(NSColorSpace.genericRGB) else {
+            print("setColor() failed creating calibrated color")
+            return
+        }
+        
+        let rCom = Int(calibratedColor.redComponent * 255 * maxBrightness)
+        let gCom = Int(calibratedColor.greenComponent * 255 * maxBrightness)
+        let bCom = Int(calibratedColor.blueComponent * 255 * maxBrightness)
+        
+        let r = gammaLookup[rCom]
+        let g = gammaLookup[gCom]
+        let b = gammaLookup[bCom]
+        
+        let packet: [UInt8] = [COLOR_BYTE, r, g, b]
+        
+        DeviceManager.shared.sendPacket(packet: packet, size: PACKET_SIZE)
+    }
+    
+    @objc func maxBrightnessChanged(_ notification: Notification) {
+        if let userInfo = notification.userInfo as? [String:Float] {
+            maxBrightness = CGFloat(userInfo["maxBrightness"] ?? 1.0)
+        }
     }
     
     // MARK: - DeviceManagerResponder

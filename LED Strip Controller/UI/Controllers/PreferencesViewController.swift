@@ -8,6 +8,9 @@
 
 import Cocoa
 
+let PREFERENCES_MAX_BRIGHTNESS_KEY = "maxBrightness"
+let PREFERENCES_DELAY_KEY = "delay"
+
 class PreferencesViewController: NSViewController {
 
     @IBOutlet weak var outputDeviceList: NSPopUpButton!
@@ -19,13 +22,15 @@ class PreferencesViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let delay: Int = UserDefaults.standard.integer(forKey: USERDEFAULTS_DELAY_KEY)
+        let delay: Int = UserDefaults.standard.integer(forKey: PREFERENCES_DELAY_KEY)
         delayField.integerValue = delay
         delaySlider.integerValue = delay
         
-        let maxBrightness: Float = (UserDefaults.standard.object(forKey: USERDEFAULTS_MAX_BRIGHTNESS_KEY) as? Float) ?? 1.0
+        let maxBrightness: Float = (UserDefaults.standard.object(forKey: PREFERENCES_MAX_BRIGHTNESS_KEY) as? Float) ?? 1.0
         maxBrightnessField.integerValue = Int(100 * maxBrightness)
         maxBrightnessSlider.integerValue = Int(100 * maxBrightness)
+        
+        outputDeviceList.addItem(withTitle: "None")
     }
     
     override func viewWillAppear() {
@@ -46,6 +51,12 @@ class PreferencesViewController: NSViewController {
     }
     
     @IBAction func outputDeviceSelected(_ sender: NSPopUpButton) {
+        if sender.indexOfSelectedItem == 1 && DeviceManager.shared.deviceIsActive() {
+            // 'None' selected
+            DeviceManager.shared.deactivateDevice()
+            return
+        }
+        
         guard let devicePath = sender.selectedItem?.title else {
             print("Error: nothing selected")
             return
@@ -71,12 +82,12 @@ class PreferencesViewController: NSViewController {
     
     @IBAction func maxBrightnessFieldChanged(_ sender: NSTextField) {
         maxBrightnessSlider.integerValue = sender.integerValue
-        NotificationCenter.default.post(name: .didChangeMaxBrightness, object: nil, userInfo: [USERDEFAULTS_MAX_BRIGHTNESS_KEY:Float(sender.integerValue) * 0.01])
+        NotificationCenter.default.post(name: .didChangeMaxBrightness, object: nil, userInfo: [PREFERENCES_MAX_BRIGHTNESS_KEY:Float(sender.integerValue) * 0.01])
     }
     
     @IBAction func maxBrightnessSliderChanged(_ sender: NSSlider) {
         maxBrightnessField.integerValue = sender.integerValue
-        NotificationCenter.default.post(name: .didChangeMaxBrightness, object: nil, userInfo: [USERDEFAULTS_MAX_BRIGHTNESS_KEY:Float(sender.integerValue) * 0.01])
+        NotificationCenter.default.post(name: .didChangeMaxBrightness, object: nil, userInfo: [PREFERENCES_MAX_BRIGHTNESS_KEY:Float(sender.integerValue) * 0.01])
     }
     
     @IBAction func resetDefaultsPressed(_ sender: Any) {

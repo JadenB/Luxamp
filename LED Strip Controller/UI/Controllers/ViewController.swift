@@ -9,18 +9,15 @@
 import Cocoa
 import GistSwift
 
-class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDelegate, LightPatternManagerDelegate {
+class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDelegate, LightPatternManagerDelegate, ArcLevelViewDelegate {
     
     var audioEngine: AudioEngine!
     var musicVisualizer: Visualizer!
     var patternManager = LightPatternManager()
     
-    @IBOutlet weak var onOffSeg: NSSegmentedControl!
     @IBOutlet weak var modeSeg: NSSegmentedControl!
     @IBOutlet weak var powerButton: NSButton!
-    
-    @IBOutlet weak var rateSlider: NSSlider!
-    @IBOutlet weak var rateSliderLabel: NSTextField!
+    @IBOutlet weak var spectrum: SpectrumView!
     
     @IBOutlet weak var centerCircleView: ArcLevelView!
     @IBOutlet weak var colorView: CircularColorWell!
@@ -29,7 +26,6 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
     @objc dynamic var modeSegEnabled = false
     
     var hidden = true
-    var levelIIR = BiasedIIRFilter(initialData: [0.0])
     
     var state: AppState = .Off {
         didSet {
@@ -55,9 +51,6 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
         musicVisualizer = Visualizer(withEngine: audioEngine)
         musicVisualizer.outputDelegate = self
         patternManager.delegate = self
-        
-        levelIIR.upwardsAlpha = 0.5
-        levelIIR.downwardsAlpha = 0.8
     }
     
     override func viewDidAppear() {
@@ -79,14 +72,6 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
     @IBAction func colorWellChanged(_ sender: NSColorWell) {
         mode = .Constant
         LightController.shared.setColorIgnoreDelay(color: sender.color)
-    }
-    
-    @IBAction func rateSliderChanged(_ sender: NSSlider) {
-        rateSliderLabel.stringValue = String(format: "%.1f s", sender.floatValue)
-        
-        if mode == .Pattern {
-            patternManager.start(withPattern: patternManager.pattern, andPeriod: sender.doubleValue)
-        }
     }
     
     @IBAction func powerButtonPressed(_ sender: NSButton) {
@@ -114,10 +99,6 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
         }
     }
     
-    @IBAction func offOnSegChanged(_ sender: NSSegmentedControl) {
-        
-    }
-    
     @IBAction func manualMusicSegChanged(_ sender: NSSegmentedControl) {
         let newMode: AppMode = (sender.selectedSegment == 0) ? .Constant : .Music
         if newMode == mode {
@@ -136,27 +117,6 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
         }
     }
     
-    @IBAction func strobePressed(_ sender: NSButton) {
-        mode = .Pattern
-        patternManager.start(withPattern: .Strobe, andPeriod: rateSlider.doubleValue)
-    }
-    
-    @IBAction func fadePressed(_ sender: NSButton) {
-        mode = .Pattern
-        patternManager.start(withPattern: .Fade, andPeriod: rateSlider.doubleValue)
-    }
-    
-    @IBAction func jumpPressed(_ sender: NSButton) {
-        mode = .Pattern
-        patternManager.start(withPattern: .Jump, andPeriod: rateSlider.doubleValue)
-    }
-    
-    @IBAction func candlePressed(_ sender: NSButton) {
-        mode = .Pattern
-        patternManager.start(withPattern: .Candle, andPeriod: rateSlider.doubleValue)
-    }
-    
-    
     func startAudioVisualization() {
         audioEngine.start()
     }
@@ -172,6 +132,15 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
             return
         }
         
+        var visualSpectrum = [Float](repeating: 0, count: 255)
+        let vsCountf = Float(visualSpectrum.count)
+        
+        for i in 0..<visualSpectrum.count {
+            let spectrumIndex = Int( Float(p.spectrumDecibelData.count) * (log2f(vsCountf) - log2f(vsCountf - Float(i))) /  log2f(1 + vsCountf) )
+            visualSpectrum[i] = p.spectrumDecibelData[spectrumIndex]
+        }
+        
+        spectrum.spectrum = visualSpectrum
         musicVisualizer.visualize()
     }
     
@@ -194,14 +163,14 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
     
     // MARK: - VisualizerOutputDelegate
     
-    func didVisualizeIntoColor(_ color: NSColor) {
+    func didVisualizeIntoColor(_ color: NSColor, brightnessVal: Float, colorVal: Float) {
         if mode == .Music {
             LightController.shared.setColor(color: color)
             colorView.color = color
         }
         
-        let bcom = color.brightnessComponent
-        centerCircleView.setLevels(blevel: Float(bcom), clevel: Float(bcom))
+        centerCircleView.setBrightnessLevel(to: brightnessVal)
+        centerCircleView.setColorLevel(to: colorVal)
     }
     
     // MARK: - LightPatternManagerDelegate
@@ -211,6 +180,21 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
             LightController.shared.setColorIgnoreDelay(color: color)
             colorView.color = color
         }
+    }
+    
+    @IBOutlet weak var smoothingView: SmoothingView!
+    @IBAction func smoothingslider(_ sender: NSSlider) {
+        smoothingView.smoothing = CGFloat(sender.floatValue)
+    }
+    
+    // MARK: - ArcLevelViewDelegate
+    
+    func arcLevelColorResetClicked() {
+        //
+    }
+    
+    func arcLevelColorClicked(with event: NSEvent) {
+        //
     }
     
 }
