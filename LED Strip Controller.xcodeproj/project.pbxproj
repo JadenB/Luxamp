@@ -100,6 +100,7 @@
 		7D33777F21CF2C4900554841 /* BufferProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BufferProcessor.swift; sourceTree = "<group>"; };
 		7D33778F21D035C800554841 /* DynamicRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicRange.swift; sourceTree = "<group>"; };
 		7D42758421D866760075A325 /* SaveDialogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveDialogViewController.swift; sourceTree = "<group>"; };
+		7D447BDA21FD210400D09EA8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		7D55915121DB366200982532 /* VisualizerSideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizerSideViewController.swift; sourceTree = "<group>"; };
 		7D5CF64B21DA566200D86666 /* Remap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remap.swift; sourceTree = "<group>"; };
 		7D5E4E4D21D5B5A60074B129 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
@@ -238,6 +239,7 @@
 		7DFE037321CB2C8800D6288F = {
 			isa = PBXGroup;
 			children = (
+				7D447BDA21FD210400D09EA8 /* README.md */,
 				7DF1B65B21F9893200FC818E /* GistSwift.framework.dSYM */,
 				7DFE037E21CB2C8800D6288F /* LED Strip Controller */,
 				7DFE039121CB2C8900D6288F /* LED Strip ControllerTests */,
