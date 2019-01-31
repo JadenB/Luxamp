@@ -17,19 +17,10 @@ class SpectrumView: NSView {
     @IBInspectable var max: Float = 1.0
     @IBInspectable var min: Float = 0.0
     
-    var spectrumLayer = SpectrumLayer()
-    var spectrum: [Float] = [] {
-        didSet {
-            spectrumLayer.spectrum = spectrum.map { CGFloat(remapValueToBounds($0, min: min, max: max)) }
-            needsDisplay = true
-        }
-    }
+    private var spectrumLayer = SpectrumLayer()
     
-    convenience init(min: Float, max: Float) {
-        self.init()
-        self.min = min
-        self.max = max
-    }
+    private var filter = BiasedIIRFilter(size: 2)
+    var spectrumSize = 2
     
     override func makeBackingLayer() -> CALayer {
         spectrumLayer.needsDisplayOnBoundsChange = true
@@ -56,7 +47,7 @@ class SpectrumView: NSView {
     override func prepareForInterfaceBuilder() {
         var newSpectrum = [Float](repeating: 0.0, count: 256)
         
-        for i in 0..<spectrum.count {
+        for i in 0..<spectrumSize {
             newSpectrum[i] = min + (max - min) * Float(arc4random()) / Float(UINT32_MAX)
         }
         
@@ -64,6 +55,24 @@ class SpectrumView: NSView {
         needsDisplay = true
     }
     
+    func setSpectrum(_ newSpectrum: [Float]) {
+        if newSpectrum.count != spectrumSize {
+            filter = BiasedIIRFilter(size: newSpectrum.count)
+            filter.upwardsAlpha = 0.4
+            filter.downwardsAlpha = 0.4
+            spectrumSize = newSpectrum.count
+        }
+        
+        var filteredSpectrum = [CGFloat](repeating: 0.0, count: newSpectrum.count)
+        for i in 0..<filteredSpectrum.count {
+            var filteredVal = remapValueToBounds(newSpectrum[i], min: min, max: max)
+            filteredVal = filter.applyFilter(toValue: filteredVal, atIndex: i)
+            filteredSpectrum[i] = CGFloat(filteredVal)
+        }
+        
+        spectrumLayer.spectrum = filteredSpectrum
+        needsDisplay = true
+    }
 }
 
 class SpectrumLayer: CALayer {
@@ -72,25 +81,7 @@ class SpectrumLayer: CALayer {
     
     var spectrum: [CGFloat] = [1, 1] {
         didSet {
-            if spectrum.count <= 1 { spectrum = [1, 1] }
-            let path = CGMutablePath()
-            path.move(to: .zero)
-            
-            var x: CGFloat = 0.0
-            let dx: CGFloat = bounds.width / CGFloat(spectrum.count - 1)
-            let h = bounds.height
-            for i in stride(from: 0, to: spectrum.count - 3, by: 3) {
-                let control1 = CGPoint(x: x, y: spectrum[i] * h)
-                x += dx
-                let control2 = CGPoint(x: x, y: spectrum[i + 1] * h)
-                x += dx
-                path.addCurve(to: CGPoint(x: x, y: spectrum[i + 2] * h), control1: control1, control2: control2)
-                x += dx
-            }
-            path.addLine(to: CGPoint(x: bounds.width, y: 0))
-            path.closeSubpath()
-            
-            spectrumMask.path = path
+            updateMask()
         }
     }
     
@@ -128,5 +119,44 @@ class SpectrumLayer: CALayer {
         addSublayer(gradientLayer)
         
         spectrumMask.drawsAsynchronously = true
+    }
+    
+    private func updateMask() {
+        if spectrum.count <= 1 { spectrum = [1, 1] }
+        let path = CGMutablePath()
+        path.move(to: .zero)
+        
+        let points = layoutPoints()
+        path.addLine(to: points[0])
+        
+        for i in 1..<points.count {
+            let curPoint = points[i]
+            let prevPoint = points[i - 1]
+            let midPoint = CGPoint(x: (prevPoint.x + curPoint.x) / 2, y: (prevPoint.y + curPoint.y) / 2)
+            path.addQuadCurve(to: midPoint, control: prevPoint)
+        }
+        
+        path.addLine(to: CGPoint(x: bounds.width, y: 0))
+        path.closeSubpath()
+        spectrumMask.path = path
+    }
+    
+    private func layoutPoints() -> [CGPoint] {
+        var points = [CGPoint]()
+        points.reserveCapacity(spectrum.count + 2)
+        
+        var x: CGFloat = 0.0
+        let dx = bounds.width / CGFloat(spectrum.count + 1)
+        let h = bounds.height
+        
+        points.append(.zero)
+        x += dx
+        for bar in spectrum {
+            points.append(CGPoint(x: x, y: bar * h))
+            x += dx
+        }
+        points.append(CGPoint(x: bounds.width, y: 0))
+        
+        return points
     }
 }

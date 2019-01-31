@@ -46,7 +46,7 @@ class VisualizerPresetManager {
     /// Gets the names of all loaded presets
     ///
     /// - Returns: The names of loaded presets in the order they were saved
-    func getPresetNames() -> [String] {
+    func getNames() -> [String] {
         return orderedPresets.map { $0.name }
     }
     

@@ -32,10 +32,16 @@ class BiasedIIRFilter {
         }
     }
     
+    /// Initializes the filter with all data at 0.0
+    ///
+    /// - Parameter size: The size of the filter
     init(size: Int) {
         lastData = Array<Float>(repeating: 0.0, count: size)
     }
     
+    /// Initializes the filter with pre-existing data (MUST NOT CONTAIN INFINITE VALUES)
+    ///
+    /// - Parameter initialData: The pre-existing data
     init(initialData: [Float]) {
         lastData = initialData
     }
@@ -55,10 +61,20 @@ class BiasedIIRFilter {
         return newValue
     }
     
-    func applyFilter(toData data: inout [Float]) {
+    func applyFilterInPlace(toData data: inout [Float]) {
         assert(data.count == size)
         for i in 0..<size {
             data[i] = applyFilter(toValue: data[i], atIndex: i)
         }
+    }
+    
+    func applyFilter(toData data: [Float]) -> [Float] {
+        assert(data.count == size)
+        var output = [Float]()
+        output.reserveCapacity(size)
+        for i in 0..<size {
+            output.append( applyFilter(toValue: data[i], atIndex: i) )
+        }
+        return output
     }
 }

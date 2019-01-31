@@ -11,17 +11,19 @@ import GistSwift
 
 class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDelegate, LightPatternManagerDelegate, ArcLevelViewDelegate {
     
-    var audioEngine: AudioEngine!
-    var musicVisualizer: Visualizer!
-    var patternManager = LightPatternManager()
-    
     @IBOutlet weak var powerButton: NSButton!
     @IBOutlet weak var spectrum: SpectrumView!
     
+    @IBOutlet weak var presetMenu: NSPopUpButton!
+    @IBOutlet weak var presetMenuDeleteItem: NSMenuItem!
     @IBOutlet weak var centerCircleView: ArcLevelView!
     @IBOutlet weak var colorView: CircularColorWell!
     
+    var audioEngine: AudioEngine!
+    var musicVisualizer: Visualizer!
+    var patternManager = LightPatternManager()
     var hidden = true
+    var lastSelectedPresetName: String = ""
     
     var state: AppState = .Off {
         didSet {
@@ -41,6 +43,9 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
         musicVisualizer = Visualizer(withEngine: audioEngine)
         musicVisualizer.outputDelegate = self
         patternManager.delegate = self
+        
+        populateMenus()
+        refreshAllViews()
     }
     
     override func viewDidAppear() {
@@ -54,9 +59,7 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
     }
     
     override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
-        guard let visualizationController = segue.destinationController as? VisualizerMainViewController else { return }
         
-        visualizationController.visualizer = musicVisualizer
     }
     
     @IBAction func colorWellChanged(_ sender: NSColorWell) {
@@ -76,7 +79,50 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
             LightController.shared.turnOff()
             stopAudioVisualization()
         }
-        
+    }
+    
+    @IBAction func presetSelected(_ sender: NSPopUpButton) {
+        if sender.indexOfSelectedItem == sender.numberOfItems - 1 {
+            let alert = NSAlert()
+            alert.alertStyle = .warning
+            alert.addButton(withTitle: "Delete")
+            alert.addButton(withTitle: "Cancel")
+            alert.messageText = "Are you sure you want to delete \"\(lastSelectedPresetName)\"?"
+            alert.informativeText = "You are about to permanently delete this preset. Once deleted it cannot be recovered."
+            alert.beginSheetModal(for: view.window!) { response in
+                if response == .alertFirstButtonReturn {
+                    self.deletePreset(withName: self.lastSelectedPresetName)
+                }
+            }
+            
+        } else if sender.indexOfSelectedItem == sender.numberOfItems - 2 {
+            performSegue(withIdentifier: "saveDialogSegue", sender: self)
+        } else {
+            musicVisualizer.presets.apply(name: sender.selectedItem?.title ?? PRESETMANAGER_DEFAULT_PRESET_NAME)
+            presetMenu.title = "Preset: " + (presetMenu.selectedItem?.title ?? "Error")
+            if sender.selectedItem?.title == PRESETMANAGER_DEFAULT_PRESET_NAME {
+                presetMenuDeleteItem.isEnabled = false
+            } else {
+                presetMenuDeleteItem.isEnabled = true
+                lastSelectedPresetName = sender.selectedItem!.title
+            }
+            
+            refreshAllViews()
+        }
+    }
+    
+    func savePreset(withName name: String) {
+        musicVisualizer.presets.saveCurrentSettings(name: name)
+        presetMenu.insertItem(withTitle: name, at: presetMenu.numberOfItems - 3)
+        presetMenu.selectItem(withTitle: name)
+        presetSelected(presetMenu)
+    }
+    
+    func deletePreset(withName name: String) {
+        presetMenu.selectItem(at: 1)
+        musicVisualizer.presets.delete(name: name)
+        presetMenu.removeItem(withTitle: name)
+        presetSelected(presetMenu)
     }
     
     func startAudioVisualization() {
@@ -87,23 +133,30 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
         audioEngine.stop()
     }
     
+    func refreshAllViews() {
+        centerCircleView.colorGradient = musicVisualizer.gradient
+    }
+    
+    func populateMenus() {
+        let presetNames = musicVisualizer.presets.getNames()
+        for i in (0..<presetNames.count).reversed() {
+            presetMenu.insertItem(withTitle: presetNames[i], at: 1) // insert at 1 to put after title and before save/delete
+        }
+        presetMenu.selectItem(at: 1)
+    }
+    
     // MARK: - AudioEngineDelegate
     
-    func didRefreshAudioEngine(withProcessor p: BufferProcessor) {
-        if state == .Off {
-            return
+    func didRefreshAudioEngine() {
+        if state == .On {
+            musicVisualizer.visualize()
         }
-        
-        var visualSpectrum = [Float](repeating: 0, count: 255)
-        let vsCountf = Float(visualSpectrum.count)
-        
-        for i in 0..<visualSpectrum.count {
-            let spectrumIndex = Int( Float(p.spectrumDecibelData.count) * (log2f(vsCountf) - log2f(vsCountf - Float(i))) /  log2f(1 + vsCountf) )
-            visualSpectrum[i] = p.spectrumDecibelData[spectrumIndex]
+    }
+    
+    func didRefreshVisualSpectrum(_ s: [Float]) {
+        if !hidden {
+            spectrum.setSpectrum(s)
         }
-        
-        spectrum.spectrum = visualSpectrum
-        musicVisualizer.visualize()
     }
     
     func audioDeviceChanged() {

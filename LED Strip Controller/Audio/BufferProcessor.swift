@@ -22,13 +22,11 @@ class BufferProcessor {
             return gist.magnitudeSpectrum()
         }
     }
-    var spectrumNormalizedMagnitudeData: [Float]
     
-    var filter: BiasedIIRFilter
+    var spectrumNormalizedMagnitudeData: [Float]
     
     var useAWeighting = false
     var useWindowing = false
-    var useIIRFilter = true
     var shouldConvertToDb = true
     
     private let fftSize: Int = BUFFER_SIZE / 2
@@ -56,9 +54,6 @@ class BufferProcessor {
     init() {
         spectrumDecibelData = Array<Float>(repeating: 0.0, count: fftSize)
         spectrumNormalizedMagnitudeData = Array<Float>(repeating: 0.0, count: fftSize)
-        filter = BiasedIIRFilter(size: fftSize)
-        filter.upwardsAlpha = 0.4
-        filter.downwardsAlpha = 0.7
     }
     
     /// Converts audio into a frequency spectrum
@@ -68,10 +63,6 @@ class BufferProcessor {
         gist.processAudio(frame: buffer)
         var result = normalizeFFT(gist.magnitudeSpectrum())
         spectrumNormalizedMagnitudeData = result // save the normalized spectrum data for later access
-        
-        if useIIRFilter {
-            filter.applyFilter(toData: &result)
-        }
         
         if useWindowing {
             applyHanningWindow(&result)
@@ -181,7 +172,7 @@ class BufferProcessor {
     private func applyDbConversion(_ data: inout [Float]) {
         var frequency: Float = 0
         let df: Float = Float(SAMPLE_RATE) / Float(fftSize * 2)
-        for i in 0..<fftSize {
+        for i in 0..<data.count {
             data[i] = convertToDB(data[i])
             
             if useAWeighting {
@@ -198,6 +189,29 @@ class BufferProcessor {
         for i in 0..<data.count {
             data[i] = data[i] * 0.5 * (1.0 - cos(2.0 * Float.pi * Float(i) / Float(data.count)))
         }
+    }
+    
+    func getVisualSpectrum() -> [Float] {
+        var visualSpectrum = [Float]()
+        /*let buckets: [Range<Int>] = [0..<4, 4..<8, 8..<12, 12..<16, 16..<22, 22..<32, 32..<46, 46..<64, 64..<90, 90..<128, 128..<181, 181..<256]
+        visualSpectrum.reserveCapacity(buckets.count)
+        
+        for range in buckets {
+            var max = -Float.infinity
+            for i in range {
+                if spectrumDecibelData[i] > max {
+                    max = spectrumDecibelData[i]
+                }
+            }
+            visualSpectrum.append(max)
+        }*/
+        
+        visualSpectrum = normalizeFFT(gist.melFrequencySpectrum())
+        for i in 0..<visualSpectrum.count {
+            visualSpectrum[i] = convertToDB(visualSpectrum[i]) - 40 * Float(visualSpectrum.count - i / 4) / Float(visualSpectrum.count)
+        }
+        
+        return visualSpectrum
     }
 }
 

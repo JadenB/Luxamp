@@ -871,10 +871,10 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="max">
-                                        <real key="value" value="2"/>
+                                        <real key="value" value="8"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="number" keyPath="min">
-                                        <real key="value" value="-72"/>
+                                        <real key="value" value="-64"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </customView>
@@ -932,6 +932,9 @@
                                         </items>
                                     </menu>
                                 </popUpButtonCell>
+                                <connections>
+                                    <action selector="presetSelected:" target="XfG-lQ-9wD" id="C0K-av-Ebb"/>
+                                </connections>
                             </popUpButton>
                         </subviews>
                     </view>
@@ -939,6 +942,8 @@
                         <outlet property="centerCircleView" destination="PTS-23-40h" id="5jz-bR-OD1"/>
                         <outlet property="colorView" destination="ZzZ-uH-Nmo" id="qLm-70-TL0"/>
                         <outlet property="powerButton" destination="cC1-fh-cqM" id="PAf-TY-v55"/>
+                        <outlet property="presetMenu" destination="wJQ-XF-OEo" id="HQv-A6-P5o"/>
+                        <outlet property="presetMenuDeleteItem" destination="vcN-Qa-xBW" id="HJo-iU-fgU"/>
                         <outlet property="spectrum" destination="eHf-pn-RXR" id="2wY-4k-GD0"/>
                     </connections>
                 </viewController>

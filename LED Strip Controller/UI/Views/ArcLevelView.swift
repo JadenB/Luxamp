@@ -65,10 +65,9 @@ class ArcLevelView: NSView {
         }
     }
     
-    var colorGradient: NSGradient! = NSGradient(starting: .black, ending: .white) {
-        didSet {
-            colorArcLayer.gradient = colorGradient
-        }
+    var colorGradient: NSGradient {
+        get { return colorArcLayer.gradient }
+        set { colorArcLayer.gradient = newValue }
     }
     
     func setBrightnessLevel(to blevel: Float) {

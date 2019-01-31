@@ -42,6 +42,7 @@
 		7DF1B66221F9895900FC818E /* GistSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7DF1B65E21F9895300FC818E /* GistSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7DF1B66321F9895900FC818E /* ORSSerial.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DF1B65D21F9895300FC818E /* ORSSerial.framework */; };
 		7DF1B66421F9895900FC818E /* ORSSerial.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7DF1B65D21F9895300FC818E /* ORSSerial.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		7DFC34202202DD7D00B4C993 /* SideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFC341F2202DD7D00B4C993 /* SideViewController.swift */; };
 		7DFE038421CB2C8900D6288F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7DFE038321CB2C8900D6288F /* Assets.xcassets */; };
 		7DFE038721CB2C8900D6288F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DFE038521CB2C8900D6288F /* Main.storyboard */; };
 		7DFE039321CB2C8900D6288F /* LED_Strip_ControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE039221CB2C8900D6288F /* LED_Strip_ControllerTests.swift */; };
@@ -122,6 +123,7 @@
 		7DF1B65B21F9893200FC818E /* GistSwift.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = GistSwift.framework.dSYM; path = Frameworks/GistSwift.framework.dSYM; sourceTree = "<group>"; };
 		7DF1B65D21F9895300FC818E /* ORSSerial.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ORSSerial.framework; path = Frameworks/ORSSerial.framework; sourceTree = "<group>"; };
 		7DF1B65E21F9895300FC818E /* GistSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GistSwift.framework; path = Frameworks/GistSwift.framework; sourceTree = "<group>"; };
+		7DFC341F2202DD7D00B4C993 /* SideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideViewController.swift; sourceTree = "<group>"; };
 		7DFE037C21CB2C8800D6288F /* LED Strip Controller.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LED Strip Controller.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DFE037F21CB2C8800D6288F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7DFE038121CB2C8800D6288F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -209,6 +211,7 @@
 			isa = PBXGroup;
 			children = (
 				7DFE038121CB2C8800D6288F /* ViewController.swift */,
+				7DFC341F2202DD7D00B4C993 /* SideViewController.swift */,
 				7D03140921D2E0DE00F46D04 /* PreferencesViewController.swift */,
 				7D14BC5621D0464700CF199F /* VisualizerMainViewController.swift */,
 				7D55915121DB366200982532 /* VisualizerSideViewController.swift */,
@@ -481,6 +484,7 @@
 				7D03140221D24ABE00F46D04 /* VisualizerTextField.swift in Sources */,
 				7D03140A21D2E0DE00F46D04 /* PreferencesViewController.swift in Sources */,
 				7DEBB55021EE916800878309 /* AngleGradientLayer.m in Sources */,
+				7DFC34202202DD7D00B4C993 /* SideViewController.swift in Sources */,
 				7D5CF64C21DA566200D86666 /* Remap.swift in Sources */,
 				7D42758521D866760075A325 /* SaveDialogViewController.swift in Sources */,
 				7D33778721D027BF00554841 /* SpectrumView.swift in Sources */,

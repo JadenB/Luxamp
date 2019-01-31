@@ -65,7 +65,7 @@ class VisualizerMainViewController: NSViewController, VisualizerDataDelegate, Gr
     }
     
     func populateMenus() {
-        let presetNames = presetManager.getPresetNames()
+        let presetNames = presetManager.getNames()
         for i in (0..<presetNames.count).reversed() {
             presetMenu.insertItem(withTitle: presetNames[i], at: 1) // insert at 1 to put after title and before save/delete
         }
@@ -222,7 +222,7 @@ class VisualizerMainViewController: NSViewController, VisualizerDataDelegate, Gr
             alert.messageText = "Invalid Preset Name"
             alert.informativeText = "Please choose a different name"
             alert.beginSheetModal(for: view.window!, completionHandler: nil)
-        } else if presetManager.getPresetNames().contains(name) {
+        } else if presetManager.getNames().contains(name) {
             let alert = NSAlert()
             alert.alertStyle = .critical
             alert.addButton(withTitle: "Replace")
