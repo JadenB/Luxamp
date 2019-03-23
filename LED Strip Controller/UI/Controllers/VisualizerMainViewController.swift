@@ -6,13 +6,13 @@
 //  Copyright © 2018 Jaden Bernal. All rights reserved.
 //
 
-import Cocoa
+/*import Cocoa
 
 fileprivate let DEFAULT_PRESET_INDEX = 1
 
 
 // TODO: Split color and brightness side controls into seperate subviews run off the same viewcontroller
-class VisualizerMainViewController: NSViewController, VisualizerDataDelegate, GradientEditorViewControllerDelegate, SaveDialogDelegate {
+class VisualizerMainViewController: NSViewController, VisualizerDataDelegate, GradientEditorDelegate, SaveDialogDelegate {
     
     var visualizer: Visualizer!
     var presetManager: VisualizerPresetManager!
@@ -207,7 +207,7 @@ class VisualizerMainViewController: NSViewController, VisualizerDataDelegate, Gr
     
     // MARK: - GradientEditorViewControllerDelegate
     
-    func didSetGradient(gradient: NSGradient) {
+    func gradientEditorSetGradient(_ gradient: NSGradient) {
         visualizer.gradient = gradient
         gradientView.gradient = gradient
     }
@@ -247,3 +247,4 @@ class VisualizerMainViewController: NSViewController, VisualizerDataDelegate, Gr
 }
 
 
+*/

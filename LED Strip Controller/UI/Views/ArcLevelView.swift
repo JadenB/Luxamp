@@ -96,11 +96,6 @@ class ArcLevelView: NSView {
         colorArcLayer.gradient = NSGradient(starting: .red, ending: .yellow)
         colorArcLayer.level = 0.0
         l.addSublayer(colorArcLayer)
-        
-        let mask = CAShapeLayer()
-        mask.frame = bounds
-        mask.path = CGPath(rect: CGRect(x: bounds.midX - 20, y: bounds.minY, width: 40, height: bounds.height), transform: nil)
-        l.mask = mask
         return l
     }
     

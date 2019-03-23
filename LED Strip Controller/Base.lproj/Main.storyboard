@@ -866,9 +866,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="960" height="540"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eHf-pn-RXR" customClass="SpectrumView" customModule="LED_Strip_Controller" customModuleProvider="target">
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="eHf-pn-RXR" customClass="SpectrumView" customModule="LED_Strip_Controller" customModuleProvider="target">
                                 <rect key="frame" x="20" y="405" width="920" height="115"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="eHf-pn-RXR" secondAttribute="height" multiplier="8:1" id="Kxg-Me-SaH"/>
+                                </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="max">
                                         <real key="value" value="8"/>
@@ -936,15 +938,37 @@
                                     <action selector="presetSelected:" target="XfG-lQ-9wD" id="C0K-av-Ebb"/>
                                 </connections>
                             </popUpButton>
+                            <containerView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KLm-fl-76A">
+                                <rect key="frame" x="20" y="20" width="292" height="365"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <connections>
+                                    <segue destination="Z19-kP-1vK" kind="embed" identifier="brightnessSideSegue" id="LZo-Ia-loG"/>
+                                </connections>
+                            </containerView>
+                            <containerView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="t2r-hK-fBS">
+                                <rect key="frame" x="648" y="20" width="292" height="365"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <connections>
+                                    <segue destination="Z19-kP-1vK" kind="embed" identifier="colorSideSegue" id="WXO-5z-Zan"/>
+                                </connections>
+                            </containerView>
                         </subviews>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="eHf-pn-RXR" secondAttribute="trailing" constant="20" id="DCt-9x-bMW"/>
+                            <constraint firstItem="eHf-pn-RXR" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="d6D-tQ-dGG"/>
+                            <constraint firstItem="eHf-pn-RXR" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" id="vrU-C7-aj7"/>
+                        </constraints>
                     </view>
                     <connections>
-                        <outlet property="centerCircleView" destination="PTS-23-40h" id="5jz-bR-OD1"/>
+                        <outlet property="arcLevelCenter" destination="PTS-23-40h" id="5jz-bR-OD1"/>
                         <outlet property="colorView" destination="ZzZ-uH-Nmo" id="qLm-70-TL0"/>
                         <outlet property="powerButton" destination="cC1-fh-cqM" id="PAf-TY-v55"/>
                         <outlet property="presetMenu" destination="wJQ-XF-OEo" id="HQv-A6-P5o"/>
                         <outlet property="presetMenuDeleteItem" destination="vcN-Qa-xBW" id="HJo-iU-fgU"/>
+                        <outlet property="scrollingGraph" destination="RZl-Je-PWx" id="b47-WQ-Afn"/>
                         <outlet property="spectrum" destination="eHf-pn-RXR" id="2wY-4k-GD0"/>
+                        <segue destination="Xjn-n8-aFl" kind="sheet" identifier="saveDialogSegue" id="n7H-ob-WR0"/>
+                        <segue destination="P3F-QY-07K" kind="modal" identifier="gradientEditorSegue" id="q8K-1G-fK7"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -1132,9 +1156,6 @@
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
-                                <connections>
-                                    <segue destination="iO9-Dj-NaA" kind="popover" identifier="gradientPopoverSegue" popoverAnchorView="2JD-PV-20Z" popoverBehavior="t" preferredEdge="maxY" id="cTB-e8-KZH"/>
-                                </connections>
                             </button>
                             <containerView translatesAutoresizingMaskIntoConstraints="NO" id="Yxg-bU-rv8">
                                 <rect key="frame" x="0.0" y="0.0" width="224" height="368"/>
@@ -1233,14 +1254,13 @@
                         <outlet property="gradientView" destination="w9o-kd-dFm" id="xfZ-Jq-ZGm"/>
                         <outlet property="presetMenu" destination="YRv-rx-gbi" id="Jvd-W3-W4C"/>
                         <outlet property="presetMenuDeleteItem" destination="Ng7-tN-SvN" id="fZz-KH-UW0"/>
-                        <segue destination="Xjn-n8-aFl" kind="sheet" identifier="saveDialogSegue" id="zoh-jf-paf"/>
                     </connections>
                 </viewController>
                 <customObject id="kHH-lN-hiY" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <userDefaultsController id="J1k-fx-vyy"/>
                 <userDefaultsController id="BY1-ZY-pRg"/>
             </objects>
-            <point key="canvasLocation" x="128" y="1568"/>
+            <point key="canvasLocation" x="-649" y="1627"/>
         </scene>
         <!--Save Dialog View Controller-->
         <scene sceneID="Ojz-o1-50l">
@@ -1321,7 +1341,28 @@ Gw
                 </viewController>
                 <customObject id="H8w-G1-xHj" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="805" y="1939.5"/>
+            <point key="canvasLocation" x="848" y="730"/>
+        </scene>
+        <!--Window Controller-->
+        <scene sceneID="nEc-7M-iIA">
+            <objects>
+                <windowController id="P3F-QY-07K" sceneMemberID="viewController">
+                    <window key="window" title="Color Editor" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" titlebarAppearsTransparent="YES" id="9ma-yX-TUL">
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" texturedBackground="YES"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+                        <rect key="contentRect" x="294" y="313" width="480" height="208"/>
+                        <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
+                        <connections>
+                            <outlet property="delegate" destination="P3F-QY-07K" id="xCu-Mx-Ilf"/>
+                        </connections>
+                    </window>
+                    <connections>
+                        <segue destination="iO9-Dj-NaA" kind="relationship" relationship="window.shadowedContentViewController" id="iF8-e0-QEo"/>
+                    </connections>
+                </windowController>
+                <customObject id="rTX-ab-5c7" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="913" y="1047"/>
         </scene>
         <!--Gradient Editor View Controller-->
         <scene sceneID="2Ri-kS-6PU">
@@ -1375,7 +1416,7 @@ Gw
                                 <constraints>
                                     <constraint firstAttribute="width" constant="35" id="s9t-ey-OFq"/>
                                 </constraints>
-                                <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="2" drawsBackground="YES" usesSingleLineMode="YES" id="eDj-Dc-jNY">
+                                <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" continuous="YES" refusesFirstResponder="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="2" drawsBackground="YES" usesSingleLineMode="YES" id="eDj-Dc-jNY">
                                     <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" allowsFloats="NO" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="-1" id="ZyS-Ju-b8D">
                                         <real key="minimum" value="1"/>
                                         <real key="maximum" value="5"/>
@@ -1488,7 +1529,7 @@ Gw
                 </viewController>
                 <customObject id="XMm-M2-Za9" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="836" y="1457"/>
+            <point key="canvasLocation" x="1477" y="1047"/>
         </scene>
         <!--Visualizer Side View Controller-->
         <scene sceneID="GAQ-M4-BJG">
@@ -1534,7 +1575,7 @@ Gw
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="fYf-K3-E2z" customClass="LevelView" customModule="LED_Strip_Controller" customModuleProvider="target">
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="fYf-K3-E2z" customClass="LegacyLevelView" customModule="LED_Strip_Controller" customModuleProvider="target">
                                 <rect key="frame" x="40" y="98" width="17" height="227"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="fYf-K3-E2z" secondAttribute="height" multiplier="17:228" id="Ewf-1t-Jpy"/>
@@ -1570,7 +1611,7 @@ Gw
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="ZPD-xV-xnw" customClass="LevelView" customModule="LED_Strip_Controller" customModuleProvider="target">
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="ZPD-xV-xnw" customClass="LegacyLevelView" customModule="LED_Strip_Controller" customModuleProvider="target">
                                 <rect key="frame" x="167" y="98" width="17" height="227"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="ZPD-xV-xnw" secondAttribute="height" multiplier="17:228" id="FVF-Dr-xDz"/>
@@ -1794,12 +1835,48 @@ Gw
                 <customObject id="dxt-iD-U14" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
         </scene>
+        <!--Side View Controller-->
+        <scene sceneID="ypB-Xb-lvy">
+            <objects>
+                <viewController id="Z19-kP-1vK" customClass="SideViewController" customModule="LED_Strip_Controller" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="M6J-IG-EcE">
+                        <rect key="frame" x="0.0" y="0.0" width="292" height="365"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="stG-mm-RrU" customClass="SmoothingView" customModule="LED_Strip_Controller" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="269" width="292" height="96"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            </customView>
+                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RZl-Je-PWx" customClass="ScrollingGraphView" customModule="LED_Strip_Controller" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="292" height="95"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="pointCount">
+                                        <integer key="value" value="40"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </customView>
+                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="koV-an-mls" customClass="AdjustableLevelView" customModule="LED_Strip_Controller" customModuleProvider="target">
+                                <rect key="frame" x="63" y="142" width="72" height="96"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            </customView>
+                        </subviews>
+                    </view>
+                    <connections>
+                        <outlet property="scrollingGraph" destination="RZl-Je-PWx" id="4aN-Xc-6zG"/>
+                    </connections>
+                </viewController>
+                <customObject id="uqK-0s-Kiy" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="75" y="1539.5"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Off Power" width="152" height="56"/>
         <image name="On Power" width="152" height="56"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="WXO-5z-Zan"/>
         <segue reference="3wr-W7-VDn"/>
     </inferredMetricsTieBreakers>
 </document>

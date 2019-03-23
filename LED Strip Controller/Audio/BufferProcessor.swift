@@ -73,7 +73,7 @@ class BufferProcessor {
         }
         
         spectrumDecibelData = result
-        delegate?.didFinishProcessingBuffer(self)
+        delegate?.bufferProcessorFinishedProcessing(self)
     }
     
     /// Gets the peak volume in decibels of the last processed buffer
@@ -208,7 +208,7 @@ class BufferProcessor {
         
         visualSpectrum = normalizeFFT(gist.melFrequencySpectrum())
         for i in 0..<visualSpectrum.count {
-            visualSpectrum[i] = convertToDB(visualSpectrum[i]) - 40 * Float(visualSpectrum.count - i / 4) / Float(visualSpectrum.count)
+            visualSpectrum[i] = convertToDB(visualSpectrum[i]) - 40 * Float(visualSpectrum.count - i / 3) / Float(visualSpectrum.count)
         }
         
         return visualSpectrum
@@ -216,5 +216,5 @@ class BufferProcessor {
 }
 
 protocol BufferProcessorDelegate: class {
-    func didFinishProcessingBuffer(_ sender: BufferProcessor)
+    func bufferProcessorFinishedProcessing(_ sender: BufferProcessor)
 }

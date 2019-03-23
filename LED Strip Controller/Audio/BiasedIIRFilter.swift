@@ -77,4 +77,8 @@ class BiasedIIRFilter {
         }
         return output
     }
+    
+    func clearData() {
+        lastData = [Float](repeating: 0.0, count: size)
+    }
 }

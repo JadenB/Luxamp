@@ -13,9 +13,9 @@ class VisualizerSideViewController: NSViewController {
     var mapper: VisualizerMapper!
     var name = "_"
     
-    @IBOutlet weak var inputLevel: LevelView!
+    @IBOutlet weak var inputLevel: LegacyLevelView!
     @IBOutlet weak var inputLabel: NSTextField!
-    @IBOutlet weak var outputLevel: LevelView!
+    @IBOutlet weak var outputLevel: LegacyLevelView!
     @IBOutlet weak var outputLabel: NSTextField!
     
     @IBOutlet weak var maxField: VisualizerTextField!
@@ -52,7 +52,7 @@ class VisualizerSideViewController: NSViewController {
     }
     
     func updateWithData(_ data: VisualizerData) {
-        inputLevel.level = remapValueToBounds(data.inputVal, min: mapper.inputMin, max: mapper.inputMax)
+        inputLevel.level = remapValueToUnit(data.inputVal, min: mapper.inputMin, max: mapper.inputMax)
         inputLevel.subrangeMax = data.dynamicInputRange.max
         inputLevel.subrangeMin = data.dynamicInputRange.min
         inputLabel.stringValue = String(format: "%.1f", data.inputVal)

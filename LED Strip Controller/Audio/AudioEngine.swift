@@ -124,7 +124,7 @@ class AudioEngine: BufferProcessorDelegate {
     
     // MARK: - BufferProcessorDelegate
     
-    func didFinishProcessingBuffer(_ sender: BufferProcessor) {
+    func bufferProcessorFinishedProcessing(_ sender: BufferProcessor) {
         DispatchQueue.main.async {
             self.delegate?.didRefreshAudioEngine()
             self.delegate?.didRefreshVisualSpectrum(sender.getVisualSpectrum())

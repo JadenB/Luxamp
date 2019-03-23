@@ -12,9 +12,13 @@ class SideViewController: NSViewController {
     
     var mapper: VisualizerMapper!
 
+    @IBOutlet weak var scrollingGraph: ScrollingGraphView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do view setup here.
     }
     
+    func updateWithData(_ data: VisualizerData) {
+        scrollingGraph.append(value: data.outputVal)
+    }
 }

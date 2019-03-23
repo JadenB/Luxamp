@@ -9,19 +9,22 @@
 import Cocoa
 import GistSwift
 
-class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDelegate, LightPatternManagerDelegate, ArcLevelViewDelegate {
+class ViewController: NSViewController, AudioEngineDelegate, VisualizerDelegate,
+                        ArcLevelViewDelegate, SaveDialogDelegate, GradientEditorDelegate {
     
     @IBOutlet weak var powerButton: NSButton!
     @IBOutlet weak var spectrum: SpectrumView!
     
     @IBOutlet weak var presetMenu: NSPopUpButton!
     @IBOutlet weak var presetMenuDeleteItem: NSMenuItem!
-    @IBOutlet weak var centerCircleView: ArcLevelView!
+    @IBOutlet weak var arcLevelCenter: ArcLevelView!
     @IBOutlet weak var colorView: CircularColorWell!
+    
+    var brightnessSide: SideViewController!
+    var colorSide: SideViewController!
     
     var audioEngine: AudioEngine!
     var musicVisualizer: Visualizer!
-    var patternManager = LightPatternManager()
     var hidden = true
     var lastSelectedPresetName: String = ""
     
@@ -32,17 +35,18 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
             } else {
                 AppManager.enableSleep()
             }
-            patternManager.stop()
         }
     }
+    
+    // MARK: - Overrides
     
     override func viewDidLoad() {
         super.viewDidLoad()
         audioEngine = AudioEngine(refreshRate: Double(SAMPLE_RATE) / Double(BUFFER_SIZE))
         audioEngine.delegate = self
         musicVisualizer = Visualizer(withEngine: audioEngine)
-        musicVisualizer.outputDelegate = self
-        patternManager.delegate = self
+        musicVisualizer.delegate = self
+        arcLevelCenter.delegate = self
         
         populateMenus()
         refreshAllViews()
@@ -59,8 +63,29 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
     }
     
     override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
-        
+        switch segue.identifier! {
+        case .brightnessSideSegue:
+            brightnessSide = segue.destinationController as? SideViewController
+        case .colorSideSegue:
+            colorSide = segue.destinationController as? SideViewController
+        case .gradientEditorSegue:
+            guard let gradientWindow = segue.destinationController as? NSWindowController else {
+                NSLog("Failed to cast gradient window controller")
+                return
+            }
+            
+            let gradientEditor = gradientWindow.contentViewController as! GradientEditorViewController
+            gradientEditor.gradient = musicVisualizer.gradient
+            gradientEditor.delegate = self
+        case .saveDialogSegue:
+            let saveDialogController = segue.destinationController as! SaveDialogViewController
+            saveDialogController.delegate = self
+        default:
+            print("error: unidentified segue \(segue.identifier ?? "no identifier")")
+        }
     }
+    
+    // MARK: - IBActions
     
     @IBAction func colorWellChanged(_ sender: NSColorWell) {
         LightController.shared.setColorIgnoreDelay(color: sender.color)
@@ -78,6 +103,7 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
         } else {
             LightController.shared.turnOff()
             stopAudioVisualization()
+            spectrum.clear()
         }
     }
     
@@ -134,7 +160,7 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
     }
     
     func refreshAllViews() {
-        centerCircleView.colorGradient = musicVisualizer.gradient
+        arcLevelCenter.colorGradient = musicVisualizer.gradient
     }
     
     func populateMenus() {
@@ -154,7 +180,7 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
     }
     
     func didRefreshVisualSpectrum(_ s: [Float]) {
-        if !hidden {
+        if !hidden && state == .On {
             spectrum.setSpectrum(s)
         }
     }
@@ -176,15 +202,19 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
         }
     }
     
-    // MARK: - VisualizerOutputDelegate
+    // MARK: - VisualizerDelegate
     
     func didVisualizeIntoColor(_ color: NSColor, brightnessVal: Float, colorVal: Float) {
-        
         LightController.shared.setColor(color: color)
         colorView.color = color
         
-        centerCircleView.setBrightnessLevel(to: brightnessVal)
-        centerCircleView.setColorLevel(to: colorVal)
+        arcLevelCenter.setBrightnessLevel(to: brightnessVal)
+        arcLevelCenter.setColorLevel(to: colorVal)
+    }
+    
+    func didVisualizeWithData(brightnessData: VisualizerData, colorData: VisualizerData) {
+        brightnessSide.updateWithData(brightnessData)
+        colorSide.updateWithData(colorData)
     }
     
     // MARK: - LightPatternManagerDelegate
@@ -198,11 +228,51 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
     
     func arcLevelColorResetClicked() {
         musicVisualizer.gradient = musicVisualizer.presets.defaultP.gradient
-        centerCircleView.colorGradient = musicVisualizer.gradient
+        arcLevelCenter.colorGradient = musicVisualizer.gradient
     }
     
     func arcLevelColorClicked(with event: NSEvent) {
-        //
+        performSegue(withIdentifier: .gradientEditorSegue, sender: nil)
+    }
+    
+    // MARK: - SaveDialogDelegate
+    
+    func saveDialogSaved(withName name: String, _ sender: SaveDialogViewController) {
+        if name == PRESETMANAGER_DEFAULT_PRESET_NAME || name == "Delete Preset" || name == "Save Preset..." {
+            let alert = NSAlert()
+            alert.alertStyle = .critical
+            alert.addButton(withTitle: "OK")
+            alert.messageText = "Invalid Preset Name"
+            alert.informativeText = "Please choose a different name"
+            alert.beginSheetModal(for: view.window!, completionHandler: nil)
+        } else if musicVisualizer.presets.getNames().contains(name) {
+            let alert = NSAlert()
+            alert.alertStyle = .critical
+            alert.addButton(withTitle: "Replace")
+            alert.addButton(withTitle: "Cancel")
+            alert.messageText = "\"\(name)\" already exists. Do you want to replace it?"
+            alert.informativeText = "A preset with the same name already exists. Replacing it will overwrite its current settings."
+            alert.beginSheetModal(for: view.window!) { response in
+                if response == .alertFirstButtonReturn {
+                    self.savePreset(withName: name)
+                    sender.dismiss(nil)
+                }
+            }
+        } else {
+            savePreset(withName: name)
+            sender.dismiss(nil)
+        }
+    } // end saveDialogSaved()
+    
+    func saveDialogCanceled(_ sender: SaveDialogViewController) {
+        sender.dismiss(nil)
+    }
+    
+    // MARK: - GradientEditorDelegate
+    
+    func gradientEditorSetGradient(_ gradient: NSGradient) {
+        musicVisualizer.gradient = gradient
+        arcLevelCenter.colorGradient = gradient
     }
     
 }
@@ -210,5 +280,12 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerOutputDel
 enum AppState {
     case On
     case Off
+}
+
+extension NSStoryboardSegue.Identifier {
+    static let saveDialogSegue = NSStoryboardSegue.Identifier("saveDialogSegue")
+    static let gradientEditorSegue = NSStoryboardSegue.Identifier("gradientEditorSegue")
+    static let brightnessSideSegue = NSStoryboardSegue.Identifier("brightnessSideSegue")
+    static let colorSideSegue = NSStoryboardSegue.Identifier("colorSideSegue")
 }
 

@@ -1,12 +1,23 @@
 import Foundation
 
 /// Remaps a value from the range min-max to the range 0-1
-func remapValueToBounds(_ value: Float, min: Float, max: Float) -> Float {
+func remapValueToUnit(_ value: Float, min: Float, max: Float) -> Float {
     if value > max {
         return 1.0
     } else if value < min {
         return 0.0
     }
+    let scalingFactor = 1 / (max - min)
+    return (value - min) * scalingFactor
+}
+
+func remapValueToUnit(_ value: CGFloat, min: CGFloat, max: CGFloat) -> CGFloat {
+    if value > max {
+        return 1.0
+    } else if value < min {
+        return 0.0
+    }
+    
     let scalingFactor = 1 / (max - min)
     return (value - min) * scalingFactor
 }

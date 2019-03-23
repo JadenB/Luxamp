@@ -34,6 +34,7 @@ class CircularColorWell: NSColorWell {
         l.frame = bounds
         l.path = CGPath(ellipseIn: bounds, transform: nil)
         l.fillColor = NSColor.black.cgColor
+        l.needsDisplayOnBoundsChange = true
         return l
     }
     

@@ -9,8 +9,7 @@ import Cocoa
 
 /// Visualizes data from its AudioEngine to an NSColor
 class Visualizer {
-    weak var outputDelegate: VisualizerOutputDelegate?
-    weak var dataDelegate: VisualizerDataDelegate?
+    weak var delegate: VisualizerDelegate?
     
     var presets: VisualizerPresetManager
     
@@ -81,7 +80,7 @@ class Visualizer {
         
         // Send the color to the output delegate
         let colorToOutput = NSColor(hue: outputHue, saturation: outputSaturation, brightness: outputBrightness, alpha: 1.0)
-        outputDelegate?.didVisualizeIntoColor(colorToOutput, brightnessVal: brightness.outputVal, colorVal: color.outputVal)
+        delegate?.didVisualizeIntoColor(colorToOutput, brightnessVal: brightness.outputVal, colorVal: color.outputVal)
         
         // Send the data to the data delegate
         let brightnessData = VisualizerData()
@@ -97,7 +96,7 @@ class Visualizer {
         colorData.dynamicInputRange.max = color.dynamicMax
         colorData.dynamicInputRange.min = color.dynamicMin
         
-        dataDelegate?.didVisualizeWithData(brightnessData: brightnessData, colorData: colorData)
+        delegate?.didVisualizeWithData(brightnessData: brightnessData, colorData: colorData)
     }
 }
 
@@ -204,11 +203,11 @@ class VisualizerMapper {
         inputVal = preFilter.applyFilter(toValue: driver.output(usingEngine: engine), atIndex: 0)
         
         var newVal = postFilter.applyFilter(toValue: inputVal, atIndex: 0)
-        newVal = remapValueToBounds(newVal, min: inputMin, max: inputMax)
+        newVal = remapValueToUnit(newVal, min: inputMin, max: inputMax)
         
         if useDynamicRange {
             let range = dynamicRange.calculateRange(forNextValue: newVal)
-            newVal = remapValueToBounds(newVal, min: range.min, max: range.max)
+            newVal = remapValueToUnit(newVal, min: range.min, max: range.max)
             dynamicMin = range.min
             dynamicMax = range.max
         }
@@ -221,7 +220,7 @@ class VisualizerMapper {
     }
 }
 
-// A container meant to consolidate output data from the visualizer to pass to its data delegate
+/// A container meant to consolidate output data from the visualizer to pass to its data delegate
 class VisualizerData {
     var inputVal: Float = 0.0
     var outputVal: Float = 0.0
@@ -230,11 +229,7 @@ class VisualizerData {
 }
 
 /// The output delegate of a Visualizer object implements this protocol to perform specialized actions when the visualizer produces a color
-protocol VisualizerOutputDelegate: class {
+protocol VisualizerDelegate: class {
     func didVisualizeIntoColor(_ color: NSColor, brightnessVal: Float, colorVal: Float)
-}
-
-/// The data delegate of a Visualizer object implements this protocol to perform specialized actions when the visualizer converts data to color and brightness
-protocol VisualizerDataDelegate: class {
     func didVisualizeWithData(brightnessData: VisualizerData, colorData: VisualizerData)
 }

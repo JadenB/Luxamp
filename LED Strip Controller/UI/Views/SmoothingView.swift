@@ -46,7 +46,7 @@ class SmoothingView: NSView {
     
 }
 
-class SmoothingGraphLayer: CALayer {
+class SmoothingGraphLayer: CAGradientLayer {
     let regSine: [CGFloat] = [
         0.50, 0.53, 0.56, 0.58, 0.61, 0.63, 0.65, 0.67, 0.69, 0.70,
         0.71, 0.72, 0.72, 0.72, 0.72, 0.71, 0.70, 0.69, 0.67, 0.65,
@@ -81,7 +81,13 @@ class SmoothingGraphLayer: CALayer {
     }
     
     private func commonInit() {
-        backgroundColor = NSColor.black.cgColor
+        colors = [
+            CGColor(gray: 0.10, alpha: 1.0),
+            CGColor(gray: 0.15, alpha: 1.0),
+            CGColor(gray: 0.10, alpha: 1.0)
+        ]
+        startPoint = .zero
+        endPoint = CGPoint(x: 0.0, y: 1.0)
     }
     
     override func draw(in ctx: CGContext) {
@@ -89,10 +95,10 @@ class SmoothingGraphLayer: CALayer {
         let width = bounds.width
         let height = bounds.height
         
-        ctx.move(to: NSPoint(x: 0, y: regSine[0] * height))
+        ctx.move(to: CGPoint(x: 0, y: regSine[0] * height))
         
         let size = regSine.count
-        let dx = width / CGFloat(size)
+        let dx = width / CGFloat(size - 1)
         var x = dx
         for i in 1..<size {
             let smoothedVal = smoothing * regSine[i] + (1 - smoothing) * noisySine[i]
