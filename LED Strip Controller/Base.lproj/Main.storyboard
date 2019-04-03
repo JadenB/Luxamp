@@ -965,7 +965,6 @@
                         <outlet property="powerButton" destination="cC1-fh-cqM" id="PAf-TY-v55"/>
                         <outlet property="presetMenu" destination="wJQ-XF-OEo" id="HQv-A6-P5o"/>
                         <outlet property="presetMenuDeleteItem" destination="vcN-Qa-xBW" id="HJo-iU-fgU"/>
-                        <outlet property="scrollingGraph" destination="RZl-Je-PWx" id="b47-WQ-Afn"/>
                         <outlet property="spectrum" destination="eHf-pn-RXR" id="2wY-4k-GD0"/>
                         <segue destination="Xjn-n8-aFl" kind="sheet" identifier="saveDialogSegue" id="n7H-ob-WR0"/>
                         <segue destination="P3F-QY-07K" kind="modal" identifier="gradientEditorSegue" id="q8K-1G-fK7"/>
@@ -1823,18 +1822,6 @@ Gw
             </objects>
             <point key="canvasLocation" x="208" y="2062"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="fbq-8I-DYZ">
-            <objects>
-                <viewController id="YRj-eI-Uvn" sceneMemberID="viewController">
-                    <view key="view" id="2vE-qq-um8">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </view>
-                </viewController>
-                <customObject id="dxt-iD-U14" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-            </objects>
-        </scene>
         <!--Side View Controller-->
         <scene sceneID="ypB-Xb-lvy">
             <objects>
@@ -1844,26 +1831,26 @@ Gw
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="stG-mm-RrU" customClass="SmoothingView" customModule="LED_Strip_Controller" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="269" width="292" height="96"/>
+                                <rect key="frame" x="86" y="306" width="121" height="45"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             </customView>
-                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RZl-Je-PWx" customClass="ScrollingGraphView" customModule="LED_Strip_Controller" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="292" height="95"/>
+                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="abo-u8-uiW" customClass="ScrollingLevelView" customModule="LED_Strip_Controller" customModuleProvider="target">
+                                <rect key="frame" x="56" y="103" width="180" height="195"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="pointCount">
-                                        <integer key="value" value="40"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                             </customView>
-                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="koV-an-mls" customClass="AdjustableLevelView" customModule="LED_Strip_Controller" customModuleProvider="target">
-                                <rect key="frame" x="63" y="142" width="72" height="96"/>
+                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pJd-dX-IL9" customClass="AdjustableLevelView" customModule="LED_Strip_Controller" customModuleProvider="target">
+                                <rect key="frame" x="256" y="103" width="36" height="195"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            </customView>
+                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yjq-L1-mhI" customClass="RangeControl" customModule="LED_Strip_Controller" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="103" width="36" height="195"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             </customView>
                         </subviews>
                     </view>
                     <connections>
-                        <outlet property="scrollingGraph" destination="RZl-Je-PWx" id="4aN-Xc-6zG"/>
+                        <outlet property="outputLevel" destination="pJd-dX-IL9" id="UIV-5j-6km"/>
+                        <outlet property="scrollingLevel" destination="abo-u8-uiW" id="5zA-F0-LHG"/>
                     </connections>
                 </viewController>
                 <customObject id="uqK-0s-Kiy" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -1876,7 +1863,7 @@ Gw
         <image name="On Power" width="152" height="56"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="WXO-5z-Zan"/>
+        <segue reference="LZo-Ia-loG"/>
         <segue reference="3wr-W7-VDn"/>
     </inferredMetricsTieBreakers>
 </document>

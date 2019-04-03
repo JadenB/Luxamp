@@ -51,6 +51,11 @@ class DynamicRange {
         minFilter = BiasedIIRFilter(initialData: [0.0])
         setAlphas()
     }
+	
+	func set(min: Float, max: Float) {
+		maxFilter = BiasedIIRFilter(initialData: [max])
+		minFilter = BiasedIIRFilter(initialData: [min])
+	}
     
     private func setAlphas() {
         maxFilter.upwardsAlpha = 0.6

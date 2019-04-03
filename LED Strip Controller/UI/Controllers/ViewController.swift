@@ -49,8 +49,11 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerDelegate,
         arcLevelCenter.delegate = self
         
         populateMenus()
-        refreshAllViews()
     }
+	
+	override func viewWillAppear() {
+		refreshViews()
+	}
     
     override func viewDidAppear() {
         super.viewDidAppear()
@@ -66,8 +69,10 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerDelegate,
         switch segue.identifier! {
         case .brightnessSideSegue:
             brightnessSide = segue.destinationController as? SideViewController
+			brightnessSide.mapper = musicVisualizer.brightness
         case .colorSideSegue:
             colorSide = segue.destinationController as? SideViewController
+			colorSide.mapper = musicVisualizer.color
         case .gradientEditorSegue:
             guard let gradientWindow = segue.destinationController as? NSWindowController else {
                 NSLog("Failed to cast gradient window controller")
@@ -133,7 +138,7 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerDelegate,
                 lastSelectedPresetName = sender.selectedItem!.title
             }
             
-            refreshAllViews()
+            refreshViews()
         }
     }
     
@@ -159,8 +164,10 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerDelegate,
         audioEngine.stop()
     }
     
-    func refreshAllViews() {
+    func refreshViews() {
         arcLevelCenter.colorGradient = musicVisualizer.gradient
+		brightnessSide.refreshViews()
+		colorSide.refreshViews()
     }
     
     func populateMenus() {
