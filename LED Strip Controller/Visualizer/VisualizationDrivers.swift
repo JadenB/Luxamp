@@ -12,6 +12,10 @@ protocol VisualizationDriver {
     var name: String {
         get
     }
+	
+	var id: Int {
+		get
+	}
     
     func output(usingEngine engine: AudioEngine) -> Float
 }
@@ -20,10 +24,12 @@ protocol VisualizationDriver {
 // 1
 class RootMeanSquareDriver: VisualizationDriver {
     var name: String {
-        get {
-            return "Root Mean Square"
-        }
+        return "Average Volume"
     }
+	
+	var id: Int {
+		return 0
+	}
     
     func output(usingEngine engine: AudioEngine) -> Float {
         return engine.bProcessor.gist.rootMeanSquare()
@@ -33,10 +39,12 @@ class RootMeanSquareDriver: VisualizationDriver {
 // 2
 class PeakEnergyDriver: VisualizationDriver {
     var name: String {
-        get {
-            return "Peak Energy"
-        }
+        return "Peak Volume"
     }
+	
+	var id: Int {
+		return 1
+	}
     
     func output(usingEngine engine: AudioEngine) -> Float {
         return engine.bProcessor.gist.peakEnergy()
@@ -46,10 +54,12 @@ class PeakEnergyDriver: VisualizationDriver {
 // 3
 class SpectralDifferenceDriver: VisualizationDriver {
     var name: String {
-        get {
-            return "Spectral Difference"
-        }
+        return "Spectral Difference"
     }
+	
+	var id: Int {
+		return 2
+	}
     
     func output(usingEngine engine: AudioEngine) -> Float {
         return engine.bProcessor.gist.spectralDifference()
@@ -59,10 +69,12 @@ class SpectralDifferenceDriver: VisualizationDriver {
 // 4
 class SpectralCrestDriver: VisualizationDriver {
     var name: String {
-        get {
-            return "Spectral Crest"
-        }
+        return "Spectral Crest"
     }
+	
+	var id: Int {
+		return 3
+	}
     
     func output(usingEngine engine: AudioEngine) -> Float {
         return engine.bProcessor.gist.spectralCrest()
@@ -73,10 +85,12 @@ class SpectralCrestDriver: VisualizationDriver {
 // 5
 class PitchDriver: VisualizationDriver {
     var name: String {
-        get {
-            return "Pitch"
-        }
+        return "Pitch"
     }
+	
+	var id: Int {
+		return 4
+	}
     
     func output(usingEngine engine: AudioEngine) -> Float {
         return engine.bProcessor.gist.pitch()
@@ -87,10 +101,12 @@ class PitchDriver: VisualizationDriver {
 // 6
 class VeryLowSpectrumDriver: VisualizationDriver {
     var name: String {
-        get {
-            return "Very Low Spectrum"
-        }
+		return "Deep Bass Volume"
     }
+	
+	var id: Int {
+		return 5
+	}
     
     func output(usingEngine engine: AudioEngine) -> Float {
         return engine.bProcessor.averageMagOfRange(0...3, withFalloff: 2) * 0.0075
@@ -100,10 +116,12 @@ class VeryLowSpectrumDriver: VisualizationDriver {
 // 7
 class LowSpectrumDriver: VisualizationDriver {
     var name: String {
-        get {
-            return "Low Spectrum"
-        }
+        return "Bass Volume"
     }
+	
+	var id: Int {
+		return 6
+	}
     
     func output(usingEngine engine: AudioEngine) -> Float {
         return engine.bProcessor.averageMagOfRange(0...6, withFalloff: 3) * 0.01
@@ -113,10 +131,12 @@ class LowSpectrumDriver: VisualizationDriver {
 // 8
 class MidSpectrumDriver: VisualizationDriver {
     var name: String {
-        get {
-            return "Mid Spectrum"
-        }
+        return "Mids Volume"
     }
+	
+	var id: Int {
+		return 7
+	}
     
     func output(usingEngine engine: AudioEngine) -> Float {
         return engine.bProcessor.averageMagOfRange(12...20, withFalloff: 3) * 0.02
@@ -126,10 +146,12 @@ class MidSpectrumDriver: VisualizationDriver {
 // 9
 class HighSpectrumDriver: VisualizationDriver {
     var name: String {
-        get {
-            return "High Spectrum"
-        }
+        return "Treble Volume"
     }
+	
+	var id: Int {
+		return 8
+	}
     
     func output(usingEngine engine: AudioEngine) -> Float {
         return engine.bProcessor.averageMagOfRange(25...50, withFalloff: 5) * 0.04

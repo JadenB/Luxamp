@@ -134,7 +134,7 @@
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bei-zt-cQH">
                                 <rect key="frame" x="14" y="52" width="129" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="push" title="Reset Defaults" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="CP7-GY-14j">
+                                <buttonCell key="cell" type="push" title="Reset Defaults" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="CP7-GY-14j">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -840,7 +840,7 @@
             <objects>
                 <windowController id="B8D-0N-5wS" sceneMemberID="viewController">
                     <window key="window" title="LED Strip Controls" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
-                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="359" y="202" width="960" height="540"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
@@ -1346,8 +1346,8 @@ Gw
         <scene sceneID="nEc-7M-iIA">
             <objects>
                 <windowController id="P3F-QY-07K" sceneMemberID="viewController">
-                    <window key="window" title="Color Editor" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" titlebarAppearsTransparent="YES" id="9ma-yX-TUL">
-                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" texturedBackground="YES"/>
+                    <window key="window" title="Color Editor" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="9ma-yX-TUL">
+                        <windowStyleMask key="styleMask" titled="YES" texturedBackground="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="294" y="313" width="480" height="208"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
@@ -1379,6 +1379,9 @@ Gw
                                 <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="FvM-Mt-2W2">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
+                                    <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
                                 </buttonCell>
                                 <connections>
                                     <action selector="applyButtonPressed:" target="iO9-Dj-NaA" id="Idk-14-95y"/>
@@ -1747,18 +1750,9 @@ Gw
             <objects>
                 <viewController id="KYw-wE-FAU" customClass="DynamicRangeViewController" customModule="LED_Strip_Controller" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="hed-2g-XF4">
-                        <rect key="frame" x="0.0" y="0.0" width="264" height="106"/>
+                        <rect key="frame" x="0.0" y="0.0" width="264" height="81"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hce-6i-KZy">
-                                <rect key="frame" x="18" y="69" width="228" height="17"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Dynamic Range" id="ceF-Ie-SCJ">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
                             <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zLv-ny-Qug">
                                 <rect key="frame" x="158" y="43" width="88" height="19"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -1820,7 +1814,7 @@ Gw
                 </viewController>
                 <customObject id="KPK-Go-8NU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="208" y="2062"/>
+            <point key="canvasLocation" x="192" y="1960"/>
         </scene>
         <!--Side View Controller-->
         <scene sceneID="ypB-Xb-lvy">
@@ -1830,30 +1824,126 @@ Gw
                         <rect key="frame" x="0.0" y="0.0" width="292" height="365"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="stG-mm-RrU" customClass="SmoothingView" customModule="LED_Strip_Controller" customModuleProvider="target">
-                                <rect key="frame" x="86" y="306" width="121" height="45"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            </customView>
                             <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="abo-u8-uiW" customClass="ScrollingLevelView" customModule="LED_Strip_Controller" customModuleProvider="target">
-                                <rect key="frame" x="56" y="103" width="180" height="195"/>
+                                <rect key="frame" x="0.0" y="135" width="236" height="199"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             </customView>
                             <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pJd-dX-IL9" customClass="AdjustableLevelView" customModule="LED_Strip_Controller" customModuleProvider="target">
-                                <rect key="frame" x="256" y="103" width="36" height="195"/>
+                                <rect key="frame" x="256" y="20" width="36" height="314"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             </customView>
-                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yjq-L1-mhI" customClass="RangeControl" customModule="LED_Strip_Controller" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="103" width="36" height="195"/>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0hN-ZB-pQB">
+                                <rect key="frame" x="258" y="0.0" width="32" height="14"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="OUT" id="tmb-Qe-RaN">
+                                    <font key="font" metaFont="smallSystem"/>
+                                    <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qWL-Xg-WSV">
+                                <rect key="frame" x="-2" y="74" width="241" height="25"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="B7J-3m-tbB">
+                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="menu"/>
+                                    <menu key="menu" id="7lq-Ww-CWp"/>
+                                </popUpButtonCell>
+                                <connections>
+                                    <action selector="driverChanged:" target="Z19-kP-1vK" id="ZF5-Jo-12R"/>
+                                </connections>
+                            </popUpButton>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Eae-WH-PM5">
+                                <rect key="frame" x="139" y="99" width="103" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Options..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="TcU-aO-Adp">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <segue destination="KYw-wE-FAU" kind="popover" identifier="dynamicRangePopoverSegue" popoverAnchorView="Eae-WH-PM5" popoverBehavior="t" preferredEdge="maxY" id="M2o-DG-hNA"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MoS-7g-fK3">
+                                <rect key="frame" x="-6" y="99" width="145" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Detect Range" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="QjN-jF-JTp">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="detectRangePressed:" target="Z19-kP-1vK" id="753-fs-iiB"/>
+                                </connections>
+                            </button>
+                            <button toolTip="Invert" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VZi-Gd-EU5">
+                                <rect key="frame" x="250" y="337" width="48" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" bezelStyle="rounded" image="ReverseImage" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="KNf-xm-WVn">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="invertPressed:" target="Z19-kP-1vK" id="DbY-cx-IDY"/>
+                                </connections>
+                            </button>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Y7v-Dv-0g6">
+                                <rect key="frame" x="58" y="346" width="121" height="17"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Brightness Control" id="U3Z-JR-55N">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bLt-rU-BT9">
+                                <rect key="frame" x="122" y="27" width="116" height="19"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="0.94999999999999996" doubleValue="0.5" tickMarkPosition="above" sliderType="linear" id="1es-eA-LrX"/>
+                                <connections>
+                                    <action selector="smoothingChanged:" target="Z19-kP-1vK" id="qwx-x2-fTq"/>
+                                </connections>
+                            </slider>
+                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V9n-fs-hTe" customClass="SmoothingView" customModule="LED_Strip_Controller" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="116" height="69"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="smoothing">
+                                        <real key="value" value="0.5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </customView>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q3W-i6-CTu">
+                                <rect key="frame" x="145" y="52" width="70" height="17"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="Smoothing" id="5fy-eC-spH">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lzd-Ke-Zga">
+                                <rect key="frame" x="118" y="-7" width="124" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Advanced..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="oTz-Xi-X7n">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </button>
                         </subviews>
                     </view>
                     <connections>
+                        <outlet property="detectRangeButton" destination="MoS-7g-fK3" id="7RO-a7-MQa"/>
+                        <outlet property="driverMenu" destination="qWL-Xg-WSV" id="qJ9-SN-pyu"/>
+                        <outlet property="invertButton" destination="VZi-Gd-EU5" id="E2Q-Uh-2gh"/>
                         <outlet property="outputLevel" destination="pJd-dX-IL9" id="UIV-5j-6km"/>
                         <outlet property="scrollingLevel" destination="abo-u8-uiW" id="5zA-F0-LHG"/>
+                        <outlet property="smoothingSlider" destination="bLt-rU-BT9" id="dfS-W8-bsg"/>
+                        <outlet property="smoothingView" destination="V9n-fs-hTe" id="VR3-RH-6qe"/>
+                        <outlet property="titleLabel" destination="Y7v-Dv-0g6" id="fAP-fO-3kK"/>
                     </connections>
                 </viewController>
                 <customObject id="uqK-0s-Kiy" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <userDefaultsController id="rol-Na-d3K"/>
             </objects>
             <point key="canvasLocation" x="75" y="1539.5"/>
         </scene>
@@ -1861,9 +1951,11 @@ Gw
     <resources>
         <image name="Off Power" width="152" height="56"/>
         <image name="On Power" width="152" height="56"/>
+        <image name="ReverseImage" width="64" height="52"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="LZo-Ia-loG"/>
+        <segue reference="M2o-DG-hNA"/>
         <segue reference="3wr-W7-VDn"/>
     </inferredMetricsTieBreakers>
 </document>

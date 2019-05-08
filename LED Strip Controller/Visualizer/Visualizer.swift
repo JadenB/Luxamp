@@ -97,16 +97,16 @@ class VisualizerMapper {
                                                          MidSpectrumDriver(),
                                                          HighSpectrumDriver()]
     private var driverDict: [String : VisualizationDriver] = [:]
+	private var driverIdDict: [Int : VisualizationDriver] = [:]
     
     private var driver: VisualizationDriver
     private var engine: AudioEngine
     
     private var preFilter = BiasedIIRFilter(size: 1)
     private var postFilter = BiasedIIRFilter(size: 1)
-    
-    // TODO: convert these to something like range.max and range.min
+	
     // The range of input values that applyMapping() remaps to the range 0-1
-    var inputMin: Float = 0.0
+	var inputMin: Float = 0.0
     var inputMax: Float = 1.0
 	
 	// The range of values remapped to by applyMapping()
@@ -117,7 +117,7 @@ class VisualizerMapper {
 	}
 	var outputMax: Float = 1.0 {
 		didSet {
-			if outputMin < 0.0 { print("outputMax is greater than 1!") }
+			if outputMax > 1.0 { print("outputMax is greater than 1!") }
 		}
 	}
     
@@ -126,8 +126,8 @@ class VisualizerMapper {
     
     /// Whether to use a dynamic subrange on the input range
     var useDynamicRange = false {
-        didSet {
-            if useDynamicRange { dynamicRange.set(min: inputMin, max: inputMax) }
+        willSet {
+            if newValue && !useDynamicRange { dynamicRange.resetRangeWithInitial(min: inputMin, max: inputMax) }
         }
     }
     
@@ -162,6 +162,7 @@ class VisualizerMapper {
         
         for driver in orderedDrivers {
             driverDict[driver.name] = driver
+			driverIdDict[driver.id] = driver
         }
     }
     
@@ -178,6 +179,13 @@ class VisualizerMapper {
     func driverName() -> String {
         return driver.name
     }
+	
+	/// Gets the id of the current driver
+	///
+	/// - Returns: The name of the current driver
+	func driverId() -> Int {
+		return driver.id
+	}
     
     /// Sets the current driver
     ///
@@ -185,6 +193,13 @@ class VisualizerMapper {
     func setDriver(withName name: String) {
         driver = driverDict[name] ?? orderedDrivers[0]
     }
+	
+	/// Sets the current driver
+	///
+	/// - Parameter name: The id of the driver to set
+	func setDriver(withId id: Int) {
+		driver = driverIdDict[id] ?? orderedDrivers[0]
+	}
     
     /// Transforms the value given by the driver and sets inputVal and outputVal
     fileprivate func applyMapping() -> VisualizerData {

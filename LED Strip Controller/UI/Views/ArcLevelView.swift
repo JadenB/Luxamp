@@ -109,8 +109,6 @@ class ArcLevelView: NSView {
             print("hit brightess")
         } else if colorArcLayer.contains(p) {
             delegate?.arcLevelColorClicked(with: event)
-        } else {
-            print("no hit")
         }
         
         super.mouseDown(with: event)

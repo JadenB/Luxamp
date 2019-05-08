@@ -10,9 +10,13 @@ import Cocoa
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
+	
+	func applicationWillFinishLaunching(_ notification: Notification) {
+		NSApp.appearance = NSAppearance(named: .darkAqua)
+	}
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Insert code here to initialize your application
+		
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

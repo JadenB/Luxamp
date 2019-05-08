@@ -36,6 +36,7 @@
 		7D6BFD9D21F98EA700E17012 /* CircularColorWell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D6BFD9C21F98EA700E17012 /* CircularColorWell.swift */; };
 		7D6BFD9F21F98EB700E17012 /* SmoothingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D6BFD9E21F98EB700E17012 /* SmoothingView.swift */; };
 		7D6D4DE221F2C9CC00553E11 /* AngleGradientArcLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D6D4DE121F2C9CC00553E11 /* AngleGradientArcLayer.swift */; };
+		7D7266E42281331700B64DD6 /* MomentumIIRFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D7266E32281331700B64DD6 /* MomentumIIRFilter.swift */; };
 		7DB5D6E821D46E92000E7B6C /* VisualizerPresetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB5D6E721D46E92000E7B6C /* VisualizerPresetManager.swift */; };
 		7DEBB55021EE916800878309 /* AngleGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DEBB54F21EE916800878309 /* AngleGradientLayer.m */; };
 		7DEBB55521EE977400878309 /* ArcLevelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DEBB55421EE977400878309 /* ArcLevelView.swift */; };
@@ -117,6 +118,7 @@
 		7D6BFD9C21F98EA700E17012 /* CircularColorWell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularColorWell.swift; sourceTree = "<group>"; };
 		7D6BFD9E21F98EB700E17012 /* SmoothingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmoothingView.swift; sourceTree = "<group>"; };
 		7D6D4DE121F2C9CC00553E11 /* AngleGradientArcLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AngleGradientArcLayer.swift; sourceTree = "<group>"; };
+		7D7266E32281331700B64DD6 /* MomentumIIRFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomentumIIRFilter.swift; sourceTree = "<group>"; };
 		7D884BC721CC47FD00FAD263 /* Visualizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visualizer.swift; sourceTree = "<group>"; };
 		7D884BD321CCC36B00FAD263 /* SpectrumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrumView.swift; sourceTree = "<group>"; };
 		7D884BD521CCD8EE00FAD263 /* LegacyLevelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyLevelView.swift; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 			children = (
 				7D33777F21CF2C4900554841 /* BufferProcessor.swift */,
 				7D884BD921CEEB9000FAD263 /* BiasedIIRFilter.swift */,
+				7D7266E32281331700B64DD6 /* MomentumIIRFilter.swift */,
 				7DFE03B421CB6F8C00D6288F /* AudioEngine.swift */,
 			);
 			path = Audio;
@@ -500,6 +503,7 @@
 				7D42758521D866760075A325 /* SaveDialogViewController.swift in Sources */,
 				7D33778721D027BF00554841 /* SpectrumView.swift in Sources */,
 				7D55915221DB366200982532 /* VisualizerSideViewController.swift in Sources */,
+				7D7266E42281331700B64DD6 /* MomentumIIRFilter.swift in Sources */,
 				7DB5D6E821D46E92000E7B6C /* VisualizerPresetManager.swift in Sources */,
 				7D33779021D035C800554841 /* DynamicRange.swift in Sources */,
 				7D33778421D027BA00554841 /* BufferProcessor.swift in Sources */,

@@ -52,12 +52,12 @@ class GradientEditorViewController: NSViewController {
     }
     
     @IBAction func cancelButtonPressed(_ sender: Any) {
-        self.view.window?.performClose(nil)
+        view.window?.close()
     }
     
     @IBAction func applyButtonPressed(_ sender: Any) {
         delegate?.gradientEditorSetGradient(gradient)
-        self.view.window?.performClose(nil)
+        view.window?.close()
     }
     
     func setupColorWells() {
@@ -93,7 +93,8 @@ class GradientEditorViewController: NSViewController {
         if count == colorsUsed && !needsColorWellsUpdated {
             return
         }
-        
+		
+		needsColorWellsUpdated = false
         countStepper.integerValue = count
         countField.integerValue = count
         colorsUsed = count

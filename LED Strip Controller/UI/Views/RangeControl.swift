@@ -45,6 +45,16 @@ class RangeControl: NSControl {
 		return bounds.height - sliderThickness
 	}
 	
+	override var isEnabled: Bool {
+		didSet {
+			if isEnabled {
+				window?.invalidateCursorRects(for: self)
+			} else {
+				discardCursorRects()
+			}
+		}
+	}
+	
 	override init(frame frameRect: NSRect) {
 		super.init(frame: frameRect)
 		commonInit()
@@ -61,6 +71,13 @@ class RangeControl: NSControl {
 	
 	override func mouseDown(with event: NSEvent) {
 		if !isEnabled {
+			return
+		}
+		
+		if event.clickCount == 2 {
+			upperValue = max
+			lowerValue = min
+			delegate?.rangeControlSlidersChanged(self)
 			return
 		}
 		
@@ -126,8 +143,10 @@ class RangeControl: NSControl {
 	}
 	
 	override func resetCursorRects() {
-		addCursorRect(upperSliderBounds, cursor: .resizeUpDown)
-		addCursorRect(lowerSliderBounds, cursor: .resizeUpDown)
+		if isEnabled {
+			addCursorRect(upperSliderBounds, cursor: .resizeUpDown)
+			addCursorRect(lowerSliderBounds, cursor: .resizeUpDown)
+		}
 	}
 	
 	func didUpdateSliderBounds() {}
@@ -136,6 +155,8 @@ class RangeControl: NSControl {
 		upperValue = remapValueToBounds(upperValue, inputMin: min, inputMax: max, outputMin: newMin, outputMax: newMax)
 		lowerValue = remapValueToBounds(lowerValue, inputMin: min, inputMax: max, outputMin: newMin, outputMax: newMax)
 		minDistance = remapValueToBounds(minDistance, inputMin: min, inputMax: max, outputMin: newMin, outputMax: newMax)
+		min = newMin
+		max = newMax
 	}
 	
 	private enum TrackingStatus {

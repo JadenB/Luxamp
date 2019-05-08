@@ -70,6 +70,7 @@ class ScrollingLevelView: RangeControl {
 		upperSliderLayer.frame = bounds
 		upperSliderLayer.fillColor = .white
 		upperSliderLayer.shadowOpacity = 0.5
+		
 		lowerSliderLayer.frame = bounds
 		lowerSliderLayer.fillColor = .white
 		lowerSliderLayer.shadowOpacity = 0.5
@@ -95,7 +96,7 @@ class ScrollingLevelView: RangeControl {
 	}
 	
 	func pushLevel(_ level: Float) {
-		history.push(CGFloat(level))
+		history.push(CGFloat(remapValueToUnit(level, min: min, max: max)))
 		updateMasks()
 	}
 	

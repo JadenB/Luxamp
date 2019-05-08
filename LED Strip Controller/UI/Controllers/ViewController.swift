@@ -42,6 +42,7 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerDelegate,
     
     override func viewDidLoad() {
         super.viewDidLoad()
+		
         audioEngine = AudioEngine(refreshRate: Double(SAMPLE_RATE) / Double(BUFFER_SIZE))
         audioEngine.delegate = self
         musicVisualizer = Visualizer(withEngine: audioEngine)
@@ -70,9 +71,11 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerDelegate,
         case .brightnessSideSegue:
             brightnessSide = segue.destinationController as? SideViewController
 			brightnessSide.mapper = musicVisualizer.brightness
+			brightnessSide.headTitle = "Brightness Control"
         case .colorSideSegue:
             colorSide = segue.destinationController as? SideViewController
 			colorSide.mapper = musicVisualizer.color
+			colorSide.headTitle = "Color Control"
         case .gradientEditorSegue:
             guard let gradientWindow = segue.destinationController as? NSWindowController else {
                 NSLog("Failed to cast gradient window controller")
@@ -144,6 +147,7 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerDelegate,
     
     func savePreset(withName name: String) {
         musicVisualizer.presets.saveCurrentSettings(name: name)
+		print(musicVisualizer.brightness.outputMin)
         presetMenu.insertItem(withTitle: name, at: presetMenu.numberOfItems - 3)
         presetMenu.selectItem(withTitle: name)
         presetSelected(presetMenu)

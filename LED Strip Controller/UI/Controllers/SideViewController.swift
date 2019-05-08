@@ -11,16 +11,29 @@ import Cocoa
 class SideViewController: NSViewController, RangeControlDelegate {
 	
 	var mapper: VisualizerMapper!
+	var headTitle: String = ""
 
+	@IBOutlet weak var titleLabel: NSTextField!
+	@IBOutlet weak var detectRangeButton: NSButton!
+	@IBOutlet weak var driverMenu: NSPopUpButton!
 	@IBOutlet weak var scrollingLevel: ScrollingLevelView!
 	@IBOutlet weak var outputLevel: AdjustableLevelView!
+	@IBOutlet weak var smoothingView: SmoothingView!
+	@IBOutlet weak var invertButton: NSButton!
+	@IBOutlet weak var smoothingSlider: NSSlider!
 	
     override func viewDidLoad() {
         super.viewDidLoad()
+		
+		titleLabel.stringValue = headTitle
+		
 		scrollingLevel.delegate = self
 		scrollingLevel.identifier = .scrollingLevel
 		outputLevel.delegate = self
 		outputLevel.identifier = .outputLevel
+		
+		populateMenus()
+		refreshViews()
     }
 	
 	override func viewDidAppear() {
@@ -29,6 +42,13 @@ class SideViewController: NSViewController, RangeControlDelegate {
 	
 	override func viewDidDisappear() {
 		scrollingLevel.isHidden = true
+	}
+	
+	override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
+		if segue.identifier == .dynamicRangePopoverSegue {
+			let drController = segue.destinationController as! DynamicRangeViewController
+			drController.dynamicRange = mapper.dynamicRange
+		}
 	}
     
     func updateWithData(_ data: VisualizerData) {
@@ -46,6 +66,50 @@ class SideViewController: NSViewController, RangeControlDelegate {
 		scrollingLevel.upperValue = mapper.inputMax
 		outputLevel.lowerValue = mapper.outputMin
 		outputLevel.upperValue = mapper.outputMax
+		
+		detectRangeButton.state = mapper.useDynamicRange ? .on : .off
+		scrollingLevel.isEnabled = !mapper.useDynamicRange
+		driverMenu.selectItem(withTitle: mapper.driverName())
+		
+		invertButton.state = mapper.invert ? .on : .off
+		
+		smoothingView.smoothing = CGFloat(mapper.upwardsSmoothing)
+		smoothingSlider.floatValue = mapper.upwardsSmoothing
+	}
+	
+	private func populateMenus() {
+		let driverNames = mapper.drivers()
+		for driverName in driverNames {
+			driverMenu.addItem(withTitle: driverName)
+		}
+	}
+	
+	@IBAction func detectRangePressed(_ sender: NSButton) {
+		mapper.useDynamicRange = (sender.state == .on)
+		scrollingLevel.isEnabled = !mapper.useDynamicRange
+		if !mapper.useDynamicRange {
+			mapper.inputMin = scrollingLevel.lowerValue
+			mapper.inputMax = scrollingLevel.upperValue
+		}
+	}
+	
+	@IBAction func driverChanged(_ sender: NSPopUpButton) {
+		mapper.setDriver(withName: sender.selectedItem!.title)
+		
+		scrollingLevel.min = 0.0
+		scrollingLevel.max = 1.0
+		scrollingLevel.lowerValue = 0.0
+		scrollingLevel.upperValue = 1.0
+	}
+	
+	@IBAction func invertPressed(_ sender: NSButton) {
+		mapper.invert = (sender.state == .on)
+	}
+	
+	@IBAction func smoothingChanged(_ sender: NSSlider) {
+		mapper.upwardsSmoothing = sender.floatValue
+		mapper.downwardsSmoothing = sender.floatValue
+		smoothingView.smoothing = CGFloat(sender.floatValue)
 	}
 	
 	// MARK: - RangeControlDelegate
@@ -64,6 +128,10 @@ class SideViewController: NSViewController, RangeControlDelegate {
 			mapper.outputMax = sender.upperValue
 		}
 	}
+}
+
+extension NSStoryboardSegue.Identifier {
+	static let dynamicRangePopoverSegue = NSStoryboardSegue.Identifier("dynamicRangePopoverSegue")
 }
 
 extension NSUserInterfaceItemIdentifier {
