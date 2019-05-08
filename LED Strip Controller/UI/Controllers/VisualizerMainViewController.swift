@@ -6,13 +6,13 @@
 //  Copyright © 2018 Jaden Bernal. All rights reserved.
 //
 
-import Cocoa
+/*import Cocoa
 
-let DEFAULT_PRESET_INDEX = 1
+fileprivate let DEFAULT_PRESET_INDEX = 1
 
 
 // TODO: Split color and brightness side controls into seperate subviews run off the same viewcontroller
-class VisualizerMainViewController: NSViewController, VisualizerDataDelegate, GradientEditorViewControllerDelegate, SaveDialogDelegate {
+class VisualizerMainViewController: NSViewController, VisualizerDataDelegate, GradientEditorDelegate, SaveDialogDelegate {
     
     var visualizer: Visualizer!
     var presetManager: VisualizerPresetManager!
@@ -47,8 +47,8 @@ class VisualizerMainViewController: NSViewController, VisualizerDataDelegate, Gr
         super.viewDidLoad()
         visualizer.dataDelegate = self
         
-        presetManager = VisualizerPresetManager(withVisualizer: visualizer)
-        presetManager.applyPreset(name: VisualizerPreset.defaultPreset.name)
+        presetManager = VisualizerPresetManager()
+        presetManager.apply(name: VisualizerPreset.defaultPreset.name)
         
         populateMenus()
         refreshView()
@@ -65,7 +65,7 @@ class VisualizerMainViewController: NSViewController, VisualizerDataDelegate, Gr
     }
     
     func populateMenus() {
-        let presetNames = presetManager.getPresetNames()
+        let presetNames = presetManager.getNames()
         for i in (0..<presetNames.count).reversed() {
             presetMenu.insertItem(withTitle: presetNames[i], at: 1) // insert at 1 to put after title and before save/delete
         }
@@ -135,7 +135,7 @@ class VisualizerMainViewController: NSViewController, VisualizerDataDelegate, Gr
         } else if sender.indexOfSelectedItem == sender.numberOfItems - 2 {
             performSegue(withIdentifier: "saveDialogSegue", sender: self)
         } else {
-            presetManager.applyPreset(name: sender.selectedItem?.title ?? PRESETMANAGER_DEFAULT_PRESET_NAME)
+            presetManager.apply(name: sender.selectedItem?.title ?? PRESETMANAGER_DEFAULT_PRESET_NAME)
             presetMenu.title = "Preset: " + (presetMenu.selectedItem?.title ?? "Error")
             if sender.selectedItem?.title == PRESETMANAGER_DEFAULT_PRESET_NAME {
                 presetMenuDeleteItem.isEnabled = false
@@ -149,7 +149,7 @@ class VisualizerMainViewController: NSViewController, VisualizerDataDelegate, Gr
     }
     
     func savePreset(withName name: String) {
-        presetManager.saveCurrentStateAsPreset(name: name)
+        presetManager.saveCurrentSettings(name: name)
         presetMenu.insertItem(withTitle: name, at: presetMenu.numberOfItems - 3)
         presetMenu.selectItem(withTitle: name)
         presetSelected(presetMenu)
@@ -157,7 +157,7 @@ class VisualizerMainViewController: NSViewController, VisualizerDataDelegate, Gr
     
     func deletePreset(withName name: String) {
         presetMenu.selectItem(at: 1)
-        presetManager.deletePreset(name: name)
+        presetManager.delete(name: name)
         presetMenu.removeItem(withTitle: name)
         presetSelected(presetMenu)
     }
@@ -207,7 +207,7 @@ class VisualizerMainViewController: NSViewController, VisualizerDataDelegate, Gr
     
     // MARK: - GradientEditorViewControllerDelegate
     
-    func didSetGradient(gradient: NSGradient) {
+    func gradientEditorSetGradient(_ gradient: NSGradient) {
         visualizer.gradient = gradient
         gradientView.gradient = gradient
     }
@@ -222,7 +222,7 @@ class VisualizerMainViewController: NSViewController, VisualizerDataDelegate, Gr
             alert.messageText = "Invalid Preset Name"
             alert.informativeText = "Please choose a different name"
             alert.beginSheetModal(for: view.window!, completionHandler: nil)
-        } else if presetManager.getPresetNames().contains(name) {
+        } else if presetManager.getNames().contains(name) {
             let alert = NSAlert()
             alert.alertStyle = .critical
             alert.addButton(withTitle: "Replace")
@@ -247,3 +247,4 @@ class VisualizerMainViewController: NSViewController, VisualizerDataDelegate, Gr
 }
 
 
+*/

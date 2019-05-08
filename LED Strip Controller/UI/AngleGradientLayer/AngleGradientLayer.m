@@ -134,12 +134,10 @@ static void angleGradient(byte* data, int w, int h, int* colors, int colorCount,
     }
     
     if (locationCount > 0 && locationCount == colorCount) {
-        printf("locations");
         locs = calloc(locationCount, sizeof(locs[0]));
         float *p = locs;
         for (NSNumber *n in locations) {
             *p++ = [n floatValue];
-            printf("%.2f,", n.floatValue);
         }
     }
     

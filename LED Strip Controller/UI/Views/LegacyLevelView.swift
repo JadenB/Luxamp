@@ -9,7 +9,7 @@
 import Cocoa
 
 @IBDesignable
-class LevelView: NSView {
+class LegacyLevelView: NSView {
     
     @IBInspectable var color: NSColor = .black
     @IBInspectable var backgroundColor: NSColor = .white
@@ -64,7 +64,7 @@ class LevelView: NSView {
         let x = bounds.origin.x
         let y = bounds.origin.y
         let w = bounds.size.width
-        let h = viewHeight * CGFloat(remapValueToBounds(level, min: min, max: max))
+        let h = viewHeight * CGFloat(remapValueToUnit(level, min: min, max: max))
         
         let r1  = CGRect(x: x, y: y, width: w, height: h)
         r1.fill()

@@ -13,7 +13,13 @@ let MAX_GRADIENT_COLORS = 5
 class GradientEditorViewController: NSViewController {
     
     @IBOutlet weak var stackView: NSStackView!
-    var gradient: NSGradient! = NSGradient(starting: .black, ending: .white)
+    var gradient: NSGradient! = NSGradient(starting: .black, ending: .white) {
+        didSet {
+            needsColorWellsUpdated = true
+            gradientView.gradient = gradient
+            setColorCount(count: gradient.numberOfColorStops)
+        }
+    }
     
     @IBOutlet weak var gradientView: GradientView!
     @IBOutlet weak var countStepper: NSStepper!
@@ -27,13 +33,13 @@ class GradientEditorViewController: NSViewController {
     
     var colorWells: [NSColorWell] = []
     var colorsUsed: Int = 0
+    var needsColorWellsUpdated = false
     
-    var delegate: GradientEditorViewControllerDelegate?
+    weak var delegate: GradientEditorDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupColorWells()
-        gradientView.gradient = gradient
         setColorCount(count: gradient.numberOfColorStops)
     }
     
@@ -46,12 +52,12 @@ class GradientEditorViewController: NSViewController {
     }
     
     @IBAction func cancelButtonPressed(_ sender: Any) {
-        self.view.window?.performClose(nil)
+        view.window?.close()
     }
     
     @IBAction func applyButtonPressed(_ sender: Any) {
-        delegate?.didSetGradient(gradient: gradient)
-        self.view.window?.performClose(nil)
+        delegate?.gradientEditorSetGradient(gradient)
+        view.window?.close()
     }
     
     func setupColorWells() {
@@ -84,10 +90,11 @@ class GradientEditorViewController: NSViewController {
     }
     
     func setColorCount(count: Int) {
-        if count == colorsUsed {
+        if count == colorsUsed && !needsColorWellsUpdated {
             return
         }
-        
+		
+		needsColorWellsUpdated = false
         countStepper.integerValue = count
         countField.integerValue = count
         colorsUsed = count
@@ -99,11 +106,9 @@ class GradientEditorViewController: NSViewController {
         for i in 0..<colorsUsed {
             colorWells[i].color = gradient.interpolatedColor(atLocation: CGFloat(i) * 1 / (CGFloat(colorsUsed) - 1))
         }
-        
-        updateGradientFromColorWells()
     }
 }
 
-protocol GradientEditorViewControllerDelegate {
-    func didSetGradient(gradient: NSGradient)
+protocol GradientEditorDelegate: class {
+    func gradientEditorSetGradient(_ gradient: NSGradient)
 }

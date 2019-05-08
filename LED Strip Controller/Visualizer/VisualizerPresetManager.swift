@@ -13,17 +13,18 @@ let PRESETMANAGER_DEFAULT_PRESET_NAME = "Default"
 
 class VisualizerPresetManager {
     
-    var visualizer: Visualizer
+    let defaultP = VisualizerPreset.defaultPreset
+    
+    weak var visualizer: Visualizer!
     private var presets: [String : VisualizerPreset] = [:]
     private var orderedPresets: [VisualizerPreset] = []
     
-    init(withVisualizer v: Visualizer) {
-        visualizer = v
-        loadPresets()
+    init() {
+        loadPresetsFromDisk()
     }
     
     /// Attempts to load saved presets from UserDefaults, or creates the default preset if none are found
-    func loadPresets() {
+    private func loadPresetsFromDisk() {
         guard let presetData = UserDefaults.standard.object(forKey: USERDEFAULTS_PRESETS_KEY) as? Data else {
             presets = [PRESETMANAGER_DEFAULT_PRESET_NAME:VisualizerPreset.defaultPreset]
             orderedPresets = [VisualizerPreset.defaultPreset]
@@ -32,10 +33,7 @@ class VisualizerPresetManager {
         
         do {
             let loadedPresets = try JSONDecoder().decode([VisualizerPreset].self, from: presetData)
-            
-            for p in loadedPresets {
-                presets[p.name] = p
-            }
+			loadedPresets.forEach { presets[$0.name] = $0 }
             orderedPresets = loadedPresets
         } catch {
             print(error)
@@ -45,28 +43,30 @@ class VisualizerPresetManager {
     /// Gets the names of all loaded presets
     ///
     /// - Returns: The names of loaded presets in the order they were saved
-    func getPresetNames() -> [String] {
+    func getNames() -> [String] {
         return orderedPresets.map { $0.name }
     }
     
     /// Applies the preset with a matching name to the current visualizer
     ///
     /// - Parameter name: The name of the preset to apply. Crashes if the preset does not exist.
-    func applyPreset(name: String) {
+    func apply(name: String) {
         guard let preset = presets[name] else {
             fatalError("Preset does not exist!")
         }
         
         let brightness = visualizer.brightness
         let color = visualizer.color
-    
+        
         visualizer.gradient = preset.gradient
         
         /* BRIGHTNESS */
-        brightness.setDriver(withName: preset.brightnessDriverName)
+        brightness.setDriver(withId: preset.brightnessDriverId)
         
-        brightness.inputMax = preset.brightnessRangeUpper
-        brightness.inputMin = preset.brightnessRangeLower
+        brightness.inputMax = preset.brightnessInputMax
+        brightness.inputMin = preset.brightnessInputMin
+		brightness.outputMax = preset.brightnessOutputMax
+		brightness.outputMin = preset.brightnessOutputMin
         brightness.invert = preset.brightnessInvert
         brightness.useDynamicRange = preset.brightnessUseDynamicRange
         
@@ -78,10 +78,12 @@ class VisualizerPresetManager {
         brightness.downwardsSmoothing = preset.brightnessDownwardsSmoothing
         
         /* COLOR */
-        color.setDriver(withName: preset.colorDriverName)
+        color.setDriver(withId: preset.colorDriverId)
         
-        color.inputMax = preset.colorRangeUpper
-        color.inputMin = preset.colorRangeLower
+        color.inputMax = preset.colorInputMax
+        color.inputMin = preset.colorInputMin
+		color.outputMax = preset.colorOutputMax
+		color.outputMin = preset.colorOutputMin
         color.invert = preset.colorInvert
         color.useDynamicRange = preset.colorUseDynamicRange
         
@@ -96,7 +98,7 @@ class VisualizerPresetManager {
     /// Saves the settings of the current visualizer as a preset
     ///
     /// - Parameter name: The name that the preset should be saved as. Replaces a preset if one with the same name already exists.
-    func saveCurrentStateAsPreset(name: String) {
+    func saveCurrentSettings(name: String) {
         let brightness = visualizer.brightness
         let color = visualizer.color
         
@@ -105,10 +107,12 @@ class VisualizerPresetManager {
         newPreset.gradient = visualizer.gradient
         
         /* BRIGHTNESS */
-        newPreset.brightnessDriverName = brightness.driverName()
+        newPreset.brightnessDriverId = brightness.driverId()
         
-        newPreset.brightnessRangeUpper = brightness.inputMax
-        newPreset.brightnessRangeLower = brightness.inputMin
+        newPreset.brightnessInputMax = brightness.inputMax
+        newPreset.brightnessInputMin = brightness.inputMin
+		newPreset.brightnessOutputMax = brightness.outputMax
+		newPreset.brightnessOutputMin = brightness.outputMin
         newPreset.brightnessInvert = brightness.invert
         newPreset.brightnessUseDynamicRange = brightness.useDynamicRange
         
@@ -120,10 +124,12 @@ class VisualizerPresetManager {
         newPreset.brightnessDownwardsSmoothing = brightness.downwardsSmoothing
         
         /* COLOR */
-        newPreset.colorDriverName = color.driverName()
+        newPreset.colorDriverId = color.driverId()
         
-        newPreset.colorRangeUpper = color.inputMax
-        newPreset.colorRangeLower = color.inputMin
+        newPreset.colorInputMax = color.inputMax
+        newPreset.colorInputMin = color.inputMin
+		newPreset.colorOutputMax = color.outputMax
+		newPreset.colorOutputMin = color.outputMin
         newPreset.colorInvert = color.invert
         newPreset.colorUseDynamicRange = color.useDynamicRange
         
@@ -136,11 +142,11 @@ class VisualizerPresetManager {
         
         presets[name] = newPreset
         orderedPresets.append(newPreset)
-        syncPresetsToUserDefaults()
+        syncToUserDefaults()
     }
     
     /// Updates the presets in UserDefaults
-    private func syncPresetsToUserDefaults() {
+    private func syncToUserDefaults() {
         guard let presetData = try? JSONEncoder().encode(orderedPresets) else {
             fatalError("Failed encoding presets!")
         }
@@ -151,10 +157,10 @@ class VisualizerPresetManager {
     /// Deletes a preset
     ///
     /// - Parameter name: The name of the preset to delete
-    func deletePreset(name: String) {
+    func delete(name: String) {
         orderedPresets.removeAll() {$0.name == name}
         presets.removeValue(forKey: name)
-        syncPresetsToUserDefaults()
+        syncToUserDefaults()
     }
 }
 
@@ -162,6 +168,51 @@ class VisualizerPreset: Codable {
     static let defaultPreset = VisualizerPreset(name: PRESETMANAGER_DEFAULT_PRESET_NAME)
     
     var name: String
+	
+	/* GLOBAL SETTINGS */
+	fileprivate var codableGradient: CodableGradient = CodableGradient()
+	var gradient: NSGradient {
+		get {
+			return codableGradient.gradient!
+		}
+		set {
+			codableGradient.gradient = newValue
+		}
+	}
+	
+	/* BRIGHTNESS SETTINGS */
+	var brightnessInputMax: Float = 1.0
+	var brightnessInputMin: Float = 0.0
+	var brightnessOutputMax: Float = 1.0
+	var brightnessOutputMin: Float = 0.0
+	
+	var brightnessDriverId: Int = 6 // Bass Volume
+	var brightnessInvert: Bool = false
+	var brightnessUseDynamicRange: Bool = false
+	
+	var brightnessDynamicUseMin: Bool = true
+	var brightnessDynamicUseMax: Bool = true
+	var brightnessDynamicAggression: Float = 0.50
+	
+	var brightnessUpwardsSmoothing: Float = 0.50
+	var brightnessDownwardsSmoothing: Float = 0.50
+	
+	/* COLOR SETTINGS */
+	var colorInputMax: Float = 1.0
+	var colorInputMin: Float = 0.0
+	var colorOutputMax: Float = 1.0
+	var colorOutputMin: Float = 0.0
+	
+	var colorDriverId: Int = 6 // Bass Volume
+	var colorInvert: Bool = false
+	var colorUseDynamicRange: Bool = false
+	
+	var colorDynamicUseMin: Bool = true
+	var colorDynamicUseMax: Bool = true
+	var colorDynamicAggression: Float = 0.50
+	
+	var colorUpwardsSmoothing: Float = 0.50
+	var colorDownwardsSmoothing: Float = 0.50
     
     init(name: String) {
         self.name = name
@@ -177,10 +228,12 @@ class VisualizerPreset: Codable {
             codableGradient = try container.decodeIfPresent(CodableGradient.self, forKey: .codableGradient) ?? d.codableGradient
             
             /* BRIGHTNESS */
-            brightnessRangeUpper = try container.decodeIfPresent(Float.self, forKey: .brightnessRangeUpper) ?? d.brightnessRangeUpper
-            brightnessRangeLower = try container.decodeIfPresent(Float.self, forKey: .brightnessRangeLower) ?? d.brightnessRangeLower
+            brightnessInputMax = try container.decodeIfPresent(Float.self, forKey: .brightnessInputMax) ?? d.brightnessInputMax
+            brightnessInputMin = try container.decodeIfPresent(Float.self, forKey: .brightnessInputMin) ?? d.brightnessInputMin
+			brightnessOutputMax = try container.decodeIfPresent(Float.self, forKey: .brightnessOutputMax) ?? d.brightnessOutputMax
+			brightnessOutputMin = try container.decodeIfPresent(Float.self, forKey: .brightnessOutputMin) ?? d.brightnessOutputMin
             
-            brightnessDriverName = try container.decodeIfPresent(String.self, forKey: .brightnessDriverName) ?? d.brightnessDriverName
+            brightnessDriverId = try container.decodeIfPresent(Int.self, forKey: .brightnessDriverId) ?? d.brightnessDriverId
             brightnessInvert = try container.decodeIfPresent(Bool.self, forKey: .brightnessInvert) ?? d.brightnessInvert
             brightnessUseDynamicRange = try container.decodeIfPresent(Bool.self, forKey: .brightnessUseDynamicRange) ?? d.brightnessUseDynamicRange
             
@@ -192,10 +245,12 @@ class VisualizerPreset: Codable {
             brightnessDownwardsSmoothing = try container.decodeIfPresent(Float.self, forKey: .brightnessDownwardsSmoothing) ?? d.brightnessDownwardsSmoothing
             
             /* COLOR */
-            colorRangeUpper = try container.decodeIfPresent(Float.self, forKey: .colorRangeUpper) ?? d.colorRangeUpper
-            colorRangeLower = try container.decodeIfPresent(Float.self, forKey: .colorRangeLower) ?? d.colorRangeLower
+            colorInputMax = try container.decodeIfPresent(Float.self, forKey: .colorInputMax) ?? d.colorInputMax
+            colorInputMin = try container.decodeIfPresent(Float.self, forKey: .colorInputMin) ?? d.colorInputMin
+			colorOutputMax = try container.decodeIfPresent(Float.self, forKey: .colorOutputMax) ?? d.colorOutputMax
+			colorOutputMin = try container.decodeIfPresent(Float.self, forKey: .colorOutputMin) ?? d.colorOutputMin
             
-            colorDriverName = try container.decodeIfPresent(String.self, forKey: .colorDriverName) ?? d.colorDriverName
+            colorDriverId = try container.decodeIfPresent(Int.self, forKey: .colorDriverId) ?? d.colorDriverId
             colorInvert = try container.decodeIfPresent(Bool.self, forKey: .colorInvert) ?? d.colorInvert
             colorUseDynamicRange = try container.decodeIfPresent(Bool.self, forKey: .colorUseDynamicRange) ?? d.colorUseDynamicRange
             
@@ -209,47 +264,6 @@ class VisualizerPreset: Codable {
             fatalError(error.localizedDescription)
         }
     }
-    
-    /* GLOBAL SETTINGS */
-    fileprivate var codableGradient: CodableGradient = CodableGradient()
-    var gradient: NSGradient {
-        get {
-            return codableGradient.gradient!
-        }
-        set {
-            codableGradient.gradient = newValue
-        }
-    }
-    
-    /* BRIGHTNESS SETTINGS */
-    var brightnessRangeUpper: Float = 1.0
-    var brightnessRangeLower: Float = 0.0
-    
-    var brightnessDriverName: String = "Low Spectrum"
-    var brightnessInvert: Bool = false
-    var brightnessUseDynamicRange: Bool = false
-    
-    var brightnessDynamicUseMin: Bool = true
-    var brightnessDynamicUseMax: Bool = true
-    var brightnessDynamicAggression: Float = 0.50
-    
-    var brightnessUpwardsSmoothing: Float = 0.50
-    var brightnessDownwardsSmoothing: Float = 0.50
-    
-    /* COLOR SETTINGS */
-    var colorRangeUpper: Float = 1.0
-    var colorRangeLower: Float = 0.0
-    
-    var colorDriverName: String = "Low Spectrum"
-    var colorInvert: Bool = false
-    var colorUseDynamicRange: Bool = false
-    
-    var colorDynamicUseMin: Bool = true
-    var colorDynamicUseMax: Bool = true
-    var colorDynamicAggression: Float = 0.50
-    
-    var colorUpwardsSmoothing: Float = 0.50
-    var colorDownwardsSmoothing: Float = 0.50
 }
 
 /// A wrapper around NSGradient that allows it to conform to the Codable protocol

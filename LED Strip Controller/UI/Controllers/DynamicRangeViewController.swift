@@ -18,13 +18,13 @@ class DynamicRangeViewController: NSViewController {
     @IBOutlet weak var rangeTopCheckbox: NSButton!
     @IBOutlet weak var rangeBottomCheckbox: NSButton!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        aggressionSlider.floatValue = dynamicRange.aggression
-        aggressionLabel.stringValue = String(format: "%.2f", dynamicRange.aggression)
-        rangeTopCheckbox.state = dynamicRange.useMax ? .on : .off
-        rangeBottomCheckbox.state = dynamicRange.useMin ? .on : .off
-    }
+	override func viewWillAppear() {
+		super.viewWillAppear()
+		aggressionSlider.floatValue = dynamicRange.aggression
+		aggressionLabel.stringValue = String(format: "%.2f", dynamicRange.aggression)
+		rangeTopCheckbox.state = dynamicRange.useMax ? .on : .off
+		rangeBottomCheckbox.state = dynamicRange.useMin ? .on : .off
+	}
     
     @IBAction func aggressionSliderChanged(_ sender: NSSlider) {
         dynamicRange.aggression = sender.floatValue

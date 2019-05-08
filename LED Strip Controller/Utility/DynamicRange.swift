@@ -47,10 +47,16 @@ class DynamicRange {
     }
     
     func resetRange() {
-        maxFilter = BiasedIIRFilter(initialData: [1.0])
         minFilter = BiasedIIRFilter(initialData: [0.0])
+        maxFilter = BiasedIIRFilter(initialData: [1.0])
         setAlphas()
     }
+	
+	func resetRangeWithInitial(min: Float, max: Float) {
+		minFilter = BiasedIIRFilter(initialData: [min])
+		maxFilter = BiasedIIRFilter(initialData: [max])
+		setAlphas()
+	}
     
     private func setAlphas() {
         maxFilter.upwardsAlpha = 0.6
