@@ -32,7 +32,7 @@ class RootMeanSquareDriver: VisualizationDriver {
 	}
     
     func output(usingEngine engine: AudioEngine) -> Float {
-        return engine.bProcessor.gist.rootMeanSquare()
+        return engine.bProcessor.gist.rootMeanSquare() * 1.5
     }
 }
 
@@ -62,7 +62,7 @@ class SpectralDifferenceDriver: VisualizationDriver {
 	}
     
     func output(usingEngine engine: AudioEngine) -> Float {
-        return engine.bProcessor.gist.spectralDifference()
+        return engine.bProcessor.gist.spectralDifference() * 0.0006
     }
 }
 
@@ -77,7 +77,7 @@ class SpectralCrestDriver: VisualizationDriver {
 	}
     
     func output(usingEngine engine: AudioEngine) -> Float {
-        return engine.bProcessor.gist.spectralCrest()
+        return engine.bProcessor.gist.spectralCrest() * 0.0014
     }
 }
 
@@ -93,7 +93,7 @@ class PitchDriver: VisualizationDriver {
 	}
     
     func output(usingEngine engine: AudioEngine) -> Float {
-        return engine.bProcessor.gist.pitch()
+        return engine.bProcessor.gist.pitch() * 0.00125
     }
 
 }
