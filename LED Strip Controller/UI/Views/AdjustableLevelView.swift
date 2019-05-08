@@ -57,5 +57,9 @@ class AdjustableLevelView: RangeControl {
 		path.addRect(lowerSliderBounds)
 		sliderLayer.path = path
 	}
+	
+	func clear() {
+		level = 0.0
+	}
     
 }

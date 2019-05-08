@@ -100,6 +100,11 @@ class ScrollingLevelView: RangeControl {
 		updateMasks()
 	}
 	
+	func clear() {
+		history.clearAll()
+		updateMasks()
+	}
+	
 	private func updateMasks() {
 		let maskPath = CGMutablePath()
 		let strokePath = CGMutablePath()
@@ -139,8 +144,10 @@ class CircularHistory<T> {
 	private var historyData: [T]
 	private var start: Int
 	private let last: Int
+	private let initialVal: T
 	
 	init(length: Int, initialData: T) {
+		initialVal = initialData
 		historyData = [T](repeating: initialData, count: length)
 		self.length = length
 		start = 0
@@ -150,6 +157,10 @@ class CircularHistory<T> {
 	func push(_ item: T) {
 		historyData[start] = item
 		start = (start == last) ? 0 : start + 1
+	}
+	
+	func clearAll() {
+		historyData = [T](repeating: initialVal, count: length)
 	}
 	
 	func getAll() -> [T] {

@@ -77,6 +77,11 @@ class SideViewController: NSViewController, RangeControlDelegate {
 		smoothingSlider.floatValue = mapper.upwardsSmoothing
 	}
 	
+	func clearViews() {
+		scrollingLevel.clear()
+		outputLevel.clear()
+	}
+	
 	private func populateMenus() {
 		let driverNames = mapper.drivers()
 		for driverName in driverNames {

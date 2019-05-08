@@ -112,6 +112,9 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerDelegate,
             LightController.shared.turnOff()
             stopAudioVisualization()
             spectrum.clear()
+			colorView.color = .black
+			arcLevelCenter.setBrightnessLevel(to: 0.0)
+			arcLevelCenter.setColorLevel(to: 0.0)
         }
     }
     
@@ -166,6 +169,8 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerDelegate,
     
     func stopAudioVisualization() {
         audioEngine.stop()
+		brightnessSide.clearViews()
+		colorSide.clearViews()
     }
     
     func refreshViews() {
