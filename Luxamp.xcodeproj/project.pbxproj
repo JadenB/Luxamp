@@ -266,7 +266,6 @@
 		7DFE037321CB2C8800D6288F = {
 			isa = PBXGroup;
 			children = (
-				7D447BDA21FD210400D09EA8 /* README.md */,
 				7DF1B65B21F9893200FC818E /* GistSwift.framework.dSYM */,
 				7D447BDB21FD333D00D09EA8 /* README.md */,
 				7DFE037E21CB2C8800D6288F /* LED Strip Controller */,
@@ -417,7 +416,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 7DFE037721CB2C8800D6288F /* Build configuration list for PBXProject "LED Strip Controller" */;
+			buildConfigurationList = 7DFE037721CB2C8800D6288F /* Build configuration list for PBXProject "Luxamp" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -805,7 +804,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		7DFE037721CB2C8800D6288F /* Build configuration list for PBXProject "LED Strip Controller" */ = {
+		7DFE037721CB2C8800D6288F /* Build configuration list for PBXProject "Luxamp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7DFE03A021CB2C8900D6288F /* Debug */,

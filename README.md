@@ -2,14 +2,14 @@
 <br>
 <img src="https://i.imgur.com/7qYqlpV.png" alt="logo" width="100">
 <br>
-AudioLED
+Luxamp
 <br>
 <br>
 </h1>
 
 <h4 align="center">A fully customizable light show for your music.</h4>
 
-**AudioLED for macOS** allows you to sync your LED lights to music with just an Arduino and a simple circuit. It analyzes audio from your computer's input and converts it into a vivid spectrum of colors for your lights. Every aspect of the conversion is customizable, including the smoothness, the frequency range used to determine color, and the output colors themselves.
+**Luxamp for macOS** allows you to sync your LED lights to music with just an Arduino and a simple circuit. It analyzes audio from your computer's input and converts it into a vivid spectrum of colors for your lights. Every aspect of the conversion is customizable, including the smoothness, the frequency range used to determine color, and the output colors themselves.
 
 ![](https://i.imgur.com/YiOsI1h.gif)
 
