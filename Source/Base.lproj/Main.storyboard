@@ -31,7 +31,7 @@
         <!--Preferences View Controller-->
         <scene sceneID="Hci-w2-fyx">
             <objects>
-                <viewController showSeguePresentationStyle="single" id="RIm-Mf-YdY" customClass="PreferencesViewController" customModule="LED_Strip_Controller" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController showSeguePresentationStyle="single" id="RIm-Mf-YdY" customClass="PreferencesViewController" customModule="Luxamp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="po3-7n-0hc">
                         <rect key="frame" x="0.0" y="0.0" width="295" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -162,11 +162,11 @@
                 <application id="hnw-xV-0zn" sceneMemberID="viewController">
                     <menu key="mainMenu" title="Main Menu" systemMenu="main" id="AYu-sK-qS6">
                         <items>
-                            <menuItem title="LED Strip Controller" id="1Xt-HY-uBw">
+                            <menuItem title="Luxamp" id="1Xt-HY-uBw">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="LED Strip Controller" systemMenu="apple" id="uQy-DD-JDr">
+                                <menu key="submenu" title="Luxamp" systemMenu="apple" id="uQy-DD-JDr">
                                     <items>
-                                        <menuItem title="About LED Strip Controller" id="5kV-Vb-QxS">
+                                        <menuItem title="About Luxamp" id="5kV-Vb-QxS">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="orderFrontStandardAboutPanel:" target="Ady-hI-5gd" id="Exp-CZ-Vem"/>
@@ -184,7 +184,7 @@
                                             <menu key="submenu" title="Services" systemMenu="services" id="hz9-B4-Xy5"/>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="4je-JR-u6R"/>
-                                        <menuItem title="Hide LED Strip Controller" keyEquivalent="h" id="Olw-nP-bQN">
+                                        <menuItem title="Hide Luxamp" keyEquivalent="h" id="Olw-nP-bQN">
                                             <connections>
                                                 <action selector="hide:" target="Ady-hI-5gd" id="PnN-Uc-m68"/>
                                             </connections>
@@ -202,7 +202,7 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="kCx-OE-vgT"/>
-                                        <menuItem title="Quit LED Strip Controller" keyEquivalent="q" id="4sb-4s-VLi">
+                                        <menuItem title="Quit Luxamp" keyEquivalent="q" id="4sb-4s-VLi">
                                             <connections>
                                                 <action selector="terminate:" target="Ady-hI-5gd" id="Te7-pn-YzF"/>
                                             </connections>
@@ -815,7 +815,7 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Help" systemMenu="help" id="F2S-fz-NVQ">
                                     <items>
-                                        <menuItem title="LED Strip Controller Help" keyEquivalent="?" id="FKE-Sm-Kum">
+                                        <menuItem title="Luxamp Help" keyEquivalent="?" id="FKE-Sm-Kum">
                                             <connections>
                                                 <action selector="showHelp:" target="Ady-hI-5gd" id="y7X-2Q-9no"/>
                                             </connections>
@@ -829,7 +829,7 @@
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
                     </connections>
                 </application>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="LED_Strip_Controller" customModuleProvider="target"/>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Luxamp" customModuleProvider="target"/>
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -861,12 +861,12 @@
         <!--View Controller-->
         <scene sceneID="hIz-AP-VOD">
             <objects>
-                <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="LED_Strip_Controller" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="Luxamp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
                         <rect key="frame" x="0.0" y="0.0" width="960" height="540"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="eHf-pn-RXR" customClass="SpectrumView" customModule="LED_Strip_Controller" customModuleProvider="target">
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="eHf-pn-RXR" customClass="SpectrumView" customModule="Luxamp" customModuleProvider="target">
                                 <rect key="frame" x="20" y="405" width="920" height="115"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="eHf-pn-RXR" secondAttribute="height" multiplier="8:1" id="Kxg-Me-SaH"/>
@@ -880,7 +880,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </customView>
-                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PTS-23-40h" userLabel="Center Circle" customClass="ArcLevelView" customModule="LED_Strip_Controller" customModuleProvider="target">
+                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PTS-23-40h" userLabel="Center Circle" customClass="ArcLevelView" customModule="Luxamp" customModuleProvider="target">
                                 <rect key="frame" x="352" y="80" width="256" height="256"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <subviews>
@@ -895,7 +895,7 @@
                                             <action selector="powerButtonPressed:" target="XfG-lQ-9wD" id="PEs-3H-HdK"/>
                                         </connections>
                                     </button>
-                                    <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZzZ-uH-Nmo" customClass="CircularColorWell" customModule="LED_Strip_Controller" customModuleProvider="target">
+                                    <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZzZ-uH-Nmo" customClass="CircularColorWell" customModule="Luxamp" customModuleProvider="target">
                                         <rect key="frame" x="62" y="62" width="132" height="132"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -978,7 +978,7 @@
         <!--Save Dialog View Controller-->
         <scene sceneID="Ojz-o1-50l">
             <objects>
-                <viewController id="Xjn-n8-aFl" customClass="SaveDialogViewController" customModule="LED_Strip_Controller" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Xjn-n8-aFl" customClass="SaveDialogViewController" customModule="Luxamp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="7xL-mX-Y5M">
                         <rect key="frame" x="0.0" y="0.0" width="350" height="103"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1080,7 +1080,7 @@ Gw
         <!--Gradient Editor View Controller-->
         <scene sceneID="2Ri-kS-6PU">
             <objects>
-                <viewController id="iO9-Dj-NaA" customClass="GradientEditorViewController" customModule="LED_Strip_Controller" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="iO9-Dj-NaA" customClass="GradientEditorViewController" customModule="Luxamp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="b9m-6P-BV4">
                         <rect key="frame" x="0.0" y="0.0" width="480" height="208"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1101,7 +1101,7 @@ DQ
                                     <action selector="applyButtonPressed:" target="iO9-Dj-NaA" id="Idk-14-95y"/>
                                 </connections>
                             </button>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="Isg-sz-mb3" customClass="GradientView" customModule="LED_Strip_Controller" customModuleProvider="target">
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="Isg-sz-mb3" customClass="GradientView" customModule="Luxamp" customModuleProvider="target">
                                 <rect key="frame" x="20" y="92" width="440" height="96"/>
                             </customView>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eZc-p2-5Zw">
@@ -1250,7 +1250,7 @@ Gw
         <!--Dynamic Range View Controller-->
         <scene sceneID="h3F-tm-QoJ">
             <objects>
-                <viewController id="KYw-wE-FAU" customClass="DynamicRangeViewController" customModule="LED_Strip_Controller" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="KYw-wE-FAU" customClass="DynamicRangeViewController" customModule="Luxamp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="hed-2g-XF4">
                         <rect key="frame" x="0.0" y="0.0" width="264" height="81"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1321,16 +1321,16 @@ Gw
         <!--Side View Controller-->
         <scene sceneID="ypB-Xb-lvy">
             <objects>
-                <viewController id="Z19-kP-1vK" customClass="SideViewController" customModule="LED_Strip_Controller" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Z19-kP-1vK" customClass="SideViewController" customModule="Luxamp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="M6J-IG-EcE">
                         <rect key="frame" x="0.0" y="0.0" width="292" height="365"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="abo-u8-uiW" customClass="ScrollingLevelView" customModule="LED_Strip_Controller" customModuleProvider="target">
+                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="abo-u8-uiW" customClass="ScrollingLevelView" customModule="Luxamp" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="135" width="236" height="199"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             </customView>
-                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pJd-dX-IL9" customClass="AdjustableLevelView" customModule="LED_Strip_Controller" customModuleProvider="target">
+                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pJd-dX-IL9" customClass="AdjustableLevelView" customModule="Luxamp" customModuleProvider="target">
                                 <rect key="frame" x="256" y="20" width="36" height="314"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             </customView>
@@ -1369,7 +1369,7 @@ Gw
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MoS-7g-fK3">
                                 <rect key="frame" x="-6" y="99" width="145" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="push" title="Detect Range" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="QjN-jF-JTp">
+                                <buttonCell key="cell" type="push" title="Smart Range" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="QjN-jF-JTp">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -1405,7 +1405,7 @@ Gw
                                     <action selector="smoothingChanged:" target="Z19-kP-1vK" id="qwx-x2-fTq"/>
                                 </connections>
                             </slider>
-                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V9n-fs-hTe" customClass="SmoothingView" customModule="LED_Strip_Controller" customModuleProvider="target">
+                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V9n-fs-hTe" customClass="SmoothingView" customModule="Luxamp" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="116" height="69"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <userDefinedRuntimeAttributes>

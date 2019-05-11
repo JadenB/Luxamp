@@ -8,7 +8,7 @@
 
 import XCTest
 
-class LED_Strip_ControllerUITests: XCTestCase {
+class LuxampUITests: XCTestCase {
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.

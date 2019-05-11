@@ -47,8 +47,8 @@
 		7DFC34202202DD7D00B4C993 /* SideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFC341F2202DD7D00B4C993 /* SideViewController.swift */; };
 		7DFE038421CB2C8900D6288F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7DFE038321CB2C8900D6288F /* Assets.xcassets */; };
 		7DFE038721CB2C8900D6288F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DFE038521CB2C8900D6288F /* Main.storyboard */; };
-		7DFE039321CB2C8900D6288F /* LED_Strip_ControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE039221CB2C8900D6288F /* LED_Strip_ControllerTests.swift */; };
-		7DFE039E21CB2C8900D6288F /* LED_Strip_ControllerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE039D21CB2C8900D6288F /* LED_Strip_ControllerUITests.swift */; };
+		7DFE039321CB2C8900D6288F /* LuxampTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE039221CB2C8900D6288F /* LuxampTests.swift */; };
+		7DFE039E21CB2C8900D6288F /* LuxampUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE039D21CB2C8900D6288F /* LuxampUITests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -128,18 +128,18 @@
 		7DF1B65D21F9895300FC818E /* ORSSerial.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ORSSerial.framework; path = Frameworks/ORSSerial.framework; sourceTree = "<group>"; };
 		7DF1B65E21F9895300FC818E /* GistSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GistSwift.framework; path = Frameworks/GistSwift.framework; sourceTree = "<group>"; };
 		7DFC341F2202DD7D00B4C993 /* SideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideViewController.swift; sourceTree = "<group>"; };
-		7DFE037C21CB2C8800D6288F /* LED Strip Controller.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LED Strip Controller.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7DFE037C21CB2C8800D6288F /* Luxamp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Luxamp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DFE037F21CB2C8800D6288F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7DFE038121CB2C8800D6288F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		7DFE038321CB2C8900D6288F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7DFE038621CB2C8900D6288F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		7DFE038821CB2C8900D6288F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7DFE038921CB2C8900D6288F /* LED_Strip_Controller.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LED_Strip_Controller.entitlements; sourceTree = "<group>"; };
-		7DFE038E21CB2C8900D6288F /* LED Strip ControllerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "LED Strip ControllerTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7DFE039221CB2C8900D6288F /* LED_Strip_ControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LED_Strip_ControllerTests.swift; sourceTree = "<group>"; };
+		7DFE038921CB2C8900D6288F /* Luxamp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Luxamp.entitlements; sourceTree = "<group>"; };
+		7DFE038E21CB2C8900D6288F /* LuxampTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LuxampTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7DFE039221CB2C8900D6288F /* LuxampTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LuxampTests.swift; sourceTree = "<group>"; };
 		7DFE039421CB2C8900D6288F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7DFE039921CB2C8900D6288F /* LED Strip ControllerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "LED Strip ControllerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7DFE039D21CB2C8900D6288F /* LED_Strip_ControllerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LED_Strip_ControllerUITests.swift; sourceTree = "<group>"; };
+		7DFE039921CB2C8900D6288F /* LuxampUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LuxampUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7DFE039D21CB2C8900D6288F /* LuxampUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LuxampUITests.swift; sourceTree = "<group>"; };
 		7DFE039F21CB2C8900D6288F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7DFE03AD21CB304900D6288F /* ColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorView.swift; sourceTree = "<group>"; };
 		7DFE03B421CB6F8C00D6288F /* AudioEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngine.swift; sourceTree = "<group>"; };
@@ -268,9 +268,9 @@
 			children = (
 				7DF1B65B21F9893200FC818E /* GistSwift.framework.dSYM */,
 				7D447BDB21FD333D00D09EA8 /* README.md */,
-				7DFE037E21CB2C8800D6288F /* LED Strip Controller */,
-				7DFE039121CB2C8900D6288F /* LED Strip ControllerTests */,
-				7DFE039C21CB2C8900D6288F /* LED Strip ControllerUITests */,
+				7DFE037E21CB2C8800D6288F /* Source */,
+				7DFE039121CB2C8900D6288F /* LuxampTests */,
+				7DFE039C21CB2C8900D6288F /* LuxampUITests */,
 				7DFE037D21CB2C8800D6288F /* Products */,
 				7DFE03AF21CB6D4400D6288F /* Frameworks */,
 			);
@@ -279,14 +279,14 @@
 		7DFE037D21CB2C8800D6288F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7DFE037C21CB2C8800D6288F /* LED Strip Controller.app */,
-				7DFE038E21CB2C8900D6288F /* LED Strip ControllerTests.xctest */,
-				7DFE039921CB2C8900D6288F /* LED Strip ControllerUITests.xctest */,
+				7DFE037C21CB2C8800D6288F /* Luxamp.app */,
+				7DFE038E21CB2C8900D6288F /* LuxampTests.xctest */,
+				7DFE039921CB2C8900D6288F /* LuxampUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		7DFE037E21CB2C8800D6288F /* LED Strip Controller */ = {
+		7DFE037E21CB2C8800D6288F /* Source */ = {
 			isa = PBXGroup;
 			children = (
 				7DFE038521CB2C8900D6288F /* Main.storyboard */,
@@ -300,27 +300,27 @@
 				7D3BDE8221DCAEE700E434BE /* Utility */,
 				7DFE038821CB2C8900D6288F /* Info.plist */,
 				7DFE038321CB2C8900D6288F /* Assets.xcassets */,
-				7DFE038921CB2C8900D6288F /* LED_Strip_Controller.entitlements */,
+				7DFE038921CB2C8900D6288F /* Luxamp.entitlements */,
 			);
-			path = "LED Strip Controller";
+			path = Source;
 			sourceTree = "<group>";
 		};
-		7DFE039121CB2C8900D6288F /* LED Strip ControllerTests */ = {
+		7DFE039121CB2C8900D6288F /* LuxampTests */ = {
 			isa = PBXGroup;
 			children = (
-				7DFE039221CB2C8900D6288F /* LED_Strip_ControllerTests.swift */,
+				7DFE039221CB2C8900D6288F /* LuxampTests.swift */,
 				7DFE039421CB2C8900D6288F /* Info.plist */,
 			);
-			path = "LED Strip ControllerTests";
+			path = LuxampTests;
 			sourceTree = "<group>";
 		};
-		7DFE039C21CB2C8900D6288F /* LED Strip ControllerUITests */ = {
+		7DFE039C21CB2C8900D6288F /* LuxampUITests */ = {
 			isa = PBXGroup;
 			children = (
-				7DFE039D21CB2C8900D6288F /* LED_Strip_ControllerUITests.swift */,
+				7DFE039D21CB2C8900D6288F /* LuxampUITests.swift */,
 				7DFE039F21CB2C8900D6288F /* Info.plist */,
 			);
-			path = "LED Strip ControllerUITests";
+			path = LuxampUITests;
 			sourceTree = "<group>";
 		};
 		7DFE03AF21CB6D4400D6288F /* Frameworks */ = {
@@ -335,9 +335,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		7DFE037B21CB2C8800D6288F /* LED Strip Controller */ = {
+		7DFE037B21CB2C8800D6288F /* Luxamp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7DFE03A221CB2C8900D6288F /* Build configuration list for PBXNativeTarget "LED Strip Controller" */;
+			buildConfigurationList = 7DFE03A221CB2C8900D6288F /* Build configuration list for PBXNativeTarget "Luxamp" */;
 			buildPhases = (
 				7DFE037821CB2C8800D6288F /* Sources */,
 				7DFE037921CB2C8800D6288F /* Frameworks */,
@@ -349,14 +349,14 @@
 			);
 			dependencies = (
 			);
-			name = "LED Strip Controller";
+			name = Luxamp;
 			productName = "LED Strip Controller";
-			productReference = 7DFE037C21CB2C8800D6288F /* LED Strip Controller.app */;
+			productReference = 7DFE037C21CB2C8800D6288F /* Luxamp.app */;
 			productType = "com.apple.product-type.application";
 		};
-		7DFE038D21CB2C8900D6288F /* LED Strip ControllerTests */ = {
+		7DFE038D21CB2C8900D6288F /* LuxampTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7DFE03A521CB2C8900D6288F /* Build configuration list for PBXNativeTarget "LED Strip ControllerTests" */;
+			buildConfigurationList = 7DFE03A521CB2C8900D6288F /* Build configuration list for PBXNativeTarget "LuxampTests" */;
 			buildPhases = (
 				7DFE038A21CB2C8900D6288F /* Sources */,
 				7DFE038B21CB2C8900D6288F /* Frameworks */,
@@ -367,14 +367,14 @@
 			dependencies = (
 				7DFE039021CB2C8900D6288F /* PBXTargetDependency */,
 			);
-			name = "LED Strip ControllerTests";
+			name = LuxampTests;
 			productName = "LED Strip ControllerTests";
-			productReference = 7DFE038E21CB2C8900D6288F /* LED Strip ControllerTests.xctest */;
+			productReference = 7DFE038E21CB2C8900D6288F /* LuxampTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		7DFE039821CB2C8900D6288F /* LED Strip ControllerUITests */ = {
+		7DFE039821CB2C8900D6288F /* LuxampUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7DFE03A821CB2C8900D6288F /* Build configuration list for PBXNativeTarget "LED Strip ControllerUITests" */;
+			buildConfigurationList = 7DFE03A821CB2C8900D6288F /* Build configuration list for PBXNativeTarget "LuxampUITests" */;
 			buildPhases = (
 				7DFE039521CB2C8900D6288F /* Sources */,
 				7DFE039621CB2C8900D6288F /* Frameworks */,
@@ -385,9 +385,9 @@
 			dependencies = (
 				7DFE039B21CB2C8900D6288F /* PBXTargetDependency */,
 			);
-			name = "LED Strip ControllerUITests";
+			name = LuxampUITests;
 			productName = "LED Strip ControllerUITests";
-			productReference = 7DFE039921CB2C8900D6288F /* LED Strip ControllerUITests.xctest */;
+			productReference = 7DFE039921CB2C8900D6288F /* LuxampUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -429,9 +429,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				7DFE037B21CB2C8800D6288F /* LED Strip Controller */,
-				7DFE038D21CB2C8900D6288F /* LED Strip ControllerTests */,
-				7DFE039821CB2C8900D6288F /* LED Strip ControllerUITests */,
+				7DFE037B21CB2C8800D6288F /* Luxamp */,
+				7DFE038D21CB2C8900D6288F /* LuxampTests */,
+				7DFE039821CB2C8900D6288F /* LuxampUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -508,7 +508,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7DFE039321CB2C8900D6288F /* LED_Strip_ControllerTests.swift in Sources */,
+				7DFE039321CB2C8900D6288F /* LuxampTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -516,7 +516,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7DFE039E21CB2C8900D6288F /* LED_Strip_ControllerUITests.swift in Sources */,
+				7DFE039E21CB2C8900D6288F /* LuxampUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -525,12 +525,12 @@
 /* Begin PBXTargetDependency section */
 		7DFE039021CB2C8900D6288F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 7DFE037B21CB2C8800D6288F /* LED Strip Controller */;
+			target = 7DFE037B21CB2C8800D6288F /* Luxamp */;
 			targetProxy = 7DFE038F21CB2C8900D6288F /* PBXContainerItemProxy */;
 		};
 		7DFE039B21CB2C8900D6288F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 7DFE037B21CB2C8800D6288F /* LED Strip Controller */;
+			target = 7DFE037B21CB2C8800D6288F /* Luxamp */;
 			targetProxy = 7DFE039A21CB2C8900D6288F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -673,7 +673,7 @@
 					"$(PROJECT_DIR)/Frameworks",
 				);
 				GCC_OPTIMIZATION_LEVEL = s;
-				INFOPLIST_FILE = "LED Strip Controller/Info.plist";
+				INFOPLIST_FILE = Source/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -684,9 +684,9 @@
 					"-lstdc++",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "jadenbernal.LED-Strip-Controller";
+				PRODUCT_BUNDLE_IDENTIFIER = jadenbernal.Luxamp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/LED Strip Controller/bridge.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Source/bridge.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 4.2;
 				VALID_ARCHS = x86_64;
@@ -704,7 +704,7 @@
 					"$(PROJECT_DIR)/Frameworks",
 				);
 				GCC_OPTIMIZATION_LEVEL = s;
-				INFOPLIST_FILE = "LED Strip Controller/Info.plist";
+				INFOPLIST_FILE = Source/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -715,9 +715,9 @@
 					"-lstdc++",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "jadenbernal.LED-Strip-Controller";
+				PRODUCT_BUNDLE_IDENTIFIER = jadenbernal.Luxamp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/LED Strip Controller/bridge.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Source/bridge.h";
 				SWIFT_VERSION = 4.2;
 				VALID_ARCHS = x86_64;
 			};
@@ -739,7 +739,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "jadenbernal.LED-Strip-ControllerTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LED Strip Controller.app/Contents/MacOS/LED Strip Controller";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Luxamp.app/Contents/MacOS/Luxamp";
 			};
 			name = Debug;
 		};
@@ -759,7 +759,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "jadenbernal.LED-Strip-ControllerTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LED Strip Controller.app/Contents/MacOS/LED Strip Controller";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Luxamp.app/Contents/MacOS/Luxamp";
 			};
 			name = Release;
 		};
@@ -813,7 +813,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7DFE03A221CB2C8900D6288F /* Build configuration list for PBXNativeTarget "LED Strip Controller" */ = {
+		7DFE03A221CB2C8900D6288F /* Build configuration list for PBXNativeTarget "Luxamp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7DFE03A321CB2C8900D6288F /* Debug */,
@@ -822,7 +822,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7DFE03A521CB2C8900D6288F /* Build configuration list for PBXNativeTarget "LED Strip ControllerTests" */ = {
+		7DFE03A521CB2C8900D6288F /* Build configuration list for PBXNativeTarget "LuxampTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7DFE03A621CB2C8900D6288F /* Debug */,
@@ -831,7 +831,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7DFE03A821CB2C8900D6288F /* Build configuration list for PBXNativeTarget "LED Strip ControllerUITests" */ = {
+		7DFE03A821CB2C8900D6288F /* Build configuration list for PBXNativeTarget "LuxampUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7DFE03A921CB2C8900D6288F /* Debug */,
