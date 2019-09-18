@@ -34,6 +34,7 @@ class AudioEngine: BufferProcessorDelegate {
     }
     
     private func installBufferTap() {
+        print(av.inputNode.inputFormat(forBus: 0))
         av.inputNode.installTap(
             onBus: 0,
             bufferSize: UInt32(BUFFER_SIZE),
