@@ -7,7 +7,7 @@
 //
 
 import Cocoa
-import GistSwift
+
 
 class ViewController: NSViewController, AudioEngineDelegate, VisualizerDelegate,
                         ArcLevelViewDelegate, SaveDialogDelegate, GradientEditorDelegate {
@@ -43,10 +43,12 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
 		
-        audioEngine = AudioEngine(refreshRate: Double(SAMPLE_RATE) / Double(BUFFER_SIZE))
+        audioEngine = AudioEngine()
         audioEngine.delegate = self
-        musicVisualizer = Visualizer(withEngine: audioEngine)
+        
+        musicVisualizer = Visualizer()
         musicVisualizer.delegate = self
+        
         arcLevelCenter.delegate = self
         
         populateMenus()
@@ -164,11 +166,11 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerDelegate,
     }
     
     func startAudioVisualization() {
-        audioEngine.start()
+        audioEngine.startTappingInput()
     }
     
     func stopAudioVisualization() {
-        audioEngine.stop()
+        audioEngine.stopTappingInput()
 		brightnessSide.clearViews()
 		colorSide.clearViews()
     }
@@ -189,32 +191,11 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerDelegate,
     
     // MARK: - AudioEngineDelegate
     
-    func didRefreshAudioEngine() {
+    func didTapInput(withBuffer buffer: [Float], sampleRate: Int) {
         if state == .On {
-            musicVisualizer.visualize()
-        }
-    }
-    
-    func didRefreshVisualSpectrum(_ s: [Float]) {
-        if !hidden && state == .On {
-            spectrum.setSpectrum(s)
-        }
-    }
-    
-    func audioDeviceChanged() {
-        LightController.shared.setColor(color: .black)
-        let alert = NSAlert()
-        alert.messageText = "Audio Device Changed"
-        alert.informativeText = "The app must be restarted to continue analyzing audio."
-        alert.alertStyle = .warning
-        alert.addButton(withTitle: "Restart")
-        alert.addButton(withTitle: "Quit")
-        alert.beginSheetModal(for: view.window!) { response in
-            if response == .alertFirstButtonReturn {
-                AppManager.restartApp()
-            } else {
-                AppManager.quitApp()
-            }
+            let analyzedBuffer = AnalyzedBuffer(buffer: buffer, bufferLength: BUFFER_SIZE, sampleRate: sampleRate)
+            musicVisualizer.visualizeBuffer(analyzedBuffer)
+            spectrum.setSpectrum(analyzedBuffer.visualSpectrum())
         }
     }
     

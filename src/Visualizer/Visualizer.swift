@@ -36,24 +36,24 @@ class Visualizer {
     /// Initializes a Visualizer
     ///
     /// - Parameter engine: The AudioEngine to draw values from. Will be accessed each time visualize() is called.
-    init(withEngine engine: AudioEngine) {
-        color = VisualizerMapper(withEngine: engine)
-        brightness = VisualizerMapper(withEngine: engine)
+    init() {
+        color = VisualizerMapper()
+        brightness = VisualizerMapper()
 		presets = VisualizerPresetManager()
         presets.visualizer = self
         presets.apply(name: PRESETMANAGER_DEFAULT_PRESET_NAME)
     }
     
     /// Produces a color and sends it to the output delegate. Also sends raw brightness and color values to the data delegate.
-    func visualize() {
+    func visualizeBuffer(_ buffer: AnalyzedBuffer) {
         // Setup components of color
         var outputBrightness: CGFloat = 1.0
         var outputSaturation: CGFloat = 1.0
         var outputHue: CGFloat = 1.0
         
         // Calculate raw values from brightness and color mappers
-        let brightnessData = brightness.applyMapping()
-        let colorData = color.applyMapping()
+        let brightnessData = brightness.generateMapping(fromBuffer: buffer)
+        let colorData = color.generateMapping(fromBuffer: buffer)
         
         // Convert raw color mapping to hue and saturation with the gradient
         let gradientColor = gradient.interpolatedColor(atLocation: CGFloat(colorData.outputVal))
@@ -87,12 +87,7 @@ class Visualizer {
 
 /// Implemented by the Visualizer class to handle brightness and color values seperately. Should not be instantiated outside of a Visualizer.
 class VisualizerMapper {
-    private var orderedDrivers: [VisualizationDriver] = [PeakEnergyDriver(),
-                                                         RootMeanSquareDriver(),
-                                                         PitchDriver(),
-                                                         SpectralDifferenceDriver(),
-                                                         SpectralCrestDriver(),
-                                                         VeryLowSpectrumDriver(),
+    private var orderedDrivers: [VisualizationDriver] = [VeryLowSpectrumDriver(),
                                                          LowSpectrumDriver(),
                                                          MidSpectrumDriver(),
                                                          HighSpectrumDriver()]
@@ -100,16 +95,15 @@ class VisualizerMapper {
 	private var driverIdDict: [Int : VisualizationDriver] = [:]
     
     private var driver: VisualizationDriver
-    private var engine: AudioEngine
     
     private var preFilter = BiasedIIRFilter(size: 1)
     private var postFilter = BiasedIIRFilter(size: 1)
 	
-    // The range of input values that applyMapping() remaps to the range 0-1
+    // The range of input values that generateMapping() remaps to the range 0-1
 	var inputMin: Float = 0.0
     var inputMax: Float = 1.0
 	
-	// The range of values remapped to by applyMapping()
+	// The range of values remapped to by generateMapping()
 	var outputMin: Float = 0.0 {
 		didSet {
 			if outputMin < 0.0 { print("outputMin is less than 0!") }
@@ -151,8 +145,7 @@ class VisualizerMapper {
         }
     }
     
-    init(withEngine engine: AudioEngine) {
-        self.engine = engine
+    init() {
         driver = orderedDrivers[0]
         
         preFilter.upwardsAlpha = 0.4
@@ -202,11 +195,11 @@ class VisualizerMapper {
 	}
     
     /// Transforms the value given by the driver and sets inputVal and outputVal
-    fileprivate func applyMapping() -> VisualizerData {
+    fileprivate func generateMapping(fromBuffer buffer: AnalyzedBuffer) -> VisualizerData {
 		// Setup returned data
 		var data = VisualizerData()
 		
-        var newVal = preFilter.applyFilter(toValue: driver.output(usingEngine: engine), atIndex: 0)
+        var newVal = preFilter.applyFilter(toValue: driver.output(usingBuffer: buffer), atIndex: 0)
         newVal = postFilter.applyFilter(toValue: newVal, atIndex: 0)
 		
 		data.inputVal = newVal

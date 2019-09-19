@@ -17,7 +17,7 @@ protocol VisualizationDriver {
 		get
 	}
     
-    func output(usingEngine engine: AudioEngine) -> Float
+    func output(usingBuffer buffer: AnalyzedBuffer) -> Float
 }
 
 /* CLASSES */
@@ -31,8 +31,8 @@ class RootMeanSquareDriver: VisualizationDriver {
 		return 0
 	}
     
-    func output(usingEngine engine: AudioEngine) -> Float {
-        return engine.bProcessor.gist.rootMeanSquare() * 1.5
+    func output(usingBuffer buffer: AnalyzedBuffer) -> Float {
+        return buffer.gist.rootMeanSquare() * 1.5
     }
 }
 
@@ -46,8 +46,8 @@ class PeakEnergyDriver: VisualizationDriver {
 		return 1
 	}
     
-    func output(usingEngine engine: AudioEngine) -> Float {
-        return engine.bProcessor.gist.peakEnergy()
+    func output(usingBuffer buffer: AnalyzedBuffer) -> Float {
+        return buffer.gist.peakEnergy()
     }
 }
 
@@ -61,8 +61,8 @@ class SpectralDifferenceDriver: VisualizationDriver {
 		return 2
 	}
     
-    func output(usingEngine engine: AudioEngine) -> Float {
-        return engine.bProcessor.gist.spectralDifference() * 0.0006
+    func output(usingBuffer buffer: AnalyzedBuffer) -> Float {
+        return buffer.gist.spectralDifference() * 0.0006
     }
 }
 
@@ -76,8 +76,8 @@ class SpectralCrestDriver: VisualizationDriver {
 		return 3
 	}
     
-    func output(usingEngine engine: AudioEngine) -> Float {
-        return engine.bProcessor.gist.spectralCrest() * 0.0014
+    func output(usingBuffer buffer: AnalyzedBuffer) -> Float {
+        return buffer.gist.spectralCrest() * 0.0014
     }
 }
 
@@ -92,8 +92,8 @@ class PitchDriver: VisualizationDriver {
 		return 4
 	}
     
-    func output(usingEngine engine: AudioEngine) -> Float {
-        return engine.bProcessor.gist.pitch() * 0.00125
+    func output(usingBuffer buffer: AnalyzedBuffer) -> Float {
+        return buffer.gist.pitch() * 0.00125
     }
 
 }
@@ -108,8 +108,8 @@ class VeryLowSpectrumDriver: VisualizationDriver {
 		return 5
 	}
     
-    func output(usingEngine engine: AudioEngine) -> Float {
-        return engine.bProcessor.averageMagOfRange(0...3, withFalloff: 2) * 0.0075
+    func output(usingBuffer buffer: AnalyzedBuffer) -> Float {
+        return buffer.averageMagOfRange(0...3, withFalloff: 2) * 0.0075
     }
 }
 
@@ -123,8 +123,8 @@ class LowSpectrumDriver: VisualizationDriver {
 		return 6
 	}
     
-    func output(usingEngine engine: AudioEngine) -> Float {
-        return engine.bProcessor.averageMagOfRange(0...6, withFalloff: 3) * 0.01
+    func output(usingBuffer buffer: AnalyzedBuffer) -> Float {
+        return buffer.averageMagOfRange(0...6, withFalloff: 3) * 0.01
     }
 }
 
@@ -138,8 +138,8 @@ class MidSpectrumDriver: VisualizationDriver {
 		return 7
 	}
     
-    func output(usingEngine engine: AudioEngine) -> Float {
-        return engine.bProcessor.averageMagOfRange(12...20, withFalloff: 3) * 0.02
+    func output(usingBuffer buffer: AnalyzedBuffer) -> Float {
+        return buffer.averageMagOfRange(12...20, withFalloff: 3) * 0.02
     }
 }
 
@@ -153,8 +153,8 @@ class HighSpectrumDriver: VisualizationDriver {
 		return 8
 	}
     
-    func output(usingEngine engine: AudioEngine) -> Float {
-        return engine.bProcessor.averageMagOfRange(25...50, withFalloff: 5) * 0.04
+    func output(usingBuffer buffer: AnalyzedBuffer) -> Float {
+        return buffer.averageMagOfRange(25...50, withFalloff: 5) * 0.04
     }
 }
 

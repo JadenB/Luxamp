@@ -14,7 +14,7 @@ class BufferProcessor {
     
     /// The volume in decibels of each frequency bucket produced by the FFT
     var spectrumDecibelData: [Float]
-    let gist = Gist(frameSize: BUFFER_SIZE, sampleRate: SAMPLE_RATE)
+    let gist = Gist(frameSize: Int(BUFFER_SIZE), sampleRate: 44100)
     
     /// The absolute magnitudes of each frequency bucket produced by the FFT
     var spectrumMagnitudeData: [Float] {
@@ -29,7 +29,7 @@ class BufferProcessor {
     var useWindowing = false
     var shouldConvertToDb = true
     
-    private let fftSize: Int = BUFFER_SIZE / 2
+    private let fftSize: Int = Int(BUFFER_SIZE) / 2
     private let aWeightFrequency: [Float] = [
         10, 12.5, 16, 20,
         25, 31.5, 40, 50,
@@ -171,7 +171,7 @@ class BufferProcessor {
     /// - Parameter data: The spectrum to convert. It will be converted in place.
     private func applyDbConversion(_ data: inout [Float]) {
         var frequency: Float = 0
-        let df: Float = Float(SAMPLE_RATE) / Float(fftSize * 2)
+        let df: Float = Float(44100) / Float(fftSize * 2)
         for i in 0..<data.count {
             data[i] = convertToDB(data[i])
             
@@ -192,21 +192,8 @@ class BufferProcessor {
     }
     
     func getVisualSpectrum() -> [Float] {
-        var visualSpectrum = [Float]()
-        /*let buckets: [Range<Int>] = [0..<4, 4..<8, 8..<12, 12..<16, 16..<22, 22..<32, 32..<46, 46..<64, 64..<90, 90..<128, 128..<181, 181..<256]
-        visualSpectrum.reserveCapacity(buckets.count)
+        var visualSpectrum = normalizeFFT(gist.melFrequencySpectrum())
         
-        for range in buckets {
-            var max = -Float.infinity
-            for i in range {
-                if spectrumDecibelData[i] > max {
-                    max = spectrumDecibelData[i]
-                }
-            }
-            visualSpectrum.append(max)
-        }*/
-        
-        visualSpectrum = normalizeFFT(gist.melFrequencySpectrum())
         for i in 0..<visualSpectrum.count {
             visualSpectrum[i] = convertToDB(visualSpectrum[i]) - 40 * Float(visualSpectrum.count - i / 3) / Float(visualSpectrum.count)
         }

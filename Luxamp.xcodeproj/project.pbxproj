@@ -39,6 +39,7 @@
 		7D889CD62332C0E500FCE787 /* GistSwift.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7D889CD42332C0E500FCE787 /* GistSwift.framework.dSYM */; };
 		7D889CD92332C0FD00FCE787 /* ORSSerial.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D889CD72332C0FC00FCE787 /* ORSSerial.framework */; };
 		7D889CDA2332C0FD00FCE787 /* GistSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D889CD82332C0FD00FCE787 /* GistSwift.framework */; };
+		7D889CDE233362FF00FCE787 /* AnalyzedBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D889CDD233362FF00FCE787 /* AnalyzedBuffer.swift */; };
 		7DB5D6E821D46E92000E7B6C /* VisualizerPresetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB5D6E721D46E92000E7B6C /* VisualizerPresetManager.swift */; };
 		7DEBB55021EE916800878309 /* AngleGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DEBB54F21EE916800878309 /* AngleGradientLayer.m */; };
 		7DEBB55521EE977400878309 /* ArcLevelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DEBB55421EE977400878309 /* ArcLevelView.swift */; };
@@ -122,6 +123,7 @@
 		7D889CD42332C0E500FCE787 /* GistSwift.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = GistSwift.framework.dSYM; path = Carthage/Build/Mac/GistSwift.framework.dSYM; sourceTree = "<group>"; };
 		7D889CD72332C0FC00FCE787 /* ORSSerial.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ORSSerial.framework; path = Carthage/Build/Mac/ORSSerial.framework; sourceTree = "<group>"; };
 		7D889CD82332C0FD00FCE787 /* GistSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GistSwift.framework; path = Carthage/Build/Mac/GistSwift.framework; sourceTree = "<group>"; };
+		7D889CDD233362FF00FCE787 /* AnalyzedBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyzedBuffer.swift; sourceTree = "<group>"; };
 		7DB5D6E721D46E92000E7B6C /* VisualizerPresetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizerPresetManager.swift; sourceTree = "<group>"; };
 		7DEBB54F21EE916800878309 /* AngleGradientLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AngleGradientLayer.m; sourceTree = "<group>"; };
 		7DEBB55121EE917100878309 /* AngleGradientLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AngleGradientLayer.h; sourceTree = "<group>"; };
@@ -176,7 +178,6 @@
 			isa = PBXGroup;
 			children = (
 				7DEBB54E21EE914600878309 /* AngleGradientLayer */,
-				7D49AADF21F98E0E00E151E8 /* Controllers */,
 				7D49AAE021F98E1800E151E8 /* Views */,
 			);
 			path = UI;
@@ -186,6 +187,7 @@
 			isa = PBXGroup;
 			children = (
 				7D33777F21CF2C4900554841 /* BufferProcessor.swift */,
+				7D889CDD233362FF00FCE787 /* AnalyzedBuffer.swift */,
 				7D884BD921CEEB9000FAD263 /* BiasedIIRFilter.swift */,
 				7D7266E32281331700B64DD6 /* MomentumIIRFilter.swift */,
 				7DFE03B421CB6F8C00D6288F /* AudioEngine.swift */,
@@ -297,6 +299,7 @@
 				7D03140D21D2E40100F46D04 /* bridge.h */,
 				7D3BDE8321DCAEF800E434BE /* Lights */,
 				7DB5D6E921D4ABA3000E7B6C /* Visualizer */,
+				7D49AADF21F98E0E00E151E8 /* Controllers */,
 				7D33778121D0274600554841 /* UI */,
 				7D33778221D0277600554841 /* Audio */,
 				7D3BDE8221DCAEE700E434BE /* Utility */,
@@ -508,6 +511,7 @@
 				7D03140221D24ABE00F46D04 /* VisualizerTextField.swift in Sources */,
 				7D03140A21D2E0DE00F46D04 /* PreferencesViewController.swift in Sources */,
 				7DEBB55021EE916800878309 /* AngleGradientLayer.m in Sources */,
+				7D889CDE233362FF00FCE787 /* AnalyzedBuffer.swift in Sources */,
 				7DFC34202202DD7D00B4C993 /* SideViewController.swift in Sources */,
 				7D5CF64C21DA566200D86666 /* Remap.swift in Sources */,
 				7D42758521D866760075A325 /* SaveDialogViewController.swift in Sources */,
@@ -689,7 +693,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
-				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = src/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

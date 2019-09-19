@@ -1,140 +1,98 @@
 //
-//  AudioAnalyzer.swift
-//  LED Strip Controller
+//  AudioEngine.swift
+//  Luxamp
 //
-//  Created by Jaden Bernal on 12/19/18.
-//  Copyright © 2018 Jaden Bernal. All rights reserved.
+//  Created by Jaden Bernal on 9/18/19.
+//  Copyright © 2019 Jaden Bernal. All rights reserved.
 //
-
-// https://stackoverflow.com/questions/20408388/how-to-filter-fft-data-for-audio-visualisation
-//https://www.cocoawithlove.com/blog/2016/07/30/timer-problems.html#a-single-queue-synchronized-timer
 
 import Foundation
 import AVKit
 
-let BUFFER_SIZE: Int = 1_024
-let SAMPLE_RATE: Int = 41_000
 
-class AudioEngine: BufferProcessorDelegate {
+let BUFFER_SIZE: Int = 1_024
+
+
+class AudioEngine {
+    
     weak var delegate: AudioEngineDelegate?
     
-    let bProcessor = BufferProcessor()
-    var isActive = false
+    private let avEngine: AVAudioEngine
+    private var isTappingInput: Bool
     
-    private var av = AVAudioEngine()
-    private var refreshTimer: DispatchSourceTimer?
-    private let refreshRate: Double
-    
-    private var sendBufferNextCycle = false
-    private var audioDeviceChangedRanOnce = false
-    
-    init(refreshRate: Double) {
-        self.refreshRate = refreshRate
-        bProcessor.delegate = self
+    init() {
+        avEngine = AVAudioEngine()
+        isTappingInput = false
+        NotificationCenter.default.addObserver(self, selector: #selector(handleConfigurationChange), name: .AVAudioEngineConfigurationChange, object: nil)
     }
     
-    private func installBufferTap() {
-        print(av.inputNode.inputFormat(forBus: 0))
-        av.inputNode.installTap(
-            onBus: 0,
-            bufferSize: UInt32(BUFFER_SIZE),
-            format: av.inputNode.inputFormat(forBus: 0)) { [weak self] (buffer, _) in
-                
-                guard let strongSelf = self else {
-                    print("Unable to create strong reference to self")
-                    return
-                }
-                
-                buffer.frameLength = UInt32(BUFFER_SIZE)
-                let offset = Int(buffer.frameCapacity - buffer.frameLength)
-                
-                if let tail = buffer.floatChannelData?[0] {
-                    strongSelf.updateBuffer(tail + offset, withBufferSize: BUFFER_SIZE)
-                }
-        }
-    }
-    
-    private func removeBufferTap() {
-        av.inputNode.removeTap(onBus: 0)
-    }
-    
-    func start() {
-        if isActive { return }
-        
-        do {
-            installBufferTap()
-            av.prepare()
-            try av.start()
-            NotificationCenter.default.addObserver(self, selector: #selector(handleConfigurationChange), name: .AVAudioEngineConfigurationChange, object: av)
-            isActive = true
-            
-            guard let timer = refreshTimer else {
-                refreshTimer = DispatchSource.makeTimerSource()
-                refreshTimer!.schedule(deadline: .now(), repeating: 1.0/refreshRate)
-                refreshTimer!.setEventHandler(handler: { [weak self] in
-                    guard let strongSelf = self else {
-                        print("Unable to create strong reference to self")
-                        return
-                    }
-                    strongSelf.getBuffer() })
-                refreshTimer!.resume()
-                return
-            }
-            
-            timer.resume()
-        } catch {
-            print("AudioEngine failed to start")
+    func startTappingInput() {
+        if isTappingInput {
             return
         }
         
-    }
-    
-    func stop() {
-        if !isActive { return }
+        let inputNode: AVAudioInputNode = avEngine.inputNode
+        let inputFormat = inputNode.outputFormat(forBus: 0)
+        let sampleRateInt = Int(inputFormat.sampleRate)
         
-        removeBufferTap()
-        refreshTimer?.suspend()
-        sendBufferNextCycle = false
-        av.stop()
-        NotificationCenter.default.removeObserver(self)
-        isActive = false
+        print("AudioEngine Input Format: \(inputFormat)")
+        
+        inputNode.installTap(onBus: 0, bufferSize: UInt32(BUFFER_SIZE), format: inputFormat) { [weak self, sampleRate = sampleRateInt] (buffer, _) in
+            guard let strongSelf = self else {
+                print("Unable to create strong reference to self")
+                return
+            }
+            
+            buffer.frameLength = UInt32(BUFFER_SIZE)
+            
+            if let bufferTail = buffer.floatChannelData?[0] {
+                let bufferPtr = UnsafeBufferPointer(start: bufferTail + Int(buffer.frameCapacity - buffer.frameLength), count: BUFFER_SIZE)
+                strongSelf.handleBuffer([Float](bufferPtr), sampleRate: sampleRate)
+            }
+        }
+        
+        isTappingInput = true
+        
+        do {
+            avEngine.prepare()
+            try avEngine.start()
+        } catch {
+            print("AVAudioEngine unable to start!")
+        }
     }
     
-    @objc func handleConfigurationChange(_ notification: Notification) {
-        print("audio configuration changed")
-        audioDeviceChangedRanOnce = true
-        if !audioDeviceChangedRanOnce {
-            DispatchQueue.main.async {
-                self.stop()
-                self.delegate?.audioDeviceChanged()
+    func stopTappingInput() {
+        if !isTappingInput {
+            return
+        }
+        
+        avEngine.stop()
+        avEngine.inputNode.removeTap(onBus: 0)
+        isTappingInput = false
+    }
+    
+    private func handleBuffer(_ buffer: [Float], sampleRate: Int) {
+        DispatchQueue.main.async {
+            if self.isTappingInput {
+                self.delegate?.didTapInput(withBuffer: buffer, sampleRate: sampleRate)
             }
         }
     }
     
-    @objc private func getBuffer() {
-        sendBufferNextCycle = true
-    }
-    
-    private func updateBuffer(_ buffer: UnsafeMutablePointer<Float>, withBufferSize size: Int) {
-        if sendBufferNextCycle {
-            sendBufferNextCycle = false
-            let bufferArray = Array<Float>(UnsafeBufferPointer(start: buffer, count: size))
-            bProcessor.process(buffer: bufferArray)
+    @objc private func handleConfigurationChange(_ notification: Notification) {
+        if !isTappingInput {
+            return
         }
+        
+        stopTappingInput()
+        avEngine.reset()
+        startTappingInput()
     }
     
-    // MARK: - BufferProcessorDelegate
-    
-    func bufferProcessorFinishedProcessing(_ sender: BufferProcessor) {
-        DispatchQueue.main.async {
-            self.delegate?.didRefreshAudioEngine()
-            self.delegate?.didRefreshVisualSpectrum(sender.getVisualSpectrum())
-        }
-    }
 }
 
+
 protocol AudioEngineDelegate: class {
-    func didRefreshAudioEngine()
-    func didRefreshVisualSpectrum(_ s: [Float])
-    func audioDeviceChanged()
+    func didTapInput(withBuffer buffer: [Float], sampleRate: Int)
 }
+
