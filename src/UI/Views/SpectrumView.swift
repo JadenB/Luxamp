@@ -17,16 +17,41 @@ class SpectrumView: NSView {
     @IBInspectable var max: Float = 1.0
     @IBInspectable var min: Float = 0.0
     
-    private var spectrumLayer = SpectrumLayer()
+    private var spectrumMask = CAShapeLayer()
     
     private var filter = BiasedIIRFilter(size: 2)
     var spectrumSize = 2
     
     override func makeBackingLayer() -> CALayer {
-        spectrumLayer.needsDisplayOnBoundsChange = true
-        spectrumLayer.frame = bounds
-        spectrumLayer.backgroundColor = NSColor.black.cgColor
-        return spectrumLayer
+        let bgGradient = CAGradientLayer()
+        bgGradient.colors = [
+            CGColor(gray: 0.1, alpha: 1.0),
+            CGColor(gray: 0.05, alpha: 1.0)
+        ]
+        bgGradient.startPoint = .zero
+        bgGradient.endPoint = CGPoint(x: 0.0, y: 1.0)
+        bgGradient.frame = bounds
+        bgGradient.needsDisplayOnBoundsChange = true
+        
+        let rainbowGradient = CAGradientLayer()
+        rainbowGradient.colors = [
+            NSColor.red.cgColor,
+            NSColor.orange.cgColor,
+            NSColor.yellow.cgColor,
+            NSColor.green.cgColor,
+            NSColor.cyan.cgColor,
+            NSColor.blue.cgColor,
+            NSColor.systemPink.cgColor
+        ]
+        rainbowGradient.startPoint = .zero
+        rainbowGradient.endPoint = CGPoint(x: 1.0, y: 0.0)
+        rainbowGradient.frame = bounds
+        rainbowGradient.shouldRasterize = true
+        rainbowGradient.needsDisplayOnBoundsChange = true
+        rainbowGradient.mask = spectrumMask
+        bgGradient.addSublayer(rainbowGradient)
+        
+        return bgGradient
     }
     
     override var isOpaque: Bool {
@@ -49,8 +74,7 @@ class SpectrumView: NSView {
             newSpectrum[i] = min + (max - min) * Float(arc4random()) / Float(UINT32_MAX)
         }
         
-        spectrumLayer.spectrum = newSpectrum.map { CGFloat(remapValueToUnit($0, min: min, max: max)) }
-        needsDisplay = true
+        setSpectrum(newSpectrum)
     }
     
     func setSpectrum(_ newSpectrum: [Float]) {
@@ -61,85 +85,14 @@ class SpectrumView: NSView {
             spectrumSize = newSpectrum.count
         }
         
-        var filteredSpectrum = [CGFloat](repeating: 0.0, count: newSpectrum.count)
-        for i in 0..<filteredSpectrum.count {
-            var filteredVal = remapValueToUnit(newSpectrum[i], min: min, max: max)
-            filteredVal = filter.applyFilter(toValue: filteredVal, atIndex: i)
-            filteredSpectrum[i] = CGFloat(filteredVal)
-        }
+        var filteredSpectrum = newSpectrum.map { remapValueToUnit($0, min: min, max: max) }
+        filter.applyFilterInPlace(toData: &filteredSpectrum)
         
-        spectrumLayer.spectrum = filteredSpectrum
-        needsDisplay = true
-    }
-    
-    func clear() {
-        filter.clearData()
-        setSpectrum( [Float](repeating: min, count: spectrumSize) )
-    }
-}
-
-class SpectrumLayer: CAGradientLayer {
-    var gradientLayer = CAGradientLayer()
-    var spectrumMask = CAShapeLayer()
-    
-    var spectrum: [CGFloat] = [1, 1] {
-        didSet {
-            updateMask()
-        }
-    }
-    
-    override var bounds: CGRect {
-        didSet { gradientLayer.frame = bounds }
-    }
-    
-    override init() {
-        super.init()
-        commonInit()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        commonInit()
-    }
-    
-    private func commonInit() {
-        gradientLayer = CAGradientLayer()
-        gradientLayer.needsDisplayOnBoundsChange = true
-        
-        let color1 = NSColor.red
-        let color2 = NSColor.orange
-        let color3 = NSColor.yellow
-        let color4 = NSColor.green
-        let color5 = NSColor.cyan
-        let color6 = NSColor.blue
-        let color7 = NSColor.systemPink
-        gradientLayer.colors = [color1.cgColor, color2.cgColor, color3.cgColor, color4.cgColor, color5.cgColor, color6.cgColor, color7.cgColor]
-        
-        gradientLayer.mask = spectrumMask
-        gradientLayer.startPoint = .zero
-        gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.0)
-        gradientLayer.shouldRasterize = true
-        addSublayer(gradientLayer)
-        
-        spectrumMask.drawsAsynchronously = true
-        
-        colors = [
-            CGColor(gray: 0.1, alpha: 1.0),
-            CGColor(gray: 0.05, alpha: 1.0)
-        ]
-        startPoint = .zero
-        endPoint = CGPoint(x: 0.0, y: 1.0)
-    }
-    
-    private func updateMask() {
-        if spectrum.count <= 1 { spectrum = [1, 1] }
+        let curvePoints = layoutCurvePoints(fromSpectrum: filteredSpectrum)
         let path = CGMutablePath()
-        path.move(to: .zero)
-        
-        let points = layoutPoints()
         
         // Smooth bars spectrum
-        let curve = QuadraticCurve(withPoints: points)
+        let curve = QuadraticCurve(withPoints: curvePoints)
         
         let barCount = 32
         let space: CGFloat = 4
@@ -156,27 +109,15 @@ class SpectrumLayer: CAGradientLayer {
         
         let stroked = path.copy(strokingWithWidth: dx - space * 2, lineCap: .butt, lineJoin: .bevel, miterLimit: 0.0)
         spectrumMask.path = stroked
-        // End smooth bars spectrum
-        
-        // Smooth curve spectrum
-        /*
-        path.addLine(to: points[0])
-        
-        for i in 1..<points.count {
-            let curPoint = points[i]
-            let prevPoint = points[i - 1]
-            let midPoint = CGPoint(x: (prevPoint.x + curPoint.x) / 2, y: (prevPoint.y + curPoint.y) / 2)
-            path.addQuadCurve(to: midPoint, control: prevPoint)
-        }
-        
-        path.addLine(to: CGPoint(x: bounds.width, y: 0))
-        path.closeSubpath()
-        spectrumMask.path = path
-        */
-        // End smooth curve spectrum
+        needsDisplay = true
     }
     
-    private func layoutPoints() -> [CGPoint] {
+    func clear() {
+        filter = BiasedIIRFilter(initialData: [Float](repeating: min, count: spectrumSize))
+        setSpectrum( [Float](repeating: min, count: spectrumSize) )
+    }
+    
+    private func layoutCurvePoints(fromSpectrum spectrum: [Float]) -> [CGPoint] {
         var points = [CGPoint]()
         points.reserveCapacity(spectrum.count + 2)
         
@@ -187,7 +128,7 @@ class SpectrumLayer: CAGradientLayer {
         points.append(.zero)
         x += dx
         for bar in spectrum {
-            points.append(CGPoint(x: x, y: bar * h))
+            points.append(CGPoint(x: x, y: CGFloat(bar) * h))
             x += dx
         }
         points.append(CGPoint(x: bounds.width, y: 0))
@@ -195,6 +136,7 @@ class SpectrumLayer: CAGradientLayer {
         return points
     }
 }
+
 
 class QuadraticCurve {
     
@@ -230,7 +172,7 @@ class QuadraticCurve {
     
     func interpolate(atPosition pos: CGFloat) -> CGPoint {
         if pos > 1.0 || pos < 0.0 {
-            print("invalid t")
+            print("invalid interpolation position \(pos)")
             return .zero
         }
         
@@ -253,4 +195,5 @@ class QuadraticCurve {
     private func midPointsSurrounding(index: Int) -> (left: CGPoint, right: CGPoint) {
         return (midPoints[index], midPoints[index + 1])
     }
+    
 }
