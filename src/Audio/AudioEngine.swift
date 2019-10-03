@@ -31,7 +31,7 @@ class AudioEngine {
             return
         }
         
-        let inputNode: AVAudioInputNode = avEngine.inputNode
+        let inputNode = avEngine.inputNode
         let inputFormat = inputNode.outputFormat(forBus: 0)
         let sampleRateInt = Int(inputFormat.sampleRate)
         
@@ -71,11 +71,12 @@ class AudioEngine {
         isTappingInput = false
     }
     
+    var hasRunOnce = false
+    
     private func handleBuffer(_ buffer: [Float], sampleRate: Int) {
-        DispatchQueue.main.async {
-            if self.isTappingInput {
-                self.delegate?.didTapInput(withBuffer: buffer, sampleRate: sampleRate)
-            }
+        DispatchQueue.main.sync {
+            let aBuffer = AnalyzedBuffer(buffer: buffer, bufferLength: BUFFER_SIZE, sampleRate: sampleRate)
+            self.delegate?.didTapInput(withBuffer: aBuffer)
         }
     }
     
@@ -93,6 +94,6 @@ class AudioEngine {
 
 
 protocol AudioEngineDelegate: class {
-    func didTapInput(withBuffer buffer: [Float], sampleRate: Int)
+    func didTapInput(withBuffer buffer: AnalyzedBuffer)
 }
 

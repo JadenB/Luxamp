@@ -36,7 +36,7 @@ class AnalyzedBuffer {
     let gist: Gist
     
     init(buffer: [Float], bufferLength: Int, sampleRate: Int) {
-        gist = Gist(frameSize: bufferLength, sampleRate: sampleRate)
+        gist = Gist(frameSize: bufferLength, sampleRate: 44100)
         fftSize = bufferLength / 2
         
         gist.processAudio(frame: buffer)

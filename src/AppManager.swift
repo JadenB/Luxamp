@@ -1,6 +1,6 @@
 //
 //  AppManager.swift
-//  LED Strip Controller
+//  Luxamp
 //
 //  Created by Jaden Bernal on 12/27/18.
 //  Copyright © 2018 Jaden Bernal. All rights reserved.

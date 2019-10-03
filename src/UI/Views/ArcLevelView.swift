@@ -1,6 +1,6 @@
 //
 //  ArcLevelView.swift
-//  LED Strip Controller
+//  Luxamp
 //
 //  Created by Jaden Bernal on 1/15/19.
 //  Copyright © 2019 Jaden Bernal. All rights reserved.

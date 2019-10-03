@@ -1,6 +1,6 @@
 //
 //  ScrollingLevelView.swift
-//  LED Strip Controller
+//  Luxamp
 //
 //  Created by Jaden Bernal on 3/25/19.
 //  Copyright © 2019 Jaden Bernal. All rights reserved.

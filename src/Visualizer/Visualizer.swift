@@ -1,6 +1,6 @@
 //
 //  Visualizer.swift
-//  LED Strip Controller
+//  Luxamp
 //
 //  Created by Jaden Bernal on 12/20/18.
 //  Copyright © 2018 Jaden Bernal. All rights reserved.
@@ -87,7 +87,12 @@ class Visualizer {
 
 /// Implemented by the Visualizer class to handle brightness and color values seperately. Should not be instantiated outside of a Visualizer.
 class VisualizerMapper {
-    private var orderedDrivers: [VisualizationDriver] = [VeryLowSpectrumDriver(),
+    private var orderedDrivers: [VisualizationDriver] = [PeakEnergyDriver(),
+                                                         RootMeanSquareDriver(),
+                                                         PitchDriver(),
+                                                         SpectralDifferenceDriver(),
+                                                         SpectralCrestDriver(),
+                                                         VeryLowSpectrumDriver(),
                                                          LowSpectrumDriver(),
                                                          MidSpectrumDriver(),
                                                          HighSpectrumDriver()]

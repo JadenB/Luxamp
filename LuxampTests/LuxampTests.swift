@@ -1,6 +1,6 @@
 //
 //  LED_Strip_ControllerTests.swift
-//  LED Strip ControllerTests
+//  LuxampTests
 //
 //  Created by Jaden Bernal on 12/19/18.
 //  Copyright © 2018 Jaden Bernal. All rights reserved.

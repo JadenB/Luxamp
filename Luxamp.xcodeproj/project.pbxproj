@@ -397,7 +397,7 @@
 					New,
 				);
 				LastSwiftUpdateCheck = 1010;
-				LastUpgradeCheck = 1010;
+				LastUpgradeCheck = 1100;
 				ORGANIZATIONNAME = "Jaden Bernal";
 				TargetAttributes = {
 					7DFE037B21CB2C8800D6288F = {
@@ -701,6 +701,7 @@
 					"$(FRAMEWORK_SEARCH_PATHS)",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MARKETING_VERSION = 0.2.1;
 				OTHER_LDFLAGS = (
 					"-lstdc++",
 					"-all_load",
@@ -732,6 +733,7 @@
 					"$(FRAMEWORK_SEARCH_PATHS)",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MARKETING_VERSION = 0.2.1;
 				OTHER_LDFLAGS = (
 					"-lstdc++",
 					"-all_load",

@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  LED Strip Controller
+//  Luxamp
 //
 //  Created by Jaden Bernal on 12/19/18.
 //  Copyright © 2018 Jaden Bernal. All rights reserved.
@@ -191,11 +191,10 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerDelegate,
     
     // MARK: - AudioEngineDelegate
     
-    func didTapInput(withBuffer buffer: [Float], sampleRate: Int) {
+    func didTapInput(withBuffer buffer: AnalyzedBuffer) {
         if state == .On {
-            let analyzedBuffer = AnalyzedBuffer(buffer: buffer, bufferLength: BUFFER_SIZE, sampleRate: sampleRate)
-            musicVisualizer.visualizeBuffer(analyzedBuffer)
-            spectrum.setSpectrum(analyzedBuffer.visualSpectrum())
+            musicVisualizer.visualizeBuffer(buffer)
+            spectrum.setSpectrum(buffer.visualSpectrum())
         }
     }
     
