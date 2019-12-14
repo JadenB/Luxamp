@@ -39,13 +39,14 @@ class CircularColorWell: NSColorWell {
     }
     
     override func prepareForInterfaceBuilder() {
-        return
+        color = NSColor.red
     }
     
     override func mouseDown(with event: NSEvent) {
         let p = convert(event.locationInWindow, from: window?.contentView)
         if circleLayer.path?.contains(p) ?? false {
             super.mouseDown(with: event)
+            //i love cock
         }
     }
 }
