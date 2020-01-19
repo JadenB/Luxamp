@@ -8,18 +8,16 @@
 
 import Cocoa
 
-let COLOR_BYTE: UInt8 = 99 // 'c'
-let POWER_BYTE: UInt8 = 112 // 'p'
-let PACKET_SIZE = 5
+let PACKET_TYPE_COLOR: UInt8 = 99 // 'c'
+let PACKET_TYPE_POWER: UInt8 = 112 // 'p'
 
 class LightController: DeviceManagerResponder {
     
     static let shared = LightController()
     
     private let lightSerialQueue = DispatchQueue(label: "lightSerialQueue")
-    private var state: LightState = .Off
+    private var isOn = false
     private var maxBrightness: CGFloat = 1.0
-    private var currentColorIgnoresDelay = false
     
     /// How long to wait before sending a custom color in milliseconds
     var delay: Int = 0 {
@@ -60,50 +58,32 @@ class LightController: DeviceManagerResponder {
     
     /// Turn the lights on
     func turnOn() {
-        state = .On
-        DeviceManager.shared.sendPacket(packet: [POWER_BYTE, 1, 0, 0], size: 4)
+        isOn = true
+        DeviceManager.shared.sendPacket(packet: [PACKET_TYPE_POWER, 1, 0, 0])
     }
     
     /// Turn the lights off
     func turnOff() {
-        state = .Off
+        isOn = false
         sendColorToDevice(color: .black)
-        DeviceManager.shared.sendPacket(packet: [POWER_BYTE, 0, 0, 0], size: 4)
-    }
-    
-    /// The current on/off status of the lights
-    func isOn() -> Bool {
-        return state == .On
+        DeviceManager.shared.sendPacket(packet: [PACKET_TYPE_POWER, 0, 0, 0])
     }
     
     /// Sets the color of the lights. Only works if they are on
     ///
     /// - Parameter color: The color to set the lights to
     func setColor(color: NSColor) {
-        if state == .Off {
+        if !isOn {
             return
         }
         
         if delay == 0 {
             sendColorToDevice(color: color)
         } else {
-            currentColorIgnoresDelay = false
             lightSerialQueue.asyncAfter(deadline: .now() + .milliseconds(delay)) {
-                if !self.currentColorIgnoresDelay { self.sendColorToDevice(color: color) }
+                self.sendColorToDevice(color: color)
             }
         }
-    }
-    
-    /// Sets the color of the lights ignoring the set delay. Waits until all previously set colors with delay have finished.
-    ///
-    /// - Parameter color: The color to set the lights to
-    func setColorIgnoreDelay(color: NSColor) {
-        if state == .Off {
-            return
-        }
-        
-        currentColorIgnoresDelay = true
-        sendColorToDevice(color: color)
     }
     
     /// Calibrates the color for the lights and sends the device a packet containing the RGB values
@@ -123,9 +103,9 @@ class LightController: DeviceManagerResponder {
         let g = gammaLookup[gCom]
         let b = gammaLookup[bCom]
         
-        let packet: [UInt8] = [COLOR_BYTE, r, g, b]
+        let packet: [UInt8] = [PACKET_TYPE_COLOR, r, g, b]
         
-        DeviceManager.shared.sendPacket(packet: packet, size: PACKET_SIZE)
+        DeviceManager.shared.sendPacket(packet: packet)
     }
     
     @objc func maxBrightnessChanged(_ notification: Notification) {
@@ -142,7 +122,7 @@ class LightController: DeviceManagerResponder {
     
     /// Called by DeviceManager when a color is sent to the lights while they are off
     func deviceRespondedWithOffStatus() {
-        if state == .On {
+        if isOn {
             turnOn() // if the state is on but the lights are off, turn them on to get back in sync
         }
     }

@@ -97,18 +97,12 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerDelegate,
     
     // MARK: - IBActions
     
-    @IBAction func colorWellChanged(_ sender: NSColorWell) {
-        LightController.shared.setColorIgnoreDelay(color: sender.color)
-    }
-    
     @IBAction func powerButtonPressed(_ sender: NSButton) {
         state = (sender.state == .on) ? .On : .Off
         
         if state == .On {
             LightController.shared.turnOn()
-            LightController.shared.setColorIgnoreDelay(color: colorView.color)
             startAudioVisualization()
-            
             colorView.isEnabled = false
         } else {
             LightController.shared.turnOff()
@@ -211,13 +205,6 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerDelegate,
     func didVisualizeWithData(brightnessData: VisualizerData, colorData: VisualizerData) {
         brightnessSide.updateWithData(brightnessData)
         colorSide.updateWithData(colorData)
-    }
-    
-    // MARK: - LightPatternManagerDelegate
-    
-    func didGenerateColorFromPattern(_ color: NSColor) {
-        LightController.shared.setColorIgnoreDelay(color: color)
-        colorView.color = color
     }
     
     // MARK: - ArcLevelViewDelegate

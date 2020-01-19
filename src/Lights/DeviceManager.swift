@@ -90,7 +90,7 @@ class DeviceManager: NSObject, ORSSerialPortDelegate {
     /// - Parameters:
     ///   - packet: The array of bytes to send
     ///   - size: The number of bytes to send
-    func sendPacket(packet: [UInt8], size: Int) {
+    func sendPacket(packet: [UInt8]) {
         if deviceIsActive() {
             var packetWithChecksum = packet
             packetWithChecksum.append(computeChecksum(fromBytes: packet))

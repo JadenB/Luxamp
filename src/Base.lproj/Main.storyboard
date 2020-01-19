@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14868"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -51,7 +51,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <popUpButtonCell key="cell" type="push" title="Select Device" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="KaG-4n-Z7M" id="zaf-du-pVs">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="menu"/>
+                                    <font key="font" metaFont="system"/>
                                     <menu key="menu" id="8zT-Qm-L7D">
                                         <items>
                                             <menuItem title="Select Device" state="on" hidden="YES" id="KaG-4n-Z7M"/>
@@ -925,7 +925,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <popUpButtonCell key="cell" type="push" title="Preset: Default" bezelStyle="rounded" alignment="center" lineBreakMode="truncatingTail" borderStyle="border" inset="2" pullsDown="YES" arrowPosition="arrowAtCenter" autoenablesItems="NO" selectedItem="n2m-IT-s2h" id="dRQ-Ao-G1b">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="menu"/>
+                                    <font key="font" metaFont="system"/>
                                     <menu key="menu" autoenablesItems="NO" id="Qqu-Rl-ovD">
                                         <items>
                                             <menuItem title="Preset: Default" hidden="YES" id="n2m-IT-s2h"/>
@@ -1103,7 +1103,7 @@ DQ
                                 </connections>
                             </button>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="Isg-sz-mb3" customClass="GradientView" customModule="Luxamp" customModuleProvider="target">
-                                <rect key="frame" x="20" y="92" width="440" height="96"/>
+                                <rect key="frame" x="20" y="91" width="440" height="97"/>
                             </customView>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eZc-p2-5Zw">
                                 <rect key="frame" x="302" y="13" width="82" height="32"/>
@@ -1122,7 +1122,7 @@ Gw
                                 </connections>
                             </button>
                             <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="C5w-Kf-G6L">
-                                <rect key="frame" x="17" y="18" width="19" height="27"/>
+                                <rect key="frame" x="17" y="17" width="19" height="28"/>
                                 <stepperCell key="cell" continuous="YES" alignment="left" minValue="2" maxValue="5" doubleValue="2" id="vMN-JX-1iB"/>
                                 <connections>
                                     <action selector="stepperChanged:" target="iO9-Dj-NaA" id="Qpo-KA-e2a"/>
@@ -1155,7 +1155,7 @@ Gw
                                 </textFieldCell>
                             </textField>
                             <stackView distribution="equalCentering" orientation="horizontal" alignment="top" spacing="0.0" horizontalStackHuggingPriority="250" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DaS-fa-1ml">
-                                <rect key="frame" x="20" y="61" width="440" height="23"/>
+                                <rect key="frame" x="20" y="60" width="440" height="23"/>
                                 <subviews>
                                     <colorWell translatesAutoresizingMaskIntoConstraints="NO" id="F9I-XH-e7o">
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="23"/>
@@ -1339,7 +1339,7 @@ Gw
                                 <rect key="frame" x="258" y="0.0" width="32" height="14"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="OUT" id="tmb-Qe-RaN">
-                                    <font key="font" metaFont="smallSystem"/>
+                                    <font key="font" metaFont="palette"/>
                                     <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
@@ -1349,7 +1349,7 @@ Gw
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="B7J-3m-tbB">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="menu"/>
+                                    <font key="font" metaFont="system"/>
                                     <menu key="menu" id="7lq-Ww-CWp"/>
                                 </popUpButtonCell>
                                 <connections>
@@ -1454,7 +1454,7 @@ Gw
     <resources>
         <image name="Off Power" width="152" height="56"/>
         <image name="On Power" width="152" height="56"/>
-        <image name="ReverseImage" width="36" height="29"/>
+        <image name="ReverseImage" width="32" height="26"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="LZo-Ia-loG"/>
