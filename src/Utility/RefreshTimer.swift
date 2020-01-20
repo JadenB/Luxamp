@@ -10,28 +10,52 @@ import Foundation
 
 
 class RefreshTimer: NSObject {
-	private var timer: Timer
 	private let onTick: () -> Void
 	private let interval: Double
 	
+	private lazy var timer: DispatchSourceTimer = {
+		let q = DispatchQueue(label: "com.jadenbernal.Luxamp.refreshQueue")
+		let t = DispatchSource.makeTimerSource(queue: q)
+		t.schedule(deadline: .now() + interval, repeating: interval)
+		t.setEventHandler { [weak self] in
+			self?.onTick()
+		}
+		return t
+	}()
+	
+	private enum State {
+		case suspended
+		case resumed
+	}
+	
+	private var state: State = .suspended
+	
 	init(refreshRate: Double, block: @escaping () -> Void) {
-		timer = Timer()
 		onTick = block
 		interval = 1.0/refreshRate
 	}
 	
 	deinit {
-		timer.invalidate()
+		timer.setEventHandler {}
+        timer.cancel()
+        start()
 	}
 	
 	func start() {
-		timer.invalidate()
-		timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) {[weak self] _ in
-			self?.onTick()
+		if state == .resumed {
+			return
 		}
+		
+		state = .resumed
+		timer.resume()
 	}
 	
 	func pause() {
-		timer.invalidate()
+		if state == .suspended {
+			return
+		}
+		
+		state = .suspended
+		timer.suspend()
 	}
 }
