@@ -15,85 +15,68 @@ let BUFFER_SIZE: Int = 1_024
 
 class AudioEngine {
     
-    weak var delegate: AudioEngineDelegate?
+    private let avEngine = AVAudioEngine()
+	private var currentBuffer = [Float](repeating: 0.0, count: BUFFER_SIZE)
+	private var currentBufferLock = UnsafeMutablePointer<pthread_mutex_t>.allocate(capacity: 1)
     
-    private let avEngine: AVAudioEngine
-    private var isTappingInput: Bool
-    
-    init() {
-        avEngine = AVAudioEngine()
-        isTappingInput = false
+	init() {
+		pthread_mutex_init(currentBufferLock, nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleConfigurationChange), name: .AVAudioEngineConfigurationChange, object: nil)
     }
+	
+	deinit {
+		currentBufferLock.deallocate()
+	}
     
     func startTappingInput() {
-        if isTappingInput {
-            return
-        }
-        
+		avEngine.stop()
+		avEngine.reset()
+		
         let inputNode = avEngine.inputNode
-        let inputFormat = inputNode.outputFormat(forBus: 0)
-        let sampleRateInt = Int(inputFormat.sampleRate)
+        let inputFormat = inputNode.inputFormat(forBus: 0)
+        let sampleRate = Int(inputFormat.sampleRate)
         
         print("AudioEngine Input Format: \(inputFormat)")
         
-        inputNode.installTap(onBus: 0, bufferSize: UInt32(BUFFER_SIZE), format: inputFormat) { [weak self, sampleRate = sampleRateInt] (buffer, _) in
+        inputNode.installTap(onBus: 0, bufferSize: UInt32(BUFFER_SIZE), format: inputFormat) { [weak self, sampleRateCaptured = sampleRate] (buffer, _) in
             guard let strongSelf = self else {
-                print("Unable to create strong reference to self")
                 return
             }
-            
+
             buffer.frameLength = UInt32(BUFFER_SIZE)
-            
+
             if let bufferTail = buffer.floatChannelData?[0] {
                 let bufferPtr = UnsafeBufferPointer(start: bufferTail + Int(buffer.frameCapacity - buffer.frameLength), count: BUFFER_SIZE)
-                strongSelf.handleBuffer([Float](bufferPtr), sampleRate: sampleRate)
+				pthread_mutex_lock(strongSelf.currentBufferLock)
+				strongSelf.currentBuffer = [Float](bufferPtr)
+				pthread_mutex_unlock(strongSelf.currentBufferLock)
             }
         }
-        
-        isTappingInput = true
         
         do {
             avEngine.prepare()
             try avEngine.start()
         } catch {
+			inputNode.removeTap(onBus: 0)
             print("AVAudioEngine unable to start!")
         }
     }
     
     func stopTappingInput() {
-        if !isTappingInput {
-            return
-        }
-        
-        avEngine.stop()
-        avEngine.inputNode.removeTap(onBus: 0)
-        isTappingInput = false
+		avEngine.inputNode.removeTap(onBus: 0)
+		avEngine.stop()
     }
-    
-    var hasRunOnce = false
-    
-    private func handleBuffer(_ buffer: [Float], sampleRate: Int) {
-        DispatchQueue.main.sync {
-            let aBuffer = AnalyzedBuffer(buffer: buffer, bufferLength: BUFFER_SIZE, sampleRate: sampleRate)
-            self.delegate?.didTapInput(withBuffer: aBuffer)
-        }
-    }
+	
+	func getCurrentBuffer() -> [Float] {
+		pthread_mutex_lock(currentBufferLock)
+		let copiedBuffer = currentBuffer
+		pthread_mutex_unlock(currentBufferLock)
+		return copiedBuffer
+	}
     
     @objc private func handleConfigurationChange(_ notification: Notification) {
-        if !isTappingInput {
-            return
-        }
-        
         stopTappingInput()
-        avEngine.reset()
         startTappingInput()
     }
     
 }
-
-
-protocol AudioEngineDelegate: class {
-    func didTapInput(withBuffer buffer: AnalyzedBuffer)
-}
-

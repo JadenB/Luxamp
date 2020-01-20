@@ -9,7 +9,10 @@
 import Cocoa
 
 
-class ViewController: NSViewController, AudioEngineDelegate, VisualizerDelegate,
+let REFRESH_RATE = 30.0
+
+
+class ViewController: NSViewController, VisualizerDelegate,
                         ArcLevelViewDelegate, SaveDialogDelegate, GradientEditorDelegate {
     
     @IBOutlet weak var powerButton: NSButton!
@@ -22,6 +25,8 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerDelegate,
     
     var brightnessSide: SideViewController!
     var colorSide: SideViewController!
+	
+	var refreshTimer: RefreshTimer!
     
     var audioEngine: AudioEngine!
     var musicVisualizer: Visualizer!
@@ -43,8 +48,22 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
 		
+		refreshTimer = RefreshTimer(refreshRate: REFRESH_RATE) { [weak self] in
+			guard let strongSelf = self else {
+				return
+			}
+			
+			let analyzedBuffer = AnalyzedBuffer(buffer: strongSelf.audioEngine.getCurrentBuffer(), bufferLength: BUFFER_SIZE, sampleRate: 44_100)
+			
+			DispatchQueue.main.async {
+				if strongSelf.state == .On {
+					strongSelf.musicVisualizer.visualizeBuffer(analyzedBuffer)
+					strongSelf.spectrum.setSpectrum(analyzedBuffer.visualSpectrum())
+				}
+			}
+		}
+		
         audioEngine = AudioEngine()
-        audioEngine.delegate = self
         
         musicVisualizer = Visualizer()
         musicVisualizer.delegate = self
@@ -146,7 +165,6 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerDelegate,
     
     func savePreset(withName name: String) {
         musicVisualizer.presets.saveCurrentSettings(name: name)
-		print(musicVisualizer.brightness.outputMin)
         presetMenu.insertItem(withTitle: name, at: presetMenu.numberOfItems - 3)
         presetMenu.selectItem(withTitle: name)
         presetSelected(presetMenu)
@@ -160,10 +178,12 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerDelegate,
     }
     
     func startAudioVisualization() {
+		refreshTimer.start()
         audioEngine.startTappingInput()
     }
     
     func stopAudioVisualization() {
+		refreshTimer.pause()
         audioEngine.stopTappingInput()
 		brightnessSide.clearViews()
 		colorSide.clearViews()
@@ -181,15 +201,6 @@ class ViewController: NSViewController, AudioEngineDelegate, VisualizerDelegate,
             presetMenu.insertItem(withTitle: presetNames[i], at: 1) // insert at 1 to put after title and before save/delete
         }
         presetMenu.selectItem(at: 1)
-    }
-    
-    // MARK: - AudioEngineDelegate
-    
-    func didTapInput(withBuffer buffer: AnalyzedBuffer) {
-        if state == .On {
-            musicVisualizer.visualizeBuffer(buffer)
-            spectrum.setSpectrum(buffer.visualSpectrum())
-        }
     }
     
     // MARK: - VisualizerDelegate

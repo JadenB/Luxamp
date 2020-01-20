@@ -43,6 +43,7 @@
 		7DEBB55021EE916800878309 /* AngleGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DEBB54F21EE916800878309 /* AngleGradientLayer.m */; };
 		7DEBB55521EE977400878309 /* ArcLevelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DEBB55421EE977400878309 /* ArcLevelView.swift */; };
 		7DF0C41E21E44DDB0007FD31 /* DynamicRangeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DF0C41D21E44DDB0007FD31 /* DynamicRangeViewController.swift */; };
+		7DF3BAC523D5044500A59892 /* RefreshTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DF3BAC423D5044500A59892 /* RefreshTimer.swift */; };
 		7DFC34202202DD7D00B4C993 /* SideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFC341F2202DD7D00B4C993 /* SideViewController.swift */; };
 		7DFE038421CB2C8900D6288F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7DFE038321CB2C8900D6288F /* Assets.xcassets */; };
 		7DFE038721CB2C8900D6288F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DFE038521CB2C8900D6288F /* Main.storyboard */; };
@@ -127,6 +128,7 @@
 		7DEBB55121EE917100878309 /* AngleGradientLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AngleGradientLayer.h; sourceTree = "<group>"; };
 		7DEBB55421EE977400878309 /* ArcLevelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArcLevelView.swift; sourceTree = "<group>"; };
 		7DF0C41D21E44DDB0007FD31 /* DynamicRangeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicRangeViewController.swift; sourceTree = "<group>"; };
+		7DF3BAC423D5044500A59892 /* RefreshTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshTimer.swift; sourceTree = "<group>"; };
 		7DFC341F2202DD7D00B4C993 /* SideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideViewController.swift; sourceTree = "<group>"; };
 		7DFE037C21CB2C8800D6288F /* Luxamp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Luxamp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DFE037F21CB2C8800D6288F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -198,6 +200,7 @@
 			children = (
 				7D33778F21D035C800554841 /* DynamicRange.swift */,
 				7D5CF64B21DA566200D86666 /* Remap.swift */,
+				7DF3BAC423D5044500A59892 /* RefreshTimer.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -394,7 +397,7 @@
 					New,
 				);
 				LastSwiftUpdateCheck = 1010;
-				LastUpgradeCheck = 1100;
+				LastUpgradeCheck = 1130;
 				ORGANIZATIONNAME = "Jaden Bernal";
 				TargetAttributes = {
 					7DFE037B21CB2C8800D6288F = {
@@ -504,6 +507,7 @@
 				7D6D4DE221F2C9CC00553E11 /* AngleGradientArcLayer.swift in Sources */,
 				7D5E4E5221D602370074B129 /* AppManager.swift in Sources */,
 				7D03140C21D2E30300F46D04 /* DeviceManager.swift in Sources */,
+				7DF3BAC523D5044500A59892 /* RefreshTimer.swift in Sources */,
 				7D03140221D24ABE00F46D04 /* VisualizerTextField.swift in Sources */,
 				7D03140A21D2E0DE00F46D04 /* PreferencesViewController.swift in Sources */,
 				7DEBB55021EE916800878309 /* AngleGradientLayer.m in Sources */,
@@ -683,6 +687,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -715,6 +720,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
