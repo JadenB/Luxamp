@@ -1,17 +1,8 @@
 import Foundation
 
-/// Remaps a value from the range min-max to the range 0-1
-func remapValueToUnit(_ value: Float, min: Float, max: Float) -> Float {
-    if value >= max {
-        return 1.0
-    } else if value <= min {
-        return 0.0
-    }
-    let scalingFactor = 1 / (max - min)
-    return (value - min) * scalingFactor
-}
 
-func remapValueToUnit(_ value: CGFloat, min: CGFloat, max: CGFloat) -> CGFloat {
+/// Remaps a value from the range min-max to the range 0-1
+func remapValueToUnit<T : BinaryFloatingPoint>(_ value: T, min: T, max: T) -> T {
     if value >= max {
         return 1.0
     } else if value <= min {
@@ -23,7 +14,7 @@ func remapValueToUnit(_ value: CGFloat, min: CGFloat, max: CGFloat) -> CGFloat {
 }
 
 /// Remaps a value from the range 0-1 to the range min-max
-func remapValueFromUnit(_ value: Float, min: Float, max: Float) -> Float {
+func remapValueFromUnit<T : BinaryFloatingPoint>(_ value: T, min: T, max: T) -> T {
 	if value >= 1.0 {
 		return max
 	} else if value <= 0.0 {
@@ -34,7 +25,7 @@ func remapValueFromUnit(_ value: Float, min: Float, max: Float) -> Float {
 }
 
 /// Remaps a value from the range min-max to the range 0-1
-func remapValueToBounds(_ value: Float, inputMin: Float, inputMax: Float, outputMin: Float, outputMax: Float) -> Float {
+func remapValueToBounds<T : BinaryFloatingPoint>(_ value: T, inputMin: T, inputMax: T, outputMin: T, outputMax: T) -> T {
     if value >= inputMax {
         return outputMax
     } else if value <= inputMin {
