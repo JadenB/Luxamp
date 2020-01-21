@@ -29,6 +29,7 @@ class ViewController: NSViewController, VisualizerDelegate,
 	var refreshTimer: RefreshTimer!
     
     var audioEngine: AudioEngine!
+	var audioMapper: AudioMapper!
     var musicVisualizer: Visualizer!
     var hidden = true
     var lastSelectedPresetName: String = ""
@@ -48,19 +49,15 @@ class ViewController: NSViewController, VisualizerDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
 		
+		audioMapper = AudioMapper(bufferSize: BUFFER_SIZE)
+		
 		refreshTimer = RefreshTimer(refreshRate: REFRESH_RATE) { [weak self] in
 			guard let strongSelf = self else {
 				return
 			}
 			
-			let analyzedBuffer = AnalyzedBuffer(buffer: strongSelf.audioEngine.getCurrentBuffer(), bufferLength: BUFFER_SIZE, sampleRate: 44_100)
-			
-			DispatchQueue.main.async {
-				if strongSelf.state == .On {
-					strongSelf.musicVisualizer.visualizeBuffer(analyzedBuffer)
-					strongSelf.spectrum.setSpectrum(analyzedBuffer.visualSpectrum())
-				}
-			}
+			strongSelf.audioMapper.process(buffer: strongSelf.audioEngine.getCurrentBuffer())
+			strongSelf.musicVisualizer.visualizeBuffer(strongSelf.audioMapper)
 		}
 		
         audioEngine = AudioEngine()
@@ -206,16 +203,25 @@ class ViewController: NSViewController, VisualizerDelegate,
     // MARK: - VisualizerDelegate
     
     func didVisualizeIntoColor(_ color: NSColor, brightnessVal: Float, colorVal: Float) {
-        LightController.shared.setColor(color: color)
-        colorView.color = color
-        
-        arcLevelCenter.setBrightnessLevel(to: brightnessVal)
-        arcLevelCenter.setColorLevel(to: colorVal)
+		DispatchQueue.main.async {
+			if self.state == .On {
+				LightController.shared.setColor(color: color)
+				self.colorView.color = color
+				
+				self.arcLevelCenter.setBrightnessLevel(to: brightnessVal)
+				self.arcLevelCenter.setColorLevel(to: colorVal)
+				// strongSelf.spectrum.setSpectrum(analyzedBuffer.visualSpectrum())
+			}
+		}
     }
     
     func didVisualizeWithData(brightnessData: VisualizerData, colorData: VisualizerData) {
-        brightnessSide.updateWithData(brightnessData)
-        colorSide.updateWithData(colorData)
+		DispatchQueue.main.async {
+			if self.state == .On {
+				self.brightnessSide.updateWithData(brightnessData)
+				self.colorSide.updateWithData(colorData)
+			}
+		}
     }
     
     // MARK: - ArcLevelViewDelegate

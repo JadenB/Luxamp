@@ -11,5 +11,6 @@
 
 #import <ORSSerial/ORSSerial.h>
 #import "AngleGradientLayer.h"
+#import "fourier_transform.h"
 
 #endif /* bridge_h */

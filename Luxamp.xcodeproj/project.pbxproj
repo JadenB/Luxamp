@@ -15,7 +15,6 @@
 		7D12FB64224EEB6F005726DA /* RangeControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D12FB63224EEB6F005726DA /* RangeControl.swift */; };
 		7D14BC5921D0C1E500CF199F /* VisualizationDrivers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D14BC5821D0C1E500CF199F /* VisualizationDrivers.swift */; };
 		7D1FDA1A2239ACEA000AC7FE /* AdjustableLevelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1FDA192239ACEA000AC7FE /* AdjustableLevelView.swift */; };
-		7D33778421D027BA00554841 /* BufferProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D33777F21CF2C4900554841 /* BufferProcessor.swift */; };
 		7D33778521D027BB00554841 /* BiasedIIRFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D884BD921CEEB9000FAD263 /* BiasedIIRFilter.swift */; };
 		7D33778621D027BC00554841 /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFE03B421CB6F8C00D6288F /* AudioEngine.swift */; };
 		7D33778721D027BF00554841 /* SpectrumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D884BD321CCC36B00FAD263 /* SpectrumView.swift */; };
@@ -35,15 +34,17 @@
 		7D6D4DE221F2C9CC00553E11 /* AngleGradientArcLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D6D4DE121F2C9CC00553E11 /* AngleGradientArcLayer.swift */; };
 		7D7266E42281331700B64DD6 /* MomentumIIRFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D7266E32281331700B64DD6 /* MomentumIIRFilter.swift */; };
 		7D889CD52332C0E500FCE787 /* ORSSerial.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7D889CD32332C0E500FCE787 /* ORSSerial.framework.dSYM */; };
-		7D889CD62332C0E500FCE787 /* GistSwift.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7D889CD42332C0E500FCE787 /* GistSwift.framework.dSYM */; };
 		7D889CD92332C0FD00FCE787 /* ORSSerial.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D889CD72332C0FC00FCE787 /* ORSSerial.framework */; };
-		7D889CDA2332C0FD00FCE787 /* GistSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D889CD82332C0FD00FCE787 /* GistSwift.framework */; };
-		7D889CDE233362FF00FCE787 /* AnalyzedBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D889CDD233362FF00FCE787 /* AnalyzedBuffer.swift */; };
 		7DB5D6E821D46E92000E7B6C /* VisualizerPresetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB5D6E721D46E92000E7B6C /* VisualizerPresetManager.swift */; };
 		7DEBB55021EE916800878309 /* AngleGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DEBB54F21EE916800878309 /* AngleGradientLayer.m */; };
 		7DEBB55521EE977400878309 /* ArcLevelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DEBB55421EE977400878309 /* ArcLevelView.swift */; };
 		7DF0C41E21E44DDB0007FD31 /* DynamicRangeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DF0C41D21E44DDB0007FD31 /* DynamicRangeViewController.swift */; };
 		7DF3BAC523D5044500A59892 /* RefreshTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DF3BAC423D5044500A59892 /* RefreshTimer.swift */; };
+		7DF3BACB23D55D2800A59892 /* VisualizerModulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DF3BACA23D55D2800A59892 /* VisualizerModulator.swift */; };
+		7DF3BAD023D66B3200A59892 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DF3BACF23D66B3200A59892 /* Accelerate.framework */; };
+		7DF3BAD323D66D8F00A59892 /* fourier_transform.c in Sources */ = {isa = PBXBuildFile; fileRef = 7DF3BAD223D66D8F00A59892 /* fourier_transform.c */; };
+		7DF3BAD523D67DA500A59892 /* FourierTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DF3BAD423D67DA500A59892 /* FourierTransform.swift */; };
+		7DF3BAD723D69C6E00A59892 /* AudioMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DF3BAD623D69C6E00A59892 /* AudioMapper.swift */; };
 		7DFC34202202DD7D00B4C993 /* SideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DFC341F2202DD7D00B4C993 /* SideViewController.swift */; };
 		7DFE038421CB2C8900D6288F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7DFE038321CB2C8900D6288F /* Assets.xcassets */; };
 		7DFE038721CB2C8900D6288F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DFE038521CB2C8900D6288F /* Main.storyboard */; };
@@ -76,7 +77,6 @@
 			dstSubfolderSpec = 16;
 			files = (
 				7D889CD52332C0E500FCE787 /* ORSSerial.framework.dSYM in CopyFiles */,
-				7D889CD62332C0E500FCE787 /* GistSwift.framework.dSYM in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,7 +102,6 @@
 		7D12FB63224EEB6F005726DA /* RangeControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangeControl.swift; sourceTree = "<group>"; };
 		7D14BC5821D0C1E500CF199F /* VisualizationDrivers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizationDrivers.swift; sourceTree = "<group>"; };
 		7D1FDA192239ACEA000AC7FE /* AdjustableLevelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdjustableLevelView.swift; sourceTree = "<group>"; };
-		7D33777F21CF2C4900554841 /* BufferProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BufferProcessor.swift; sourceTree = "<group>"; };
 		7D33778F21D035C800554841 /* DynamicRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicRange.swift; sourceTree = "<group>"; };
 		7D42758421D866760075A325 /* SaveDialogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveDialogViewController.swift; sourceTree = "<group>"; };
 		7D447BDB21FD333D00D09EA8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -119,16 +118,19 @@
 		7D884BD521CCD8EE00FAD263 /* LegacyLevelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyLevelView.swift; sourceTree = "<group>"; };
 		7D884BD921CEEB9000FAD263 /* BiasedIIRFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiasedIIRFilter.swift; sourceTree = "<group>"; };
 		7D889CD32332C0E500FCE787 /* ORSSerial.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = ORSSerial.framework.dSYM; path = Carthage/Build/Mac/ORSSerial.framework.dSYM; sourceTree = "<group>"; };
-		7D889CD42332C0E500FCE787 /* GistSwift.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = GistSwift.framework.dSYM; path = Carthage/Build/Mac/GistSwift.framework.dSYM; sourceTree = "<group>"; };
 		7D889CD72332C0FC00FCE787 /* ORSSerial.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ORSSerial.framework; path = Carthage/Build/Mac/ORSSerial.framework; sourceTree = "<group>"; };
-		7D889CD82332C0FD00FCE787 /* GistSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GistSwift.framework; path = Carthage/Build/Mac/GistSwift.framework; sourceTree = "<group>"; };
-		7D889CDD233362FF00FCE787 /* AnalyzedBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyzedBuffer.swift; sourceTree = "<group>"; };
 		7DB5D6E721D46E92000E7B6C /* VisualizerPresetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizerPresetManager.swift; sourceTree = "<group>"; };
 		7DEBB54F21EE916800878309 /* AngleGradientLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AngleGradientLayer.m; sourceTree = "<group>"; };
 		7DEBB55121EE917100878309 /* AngleGradientLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AngleGradientLayer.h; sourceTree = "<group>"; };
 		7DEBB55421EE977400878309 /* ArcLevelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArcLevelView.swift; sourceTree = "<group>"; };
 		7DF0C41D21E44DDB0007FD31 /* DynamicRangeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicRangeViewController.swift; sourceTree = "<group>"; };
 		7DF3BAC423D5044500A59892 /* RefreshTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshTimer.swift; sourceTree = "<group>"; };
+		7DF3BACA23D55D2800A59892 /* VisualizerModulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizerModulator.swift; sourceTree = "<group>"; };
+		7DF3BACF23D66B3200A59892 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		7DF3BAD123D66D8F00A59892 /* fourier_transform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fourier_transform.h; sourceTree = "<group>"; };
+		7DF3BAD223D66D8F00A59892 /* fourier_transform.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = fourier_transform.c; sourceTree = "<group>"; };
+		7DF3BAD423D67DA500A59892 /* FourierTransform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourierTransform.swift; sourceTree = "<group>"; };
+		7DF3BAD623D69C6E00A59892 /* AudioMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioMapper.swift; sourceTree = "<group>"; };
 		7DFC341F2202DD7D00B4C993 /* SideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideViewController.swift; sourceTree = "<group>"; };
 		7DFE037C21CB2C8800D6288F /* Luxamp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Luxamp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DFE037F21CB2C8800D6288F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -152,8 +154,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7DF3BAD023D66B3200A59892 /* Accelerate.framework in Frameworks */,
 				7D889CD92332C0FD00FCE787 /* ORSSerial.framework in Frameworks */,
-				7D889CDA2332C0FD00FCE787 /* GistSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -186,11 +188,13 @@
 		7D33778221D0277600554841 /* Audio */ = {
 			isa = PBXGroup;
 			children = (
-				7D33777F21CF2C4900554841 /* BufferProcessor.swift */,
-				7D889CDD233362FF00FCE787 /* AnalyzedBuffer.swift */,
+				7DF3BAD623D69C6E00A59892 /* AudioMapper.swift */,
 				7D884BD921CEEB9000FAD263 /* BiasedIIRFilter.swift */,
 				7D7266E32281331700B64DD6 /* MomentumIIRFilter.swift */,
 				7DFE03B421CB6F8C00D6288F /* AudioEngine.swift */,
+				7DF3BAD423D67DA500A59892 /* FourierTransform.swift */,
+				7DF3BAD123D66D8F00A59892 /* fourier_transform.h */,
+				7DF3BAD223D66D8F00A59892 /* fourier_transform.c */,
 			);
 			path = Audio;
 			sourceTree = "<group>";
@@ -250,6 +254,7 @@
 			isa = PBXGroup;
 			children = (
 				7D884BC721CC47FD00FAD263 /* Visualizer.swift */,
+				7DF3BACA23D55D2800A59892 /* VisualizerModulator.swift */,
 				7DB5D6E721D46E92000E7B6C /* VisualizerPresetManager.swift */,
 				7D14BC5821D0C1E500CF199F /* VisualizationDrivers.swift */,
 			);
@@ -265,18 +270,25 @@
 			path = AngleGradientLayer;
 			sourceTree = "<group>";
 		};
+		7DF3BACE23D66B3200A59892 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7DF3BACF23D66B3200A59892 /* Accelerate.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		7DFE037321CB2C8800D6288F = {
 			isa = PBXGroup;
 			children = (
-				7D889CD82332C0FD00FCE787 /* GistSwift.framework */,
 				7D889CD72332C0FC00FCE787 /* ORSSerial.framework */,
-				7D889CD42332C0E500FCE787 /* GistSwift.framework.dSYM */,
 				7D889CD32332C0E500FCE787 /* ORSSerial.framework.dSYM */,
 				7D447BDB21FD333D00D09EA8 /* README.md */,
 				7DFE037E21CB2C8800D6288F /* src */,
 				7DFE039121CB2C8900D6288F /* LuxampTests */,
 				7DFE039C21CB2C8900D6288F /* LuxampUITests */,
 				7DFE037D21CB2C8800D6288F /* Products */,
+				7DF3BACE23D66B3200A59892 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -497,11 +509,14 @@
 				7D33778A21D027C200554841 /* AppDelegate.swift in Sources */,
 				7D12FB622249AD0F005726DA /* ScrollingLevelView.swift in Sources */,
 				7D14BC5921D0C1E500CF199F /* VisualizationDrivers.swift in Sources */,
+				7DF3BAD523D67DA500A59892 /* FourierTransform.swift in Sources */,
 				7D33778B21D027C400554841 /* ViewController.swift in Sources */,
 				7D5E4E5021D5C7F50074B129 /* GradientEditorViewController.swift in Sources */,
 				7D33778821D027C000554841 /* ColorView.swift in Sources */,
 				7D5E4E4E21D5B5A60074B129 /* GradientView.swift in Sources */,
+				7DF3BACB23D55D2800A59892 /* VisualizerModulator.swift in Sources */,
 				7D33778921D027C100554841 /* LegacyLevelView.swift in Sources */,
+				7DF3BAD323D66D8F00A59892 /* fourier_transform.c in Sources */,
 				7DF0C41E21E44DDB0007FD31 /* DynamicRangeViewController.swift in Sources */,
 				7DEBB55521EE977400878309 /* ArcLevelView.swift in Sources */,
 				7D6D4DE221F2C9CC00553E11 /* AngleGradientArcLayer.swift in Sources */,
@@ -511,15 +526,14 @@
 				7D03140221D24ABE00F46D04 /* VisualizerTextField.swift in Sources */,
 				7D03140A21D2E0DE00F46D04 /* PreferencesViewController.swift in Sources */,
 				7DEBB55021EE916800878309 /* AngleGradientLayer.m in Sources */,
-				7D889CDE233362FF00FCE787 /* AnalyzedBuffer.swift in Sources */,
 				7DFC34202202DD7D00B4C993 /* SideViewController.swift in Sources */,
 				7D5CF64C21DA566200D86666 /* Remap.swift in Sources */,
 				7D42758521D866760075A325 /* SaveDialogViewController.swift in Sources */,
 				7D33778721D027BF00554841 /* SpectrumView.swift in Sources */,
 				7D7266E42281331700B64DD6 /* MomentumIIRFilter.swift in Sources */,
 				7DB5D6E821D46E92000E7B6C /* VisualizerPresetManager.swift in Sources */,
+				7DF3BAD723D69C6E00A59892 /* AudioMapper.swift in Sources */,
 				7D33779021D035C800554841 /* DynamicRange.swift in Sources */,
-				7D33778421D027BA00554841 /* BufferProcessor.swift in Sources */,
 				7D12FB64224EEB6F005726DA /* RangeControl.swift in Sources */,
 				7D33778521D027BB00554841 /* BiasedIIRFilter.swift in Sources */,
 			);

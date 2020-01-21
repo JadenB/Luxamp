@@ -34,11 +34,10 @@ class AudioEngine {
 		
         let inputNode = avEngine.inputNode
         let inputFormat = inputNode.inputFormat(forBus: 0)
-        let sampleRate = Int(inputFormat.sampleRate)
         
         print("AudioEngine Input Format: \(inputFormat)")
         
-        inputNode.installTap(onBus: 0, bufferSize: UInt32(BUFFER_SIZE), format: inputFormat) { [weak self, sampleRateCaptured = sampleRate] (buffer, _) in
+        inputNode.installTap(onBus: 0, bufferSize: UInt32(BUFFER_SIZE), format: inputFormat) { [weak self] (buffer, _) in
             guard let strongSelf = self else {
                 return
             }

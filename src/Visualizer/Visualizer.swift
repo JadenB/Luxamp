@@ -18,20 +18,6 @@ class Visualizer {
     
     /// The gradient used to map the output color
     var gradient: NSGradient! = NSGradient(starting: .red, ending: .yellow)
-    /// Whether to gradually shift the overall hue over time
-    var useEvolvingColor = false
-    /// The amount to change the color every time visualize() is called
-    var evolvingColorRate: Float {
-        get {
-            return Float(cgEvolvingColorRate)
-        }
-        set {
-            cgEvolvingColorRate = CGFloat(newValue) // setting a CGFloat version of this variable to avoid converting types each run
-        }
-    }
-    private var cgEvolvingColorRate: CGFloat = 0.3
-    private var evolvingColorOffset: CGFloat = 0.0
-    private var lastColorVal: Float = 0.0
     
     /// Initializes a Visualizer
     ///
@@ -45,7 +31,7 @@ class Visualizer {
     }
     
     /// Produces a color and sends it to the output delegate. Also sends raw brightness and color values to the data delegate.
-    func visualizeBuffer(_ buffer: AnalyzedBuffer) {
+    func visualizeBuffer(_ buffer: AudioMapper) {
         // Setup components of color
         var outputBrightness: CGFloat = 1.0
         var outputSaturation: CGFloat = 1.0
@@ -63,21 +49,6 @@ class Visualizer {
         outputSaturation = gradientColor.saturationComponent
         outputHue = gradientColor.hueComponent
         
-        if useEvolvingColor {
-            let colorDiff = colorData.outputVal - lastColorVal
-            if colorDiff > 0.0 {
-                evolvingColorOffset += CGFloat(colorDiff) * cgEvolvingColorRate * (1/7)
-            }
-            
-            outputHue += evolvingColorOffset
-            
-            if outputHue > 1.0 {
-                outputHue = outputHue.truncatingRemainder(dividingBy: 1.0)
-            }
-            
-            lastColorVal = colorData.outputVal // save the last value so the difference can be computed for the next cycle
-        }
-        
         // Send the computed color and associated data to the delegate
         let colorToOutput = NSColor(hue: outputHue, saturation: outputSaturation, brightness: outputBrightness, alpha: 1.0)
         delegate?.didVisualizeIntoColor(colorToOutput, brightnessVal: brightnessData.outputVal, colorVal: colorData.outputVal)
@@ -87,12 +58,7 @@ class Visualizer {
 
 /// Implemented by the Visualizer class to handle brightness and color values seperately. Should not be instantiated outside of a Visualizer.
 class VisualizerMapper {
-    private var orderedDrivers: [VisualizationDriver] = [PeakEnergyDriver(),
-                                                         RootMeanSquareDriver(),
-                                                         PitchDriver(),
-                                                         SpectralDifferenceDriver(),
-                                                         SpectralCrestDriver(),
-                                                         VeryLowSpectrumDriver(),
+    private var orderedDrivers: [VisualizationDriver] = [VeryLowSpectrumDriver(),
                                                          LowSpectrumDriver(),
                                                          MidSpectrumDriver(),
                                                          HighSpectrumDriver()]
@@ -200,7 +166,7 @@ class VisualizerMapper {
 	}
     
     /// Transforms the value given by the driver and sets inputVal and outputVal
-    fileprivate func generateMapping(fromBuffer buffer: AnalyzedBuffer) -> VisualizerData {
+    fileprivate func generateMapping(fromBuffer buffer: AudioMapper) -> VisualizerData {
 		// Setup returned data
 		var data = VisualizerData()
 		
