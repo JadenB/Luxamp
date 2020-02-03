@@ -56,8 +56,10 @@ class ViewController: NSViewController, VisualizerDelegate,
 				return
 			}
 			
-			strongSelf.audioMapper.process(buffer: strongSelf.audioEngine.getCurrentBuffer())
-			strongSelf.musicVisualizer.visualizeBuffer(strongSelf.audioMapper)
+			DispatchQueue.main.async {
+				strongSelf.audioMapper.process(buffer: strongSelf.audioEngine.getCurrentBuffer())
+				strongSelf.musicVisualizer.visualizeBuffer(strongSelf.audioMapper)
+			}
 		}
 		
         audioEngine = AudioEngine()
@@ -117,17 +119,19 @@ class ViewController: NSViewController, VisualizerDelegate,
         state = (sender.state == .on) ? .On : .Off
         
         if state == .On {
-            LightController.shared.turnOn()
+			FixtureManager.sharedFixture.dimmer = 1.0
             startAudioVisualization()
             colorView.isEnabled = false
         } else {
-            LightController.shared.turnOff()
+			FixtureManager.sharedFixture.dimmer = 0.0
             stopAudioVisualization()
             spectrum.clear()
 			colorView.color = .black
 			arcLevelCenter.setBrightnessLevel(to: 0.0)
 			arcLevelCenter.setColorLevel(to: 0.0)
         }
+		
+		FixtureManager.sharedFixture.sendChannels()
     }
     
     @IBAction func presetSelected(_ sender: NSPopUpButton) {
@@ -203,24 +207,20 @@ class ViewController: NSViewController, VisualizerDelegate,
     // MARK: - VisualizerDelegate
     
     func didVisualizeIntoColor(_ color: NSColor, brightnessVal: Float, colorVal: Float) {
-		DispatchQueue.main.async {
-			if self.state == .On {
-				LightController.shared.setColor(color: color)
-				self.colorView.color = color
-				
-				self.arcLevelCenter.setBrightnessLevel(to: brightnessVal)
-				self.arcLevelCenter.setColorLevel(to: colorVal)
-				// strongSelf.spectrum.setSpectrum(analyzedBuffer.visualSpectrum())
-			}
+		if self.state == .On {
+			FixtureManager.sharedFixture.color = color
+			FixtureManager.sharedFixture.sendChannels()
+			self.colorView.color = color
+			
+			self.arcLevelCenter.setBrightnessLevel(to: brightnessVal)
+			self.arcLevelCenter.setColorLevel(to: colorVal)
 		}
     }
     
     func didVisualizeWithData(brightnessData: VisualizerData, colorData: VisualizerData) {
-		DispatchQueue.main.async {
-			if self.state == .On {
-				self.brightnessSide.updateWithData(brightnessData)
-				self.colorSide.updateWithData(colorData)
-			}
+		if self.state == .On {
+			self.brightnessSide.updateWithData(brightnessData)
+			self.colorSide.updateWithData(colorData)
 		}
     }
     

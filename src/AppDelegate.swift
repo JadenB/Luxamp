@@ -20,11 +20,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
-        LightController.shared.turnOff()
-        
-        if DeviceManager.shared.deviceIsActive() {
-            DeviceManager.shared.deactivateDevice()
-        }
     }
     
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {

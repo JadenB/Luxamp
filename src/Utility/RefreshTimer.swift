@@ -9,13 +9,12 @@
 import Foundation
 
 
-class RefreshTimer: NSObject {
+class RefreshTimer {
 	private let onTick: () -> Void
 	private let interval: Double
 	
 	private lazy var timer: DispatchSourceTimer = {
-		let q = DispatchQueue(label: "com.jadenbernal.Luxamp.refreshQueue")
-		let t = DispatchSource.makeTimerSource(queue: q)
+		let t = DispatchSource.makeTimerSource()
 		t.schedule(deadline: .now() + interval, repeating: interval)
 		t.setEventHandler { [weak self] in
 			self?.onTick()
@@ -30,8 +29,8 @@ class RefreshTimer: NSObject {
 	
 	private var state: State = .suspended
 	
-	init(refreshRate: Double, block: @escaping () -> Void) {
-		onTick = block
+	init(refreshRate: Double, onRefresh: @escaping () -> Void) {
+		onTick = onRefresh
 		interval = 1.0/refreshRate
 	}
 	

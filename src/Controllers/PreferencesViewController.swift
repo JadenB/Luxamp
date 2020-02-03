@@ -11,13 +11,20 @@ import Cocoa
 let PREFERENCES_MAX_BRIGHTNESS_KEY = "maxBrightness"
 let PREFERENCES_DELAY_KEY = "delay"
 
+let DEVICEMENU_NONE_INDEX = 1
+
+
 class PreferencesViewController: NSViewController {
 
-    @IBOutlet weak var outputDeviceList: NSPopUpButton!
+    @IBOutlet weak var outputDeviceMenu: NSPopUpButton!
     @IBOutlet weak var delayField: NSTextField!
     @IBOutlet weak var delaySlider: NSSlider!
     @IBOutlet weak var maxBrightnessField: NSTextField!
     @IBOutlet weak var maxBrightnessSlider: NSSlider!
+	
+	deinit {
+		NotificationCenter.default.removeObserver(self)
+	}
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,30 +37,20 @@ class PreferencesViewController: NSViewController {
         maxBrightnessField.integerValue = Int(100 * maxBrightness)
         maxBrightnessSlider.integerValue = Int(100 * maxBrightness)
         
-        outputDeviceList.addItem(withTitle: "None")
-    }
-    
-    override func viewWillAppear() {
-        let deviceManager = DeviceManager.shared
-        outputDeviceList.addItems(withTitles: deviceManager.getDevices())
-        
-        if deviceManager.deviceIsSelected() {
-            outputDeviceList.selectItem(withTitle: deviceManager.selectedDevice())
-        }
+        outputDeviceMenu.addItem(withTitle: "None")
+		outputDeviceMenu.addItems(withTitles:
+			ORSSerialPortManager.shared().availablePorts.map { $0.path }
+		)
         
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(devicesAdded), name: .ORSSerialPortsWereConnected, object: nil)
         nc.addObserver(self, selector: #selector(devicesRemoved), name: .ORSSerialPortsWereDisconnected, object: nil)
     }
     
-    override func viewDidDisappear() {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
     @IBAction func outputDeviceSelected(_ sender: NSPopUpButton) {
-        if sender.indexOfSelectedItem == 1 && DeviceManager.shared.deviceIsActive() {
+        if sender.indexOfSelectedItem == DEVICEMENU_NONE_INDEX {
             // 'None' selected
-            DeviceManager.shared.deactivateDevice()
+			FixtureManager.sharedFixture.disconnectFromController()
             return
         }
         
@@ -62,22 +59,15 @@ class PreferencesViewController: NSViewController {
             return
         }
         
-        if !DeviceManager.shared.selectDevice(withPath: devicePath) {
-            outputDeviceList.selectItem(at: 0)
-            return
-        }
-        
-        DeviceManager.shared.activateDevice()
+		FixtureManager.sharedFixture.connectToController(devicePath: devicePath)
     }
     
     @IBAction func delayFieldChanged(_ sender: NSTextField) {
         delaySlider.integerValue = sender.integerValue
-        LightController.shared.delay = sender.integerValue
     }
     
     @IBAction func delaySliderChanged(_ sender: NSSlider) {
         delayField.integerValue = sender.integerValue
-        LightController.shared.delay = sender.integerValue
     }
     
     @IBAction func maxBrightnessFieldChanged(_ sender: NSTextField) {
@@ -106,7 +96,7 @@ class PreferencesViewController: NSViewController {
         if let userInfo = notification.userInfo {
             let addedNames = (userInfo[ORSConnectedSerialPortsKey] as! [ORSSerialPort]).map{ $0.path }
             for name in addedNames {
-                outputDeviceList.insertItem(withTitle: name, at: 1)
+                outputDeviceMenu.insertItem(withTitle: name, at: 1)
             }
         }
     }
@@ -115,10 +105,11 @@ class PreferencesViewController: NSViewController {
         if let userInfo = notification.userInfo {
             let removedNames = (userInfo[ORSDisconnectedSerialPortsKey] as! [ORSSerialPort]).map{ $0.path }
             for name in removedNames {
-                if name == DeviceManager.shared.selectedDevice() {
-                    outputDeviceList.selectItem(at: 0)
+				if name == outputDeviceMenu.titleOfSelectedItem {
+                    outputDeviceMenu.selectItem(at: 0)
+					FixtureManager.sharedFixture.disconnectFromController()
                 }
-                outputDeviceList.removeItem(withTitle: name)
+                outputDeviceMenu.removeItem(withTitle: name)
             }
         }
     }
