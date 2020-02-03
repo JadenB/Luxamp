@@ -96,7 +96,7 @@ class PreferencesViewController: NSViewController {
         if let userInfo = notification.userInfo {
             let addedNames = (userInfo[ORSConnectedSerialPortsKey] as! [ORSSerialPort]).map{ $0.path }
             for name in addedNames {
-                outputDeviceMenu.insertItem(withTitle: name, at: 1)
+                outputDeviceMenu.insertItem(withTitle: name, at: 2)
             }
         }
     }
