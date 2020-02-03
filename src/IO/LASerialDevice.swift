@@ -45,6 +45,7 @@ Response structure:
 
 import Foundation
 import ORSSerial
+import os
 
 
 fileprivate let PACKET_START_BYTE: UInt8 = 0xE7
@@ -57,6 +58,12 @@ fileprivate let READY_REQUEST_TYPE: UInt8 = 0x72 // 'r'
 
 fileprivate let REQUEST_RESPONSE_LENGTH = 5
 fileprivate let REQUEST_TIMEOUT = 1.0
+fileprivate let MAX_CONNECTION_RETRIES = 4
+
+
+protocol LASerialDeviceDelegate: class {
+	
+}
 
 
 class LASerialDevice: NSObject, ORSSerialPortDelegate {
@@ -83,6 +90,9 @@ class LASerialDevice: NSObject, ORSSerialPortDelegate {
 	private var _channelSendPacket = Data()
 	private var _channelSendStarted = false
 	private var _channelSendPacketHasBeenWrittenOnce = false
+	
+	// Request data
+	private var _readyRequestRetries = 0
 	
 	init(channelCount: Int) {
 		if channelCount < 0 {
@@ -203,7 +213,7 @@ class LASerialDevice: NSObject, ORSSerialPortDelegate {
 		return checksum == responsePacket[REQUEST_RESPONSE_LENGTH-2]
 	}
 	
-	private func sendRequest(requestType: UInt8) {
+	private func sendRequest(requestType: UInt8, timeout: TimeInterval) {
 		if _serialPort == nil {
 			fatalError("Cannot send request using nil port")
 		}
@@ -223,7 +233,7 @@ class LASerialDevice: NSObject, ORSSerialPortDelegate {
 				return data![0] == PACKET_START_BYTE && data![REQUEST_RESPONSE_LENGTH-1] == PACKET_END_BYTE && LASerialDevice.validateResponse(forPacket: data!, requestType: requestType)
 		})
 		
-		let request = ORSSerialRequest(dataToSend: requestPacket, userInfo: nil, timeoutInterval: REQUEST_TIMEOUT, responseDescriptor: responseDescriptor)
+		let request = ORSSerialRequest(dataToSend: requestPacket, userInfo: nil, timeoutInterval: timeout, responseDescriptor: responseDescriptor)
 		
 		_serialPort!.send(request)
 	}
@@ -246,22 +256,29 @@ class LASerialDevice: NSObject, ORSSerialPortDelegate {
 	}
 	
 	func serialPortWasOpened(_ serialPort: ORSSerialPort) {
-		print("did open port \(serialPort.path)")
-		print("sending request...")
-		self.sendRequest(requestType: READY_REQUEST_TYPE)
+		os_log("Opened serial port %s. Sending ready request...", type: .info, serialPort.path)
+		self.sendRequest(requestType: READY_REQUEST_TYPE, timeout: 1.0)
 	}
 	
 	func serialPort(_ serialPort: ORSSerialPort, requestDidTimeout request: ORSSerialRequest) {
-		print("request timed out, retrying...")
-		self.sendRequest(requestType: READY_REQUEST_TYPE)
+		if (_readyRequestRetries == MAX_CONNECTION_RETRIES) {
+			os_log("Ready request failed for serial port %s", type: .info, serialPort.path)
+			_readyRequestRetries = 0
+		} else {
+			os_log("Ready request did timeout for serial port %s. Retrying...", type: .info, serialPort.path)
+			_readyRequestRetries += 1
+			self.sendRequest(requestType: READY_REQUEST_TYPE, timeout: pow(2.0, Double(_readyRequestRetries)))
+		}
 	}
 	
 	func serialPortWasClosed(_ serialPort: ORSSerialPort) {
+		os_log("Closed serial port %s", type: .info, serialPort.path)
 		serialDeviceIsReady = false
 	}
 	
 	func serialPort(_ serialPort: ORSSerialPort, didEncounterError error: Error) {
 		// TODO: handle errors
+		os_log("Serial port %s encountered an error: %s", type: .error, serialPort.path, error.localizedDescription)
 	}
 
 	func serialPort(_ serialPort: ORSSerialPort, didReceiveResponse responseData: Data, to request: ORSSerialRequest) {
