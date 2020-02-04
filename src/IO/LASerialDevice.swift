@@ -238,36 +238,28 @@ class LASerialDevice: NSObject, ORSSerialPortDelegate {
 		_serialPort!.send(request)
 	}
 	
-	private func processResponseToRequest(withType requestType: UInt8, responseCode: UInt8) {
-		switch (requestType) {
-		case READY_REQUEST_TYPE:
-			if (responseCode == 1) { serialDeviceIsReady = true; print("ready") }
-		default:
-			return
-		}
-	}
-	
 	// MARK: - ORSSerialPortDelegate
 	
 	func serialPortWasRemovedFromSystem(_ serialPort: ORSSerialPort) {
+		os_log("Serial port %s was removed from system", log: Log.serial, type: .info, serialPort.path)
 		serialDeviceIsReady = false
 		_serialPort?.delegate = nil
 		_serialPort = nil
 	}
 	
 	func serialPortWasOpened(_ serialPort: ORSSerialPort) {
-		os_log("Opened serial port %s. Sending ready request...", type: .info, serialPort.path)
+		os_log("Opened serial port %s. Sending ready request...", log: Log.serial, type: .info, serialPort.path)
 		self.sendRequest(requestType: READY_REQUEST_TYPE, timeout: 1.0)
 	}
 	
 	func serialPort(_ serialPort: ORSSerialPort, requestDidTimeout request: ORSSerialRequest) {
 		if (_readyRequestRetries == MAX_CONNECTION_RETRIES) {
-			os_log("Ready request failed for serial port %s", type: .info, serialPort.path)
+			os_log("Ready request failed for serial port %s", log: Log.serial, type: .info, serialPort.path)
 			_readyRequestRetries = 0
 		} else {
-			os_log("Ready request did timeout for serial port %s. Retrying...", type: .info, serialPort.path)
-			_readyRequestRetries += 1
+			os_log("Ready request did timeout for serial port %s. Retrying...", log: Log.serial, type: .debug, serialPort.path)
 			self.sendRequest(requestType: READY_REQUEST_TYPE, timeout: pow(2.0, Double(_readyRequestRetries)))
+			_readyRequestRetries += 1
 		}
 	}
 	
@@ -278,10 +270,23 @@ class LASerialDevice: NSObject, ORSSerialPortDelegate {
 	
 	func serialPort(_ serialPort: ORSSerialPort, didEncounterError error: Error) {
 		// TODO: handle errors
-		os_log("Serial port %s encountered an error: %s", type: .error, serialPort.path, error.localizedDescription)
+		os_log("Serial port %s encountered an error: %s", log: Log.serial, type: .error, serialPort.path, error.localizedDescription)
 	}
 
 	func serialPort(_ serialPort: ORSSerialPort, didReceiveResponse responseData: Data, to request: ORSSerialRequest) {
-		processResponseToRequest(withType: responseData[1], responseCode: responseData[2])
+		let requestType = responseData[1]
+		let responseCode = responseData[2]
+		
+		switch (requestType) {
+		case READY_REQUEST_TYPE:
+			os_log("Serial port %s recieved response to ready request with code %u", log: Log.serial, type: .info, serialPort.path, responseCode)
+			
+			_readyRequestRetries = 0
+			if (responseCode == 1) {
+				serialDeviceIsReady = true
+			}
+		default:
+			return
+		}
 	}
 }

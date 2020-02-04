@@ -30,12 +30,15 @@ class LAFixture {
 		}
 	}
 	
+	var name: String
 	let id = UUID()
 	
 	private let parameters: [Parameter]
 	private var parameterChannels: [[UInt8]] = []
 	
-	init(parameters: [Parameter]) {
+	init(defaultName: String, parameters: [Parameter]) {
+		self.name = defaultName
+		
 		self.parameters = parameters
 		for p in parameters {
 			parameterChannels.append([UInt8](repeating: 0, count: p.channelCount))

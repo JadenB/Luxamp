@@ -59,6 +59,7 @@ class PreferencesViewController: NSViewController {
             return
         }
         
+		os_log("User selected device %s", log: Log.user, type: .debug, devicePath)
 		FixtureManager.sharedFixture.connectToController(devicePath: devicePath)
     }
     
@@ -90,6 +91,8 @@ class PreferencesViewController: NSViewController {
         dictionary.keys.forEach { key in
             defaults.removeObject(forKey: key)
         }
+		
+		os_log("UserDefaults reset by user", log: Log.user, type: .debug)
     }
     
     @objc func devicesAdded(_ notification: Notification) {

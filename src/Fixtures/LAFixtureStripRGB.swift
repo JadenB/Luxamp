@@ -36,7 +36,10 @@ class LAFixtureStripRGB: LAFixture {
 	}
 	
 	init() {
-		super.init(parameters: [.makeDimmer(), .makeColorRGB()])
+		super.init(
+			defaultName: "RGB Strip",
+			parameters: [.makeDimmer(), .makeColorRGB()]
+		)
 	}
 	
 	override func sendChannels() {
