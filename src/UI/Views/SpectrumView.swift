@@ -19,7 +19,7 @@ class SpectrumView: NSView {
     
     private var spectrumMask = CAShapeLayer()
     
-    private var filter = BiasedIIRFilter(size: 2)
+	private var filters = [BiasedIIRFilter](count: 2, elementCreator: BiasedIIRFilter(initialValue: 0.0))
     var spectrumSize = 2
     
     override func makeBackingLayer() -> CALayer {
@@ -79,14 +79,21 @@ class SpectrumView: NSView {
     
     func setSpectrum(_ newSpectrum: [Float]) {
         if newSpectrum.count != spectrumSize {
-            filter = BiasedIIRFilter(size: newSpectrum.count)
-            filter.upwardsAlpha = 0.4
-            filter.downwardsAlpha = 0.4
+			filters.removeAll()
+			filters = (0..<newSpectrum.count).map { _ in
+				let newFilter = BiasedIIRFilter(initialValue: 0.0)
+				newFilter.upwardsAlpha = 0.4
+				newFilter.downwardsAlpha = 0.4
+				return newFilter
+			}
+
             spectrumSize = newSpectrum.count
         }
         
-        var filteredSpectrum = newSpectrum.map { remapValueToUnit($0, min: min, max: max) }
-        filter.applyFilterInPlace(toData: &filteredSpectrum)
+		let filteredSpectrum = (0..<newSpectrum.count).map { i -> Float in
+			let filteredValue = filters[i].filter(nextValue: newSpectrum[i])
+			return remapValueToUnit(filteredValue, min: min, max: max)
+		}
         
         let curvePoints = layoutCurvePoints(fromSpectrum: filteredSpectrum)
         let path = CGMutablePath()
@@ -113,7 +120,7 @@ class SpectrumView: NSView {
     }
     
     func clear() {
-        filter = BiasedIIRFilter(initialData: [Float](repeating: min, count: spectrumSize))
+		filters.forEach { $0.reset(toValue: min) }
         setSpectrum( [Float](repeating: min, count: spectrumSize) )
     }
     

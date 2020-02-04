@@ -67,8 +67,9 @@ class VisualizerMapper {
     
     private var driver: VisualizationDriver
     
-    private var preFilter = BiasedIIRFilter(size: 1)
-    private var postFilter = BiasedIIRFilter(size: 1)
+    // private var preFilter = BiasedIIRFilter(size: 1)
+	private var preFilter = SavitzkyGolayFilter(initialValue: 0.0, filterOrder: .nine)
+	private var postFilter = BiasedIIRFilter(initialValue: 0.0)
 	
     // The range of input values that generateMapping() remaps to the range 0-1
 	var inputMin: Float = 0.0
@@ -98,31 +99,25 @@ class VisualizerMapper {
     
     var dynamicRange = DynamicRange()
     
-    var upwardsSmoothing: Float {
-        get {
-            return postFilter.upwardsAlpha * postFilter.upwardsAlpha
-        }
-        set {
-            postFilter.upwardsAlpha = sqrtf(newValue)
+	var upwardsSmoothing: Float = 0.5 {
+        didSet {
+            postFilter.upwardsAlpha = sqrtf(upwardsSmoothing)
         }
     }
     
-    var downwardsSmoothing: Float {
-        get {
-            return postFilter.downwardsAlpha * postFilter.downwardsAlpha
-        }
-        set {
-            postFilter.downwardsAlpha = sqrtf(newValue)
+	var downwardsSmoothing: Float = 0.5 {
+        didSet {
+            postFilter.downwardsAlpha = sqrtf(downwardsSmoothing)
         }
     }
     
     init() {
         driver = orderedDrivers[0]
         
-        preFilter.upwardsAlpha = 0.4
-        preFilter.downwardsAlpha = 0.4
-        postFilter.upwardsAlpha = 0.707
-        postFilter.downwardsAlpha = 0.707
+        //preFilter.upwardsAlpha = 0.4
+        //preFilter.downwardsAlpha = 0.4
+		postFilter.upwardsAlpha = sqrtf(0.5)
+		postFilter.downwardsAlpha = sqrtf(0.5)
         
         for driver in orderedDrivers {
             driverDict[driver.name] = driver
@@ -170,8 +165,8 @@ class VisualizerMapper {
 		// Setup returned data
 		var data = VisualizerData()
 		
-        var newVal = preFilter.applyFilter(toValue: driver.output(usingBuffer: buffer), atIndex: 0)
-        newVal = postFilter.applyFilter(toValue: newVal, atIndex: 0)
+		var newVal = preFilter.filter(nextValue: driver.output(usingBuffer: buffer))
+        newVal = postFilter.filter(nextValue: newVal)
 		
 		data.inputVal = newVal
 		

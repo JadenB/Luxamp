@@ -12,8 +12,8 @@ fileprivate let ALPHA_MAX: Float = 0.9995
 fileprivate let ALPHA_MIN: Float = 0.995
 
 class DynamicRange {
-    var maxFilter = BiasedIIRFilter(initialData: [1.0])
-    var minFilter = BiasedIIRFilter(initialData: [0.0])
+    var maxFilter = BiasedIIRFilter(initialValue: 1.0)
+	var minFilter = BiasedIIRFilter(initialValue: 0.0)
     
     /// Whether the dynamic subrange calculates a new maximum.
     var useMax = true 
@@ -35,11 +35,11 @@ class DynamicRange {
         var newMin: Float = 0.0
         
         if useMax {
-            newMax = maxFilter.applyFilter(toValue: val, atIndex: 0)
+            newMax = maxFilter.filter(nextValue: val)
         }
         
         if useMin {
-            newMin = minFilter.applyFilter(toValue: val, atIndex: 0)
+			newMin = minFilter.filter(nextValue: val)
         }
         
         
@@ -47,15 +47,13 @@ class DynamicRange {
     }
     
     func resetRange() {
-        minFilter = BiasedIIRFilter(initialData: [0.0])
-        maxFilter = BiasedIIRFilter(initialData: [1.0])
-        setAlphas()
+		maxFilter.reset(toValue: 1.0)
+		minFilter.reset(toValue: 0.0)
     }
 	
 	func resetRangeWithInitial(min: Float, max: Float) {
-		minFilter = BiasedIIRFilter(initialData: [min])
-		maxFilter = BiasedIIRFilter(initialData: [max])
-		setAlphas()
+		maxFilter.reset(toValue: max)
+		minFilter.reset(toValue: min)
 	}
     
     private func setAlphas() {
