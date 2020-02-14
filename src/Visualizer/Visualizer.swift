@@ -7,6 +7,7 @@
 //
 import Cocoa
 
+
 /// Visualizes data from its AudioEngine to an NSColor
 class Visualizer {
     weak var delegate: VisualizerDelegate?
@@ -68,8 +69,13 @@ class VisualizerMapper {
     private var driver: VisualizationDriver
     
     // private var preFilter = BiasedIIRFilter(size: 1)
-	private var preFilter = SavitzkyGolayFilter(initialValue: 0.0, filterOrder: .nine)
-	private var postFilter = BiasedIIRFilter(initialValue: 0.0)
+	private var preFilter = MultipassFilter(initialValue: 0.0, filters: [
+		SavitzkyGolayFilter(initialValue: 0.0, filterOrder: .three),
+		SavitzkyGolayFilter(initialValue: 0.0, filterOrder: .four),
+		SavitzkyGolayFilter(initialValue: 0.0, filterOrder: .nine)
+	])
+	
+	private var smoothingFilter = BiasedIIRFilter(initialValue: 0.0)
 	
     // The range of input values that generateMapping() remaps to the range 0-1
 	var inputMin: Float = 0.0
@@ -101,23 +107,21 @@ class VisualizerMapper {
     
 	var upwardsSmoothing: Float = 0.5 {
         didSet {
-            postFilter.upwardsAlpha = sqrtf(upwardsSmoothing)
+            smoothingFilter.upwardsAlpha = sqrtf(upwardsSmoothing)
         }
     }
     
 	var downwardsSmoothing: Float = 0.5 {
         didSet {
-            postFilter.downwardsAlpha = sqrtf(downwardsSmoothing)
+            smoothingFilter.downwardsAlpha = sqrtf(downwardsSmoothing)
         }
     }
     
     init() {
         driver = orderedDrivers[0]
         
-        //preFilter.upwardsAlpha = 0.4
-        //preFilter.downwardsAlpha = 0.4
-		postFilter.upwardsAlpha = sqrtf(0.5)
-		postFilter.downwardsAlpha = sqrtf(0.5)
+		smoothingFilter.upwardsAlpha = sqrtf(0.5)
+		smoothingFilter.downwardsAlpha = sqrtf(0.5)
         
         for driver in orderedDrivers {
             driverDict[driver.name] = driver
@@ -165,25 +169,27 @@ class VisualizerMapper {
 		// Setup returned data
 		var data = VisualizerData()
 		
-		var newVal = preFilter.filter(nextValue: driver.output(usingBuffer: buffer))
-        newVal = postFilter.filter(nextValue: newVal)
+		var inputVal = driver.output(usingBuffer: buffer)
 		
-		data.inputVal = newVal
+		inputVal = preFilter.filter(nextValue: inputVal)
+		inputVal = smoothingFilter.filter(nextValue: inputVal)
+		
+		data.inputVal = inputVal
 		
         if useDynamicRange {
-            let range = dynamicRange.calculateRange(forNextValue: newVal)
-            newVal = remapValueToUnit(newVal, min: range.min, max: range.max)
+            let range = dynamicRange.calculateRange(forNextValue: inputVal)
+            inputVal = remapValueToUnit(inputVal, min: range.min, max: range.max)
             data.dynamicInputRange.min = range.min
             data.dynamicInputRange.max = range.max
 		} else {
-			newVal = remapValueToUnit(newVal, min: inputMin, max: inputMax)
+			inputVal = remapValueToUnit(inputVal, min: inputMin, max: inputMax)
 		}
         
         if invert {
-            newVal = 1.0 - newVal
+            inputVal = 1.0 - inputVal
         }
         
-        data.outputVal = remapValueFromUnit(newVal, min: outputMin, max: outputMax)
+        data.outputVal = remapValueFromUnit(inputVal, min: outputMin, max: outputMax)
 		return data
     }
 }

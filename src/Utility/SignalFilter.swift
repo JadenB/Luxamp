@@ -10,7 +10,6 @@ import Foundation
 
 
 protocol SignalFilter {
-	init(initialValue: Float)
 	func filter(nextValue: Float) -> Float
 	func reset(toValue value: Float)
 }

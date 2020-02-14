@@ -25,6 +25,7 @@
 		7D33778C21D027C500554841 /* Visualizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D884BC721CC47FD00FAD263 /* Visualizer.swift */; };
 		7D33779021D035C800554841 /* DynamicRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D33778F21D035C800554841 /* DynamicRange.swift */; };
 		7D42758521D866760075A325 /* SaveDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D42758421D866760075A325 /* SaveDialogViewController.swift */; };
+		7D504F2023EA1CA500F627DA /* MultipassFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D504F1F23EA1CA500F627DA /* MultipassFilter.swift */; };
 		7D5BE95623E6413800B06B6F /* LAFixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5BE95523E6413800B06B6F /* LAFixture.swift */; };
 		7D5BE95823E643F700B06B6F /* FixtureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5BE95723E643F700B06B6F /* FixtureManager.swift */; };
 		7D5CF64C21DA566200D86666 /* Remap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5CF64B21DA566200D86666 /* Remap.swift */; };
@@ -34,6 +35,7 @@
 		7D6BFD9D21F98EA700E17012 /* CircularColorWell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D6BFD9C21F98EA700E17012 /* CircularColorWell.swift */; };
 		7D6BFD9F21F98EB700E17012 /* SmoothingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D6BFD9E21F98EB700E17012 /* SmoothingView.swift */; };
 		7D6D4DE221F2C9CC00553E11 /* AngleGradientArcLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D6D4DE121F2C9CC00553E11 /* AngleGradientArcLayer.swift */; };
+		7DA1F0A823F61DCB001416A6 /* AudioAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DA1F0A723F61DCB001416A6 /* AudioAnalyzer.swift */; };
 		7DB5D6E821D46E92000E7B6C /* VisualizerPresetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB5D6E721D46E92000E7B6C /* VisualizerPresetManager.swift */; };
 		7DEBB55021EE916800878309 /* AngleGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DEBB54F21EE916800878309 /* AngleGradientLayer.m */; };
 		7DEBB55521EE977400878309 /* ArcLevelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DEBB55421EE977400878309 /* ArcLevelView.swift */; };
@@ -98,6 +100,7 @@
 		7D33778F21D035C800554841 /* DynamicRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicRange.swift; sourceTree = "<group>"; };
 		7D42758421D866760075A325 /* SaveDialogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveDialogViewController.swift; sourceTree = "<group>"; };
 		7D447BDB21FD333D00D09EA8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		7D504F1F23EA1CA500F627DA /* MultipassFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipassFilter.swift; sourceTree = "<group>"; };
 		7D5BE95523E6413800B06B6F /* LAFixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LAFixture.swift; sourceTree = "<group>"; };
 		7D5BE95723E643F700B06B6F /* FixtureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixtureManager.swift; sourceTree = "<group>"; };
 		7D5BE95923E7C1C500B06B6F /* Luxamp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Luxamp.entitlements; sourceTree = "<group>"; };
@@ -113,6 +116,7 @@
 		7D884BD521CCD8EE00FAD263 /* LegacyLevelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyLevelView.swift; sourceTree = "<group>"; };
 		7D884BD921CEEB9000FAD263 /* BiasedIIRFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiasedIIRFilter.swift; sourceTree = "<group>"; };
 		7D889CD72332C0FC00FCE787 /* ORSSerial.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ORSSerial.framework; path = Carthage/Build/Mac/ORSSerial.framework; sourceTree = "<group>"; };
+		7DA1F0A723F61DCB001416A6 /* AudioAnalyzer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioAnalyzer.swift; sourceTree = "<group>"; };
 		7DB5D6E721D46E92000E7B6C /* VisualizerPresetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizerPresetManager.swift; sourceTree = "<group>"; };
 		7DEBB54F21EE916800878309 /* AngleGradientLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AngleGradientLayer.m; sourceTree = "<group>"; };
 		7DEBB55121EE917100878309 /* AngleGradientLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AngleGradientLayer.h; sourceTree = "<group>"; };
@@ -194,6 +198,7 @@
 		7D33778221D0277600554841 /* Audio */ = {
 			isa = PBXGroup;
 			children = (
+				7DA1F0A723F61DCB001416A6 /* AudioAnalyzer.swift */,
 				7DF3BAD623D69C6E00A59892 /* AudioMapper.swift */,
 				7DFE03B421CB6F8C00D6288F /* AudioEngine.swift */,
 				7DF3BAD423D67DA500A59892 /* FourierTransform.swift */,
@@ -213,6 +218,7 @@
 				7DEC479523E9320100013953 /* Extensions.swift */,
 				7D884BD921CEEB9000FAD263 /* BiasedIIRFilter.swift */,
 				7DEC479123E8F1B300013953 /* SavitzkyGolayFilter.swift */,
+				7D504F1F23EA1CA500F627DA /* MultipassFilter.swift */,
 				7DEC479323E910C700013953 /* SignalFilter.swift */,
 			);
 			path = Utility;
@@ -515,8 +521,10 @@
 				7D6BFD9D21F98EA700E17012 /* CircularColorWell.swift in Sources */,
 				7D5BE95623E6413800B06B6F /* LAFixture.swift in Sources */,
 				7DEC479423E910C700013953 /* SignalFilter.swift in Sources */,
+				7DA1F0A823F61DCB001416A6 /* AudioAnalyzer.swift in Sources */,
 				7D33778C21D027C500554841 /* Visualizer.swift in Sources */,
 				7D33778A21D027C200554841 /* AppDelegate.swift in Sources */,
+				7D504F2023EA1CA500F627DA /* MultipassFilter.swift in Sources */,
 				7D12FB622249AD0F005726DA /* ScrollingLevelView.swift in Sources */,
 				7D14BC5921D0C1E500CF199F /* VisualizationDrivers.swift in Sources */,
 				7DF3BAD523D67DA500A59892 /* FourierTransform.swift in Sources */,
@@ -713,6 +721,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_GCD_PERFORMANCE = YES;
 				CODE_SIGN_ENTITLEMENTS = Luxamp.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
@@ -747,6 +756,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_GCD_PERFORMANCE = YES;
 				CODE_SIGN_ENTITLEMENTS = Luxamp.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
