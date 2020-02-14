@@ -26,13 +26,17 @@ class ViewController: NSViewController, VisualizerDelegate,
     var brightnessSide: SideViewController!
     var colorSide: SideViewController!
 	
-	var refreshTimer: RefreshTimer!
-    
-    var audioEngine: AudioEngine!
-	var audioMapper: AudioMapper!
-    var musicVisualizer: Visualizer!
     var hidden = true
     var lastSelectedPresetName: String = ""
+	
+	var refreshTimer: RefreshTimer!
+    
+    var audioEngine: InputAudioTapper!
+	var audioAnalyzer: AudioAnalyzer!
+    var musicVisualizer: Visualizer!
+	
+	var currentBuffer: [Float] = [Float](repeating: 0.0, count: InputAudioTapper.BUFFER_SIZE)
+	var currentBufferLock = UnsafeMutablePointer<pthread_mutex_t>.allocate(capacity: 1)
     
     var state: AppState = .Off {
         didSet {
@@ -43,13 +47,30 @@ class ViewController: NSViewController, VisualizerDelegate,
             }
         }
     }
+	
+	deinit {
+		currentBufferLock.deallocate()
+	}
     
     // MARK: - Overrides
     
     override func viewDidLoad() {
         super.viewDidLoad()
 		
-		audioMapper = AudioMapper(bufferSize: BUFFER_SIZE)
+		audioAnalyzer = AudioAnalyzer(bufferSize: InputAudioTapper.BUFFER_SIZE)
+		audioEngine = InputAudioTapper()
+		musicVisualizer = Visualizer()
+		pthread_mutex_init(currentBufferLock, nil)
+		
+		audioEngine.setOnTap { [weak self] (buffer: [Float]) in
+			guard let strongSelf = self else {
+				return
+			}
+			
+			pthread_mutex_lock(strongSelf.currentBufferLock)
+			strongSelf.currentBuffer = buffer
+			pthread_mutex_unlock(strongSelf.currentBufferLock)
+		}
 		
 		refreshTimer = RefreshTimer(refreshRate: REFRESH_RATE) { [weak self] in
 			guard let strongSelf = self else {
@@ -57,16 +78,15 @@ class ViewController: NSViewController, VisualizerDelegate,
 			}
 			
 			DispatchQueue.main.async {
-				strongSelf.audioMapper.process(buffer: strongSelf.audioEngine.getCurrentBuffer())
-				strongSelf.musicVisualizer.visualizeBuffer(strongSelf.audioMapper)
+				pthread_mutex_lock(strongSelf.currentBufferLock)
+				let audio = strongSelf.audioAnalyzer.analyze(buffer: strongSelf.currentBuffer)
+				pthread_mutex_unlock(strongSelf.currentBufferLock)
+				
+				strongSelf.musicVisualizer.visualizeAudio(audio)
 			}
 		}
-		
-        audioEngine = AudioEngine()
         
-        musicVisualizer = Visualizer()
         musicVisualizer.delegate = self
-        
         arcLevelCenter.delegate = self
         
         populateMenus()

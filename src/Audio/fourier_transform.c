@@ -51,3 +51,9 @@ void perform_fft(const LuxampFFTSetup* setup, const float* in_buffer, float* out
 		out_magnitude[i] = sqrtf(power) * norm_factor;
 	}
 }
+
+float root_mean_square(const LuxampFFTSetup* setup, const float* in_buffer) {
+	float result;
+	vDSP_rmsqv(in_buffer, 1, &result, setup->n);
+	return result;
+}

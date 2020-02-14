@@ -17,7 +17,7 @@ protocol VisualizationDriver {
 		get
 	}
     
-    func output(usingBuffer buffer: AudioMapper) -> Float
+    func output(usingAudio audio: AnalyzedAudio) -> Float
 }
 
 
@@ -30,8 +30,8 @@ class VeryLowSpectrumDriver: VisualizationDriver {
 		return 5
 	}
     
-    func output(usingBuffer buffer: AudioMapper) -> Float {
-        return buffer.averageMagOfRange(0...3, withFalloff: 2) * 4
+    func output(usingAudio audio: AnalyzedAudio) -> Float {
+        return audio.averageMagOfRange(0...3, withFalloff: 2) * 4
     }
 }
 
@@ -45,8 +45,8 @@ class LowSpectrumDriver: VisualizationDriver {
 		return 6
 	}
     
-    func output(usingBuffer buffer: AudioMapper) -> Float {
-        return buffer.averageMagOfRange(0...6, withFalloff: 3) * 5
+    func output(usingAudio audio: AnalyzedAudio) -> Float {
+        return audio.averageMagOfRange(0...6, withFalloff: 3) * 5
     }
 }
 
@@ -60,8 +60,8 @@ class MidSpectrumDriver: VisualizationDriver {
 		return 7
 	}
     
-    func output(usingBuffer buffer: AudioMapper) -> Float {
-        return buffer.averageMagOfRange(12...20, withFalloff: 3) * 10
+    func output(usingAudio audio: AnalyzedAudio) -> Float {
+        return audio.averageMagOfRange(12...20, withFalloff: 3) * 10
     }
 }
 
@@ -75,7 +75,7 @@ class HighSpectrumDriver: VisualizationDriver {
 		return 8
 	}
     
-    func output(usingBuffer buffer: AudioMapper) -> Float {
-        return buffer.averageMagOfRange(25...50, withFalloff: 5) * 20
+    func output(usingAudio audio: AnalyzedAudio) -> Float {
+        return audio.averageMagOfRange(25...50, withFalloff: 5) * 20
     }
 }

@@ -24,5 +24,6 @@ typedef struct {
 void initialize_fft_setup(LuxampFFTSetup* setup, int fftSize, int log2fftSize);
 void destroy_fft_setup(LuxampFFTSetup setup);
 void perform_fft(const LuxampFFTSetup* setup, const float* in_buffer, float* out_magnitude);
+float root_mean_square(const LuxampFFTSetup* setup, const float* in_buffer);
 
 #endif /* fourier_transform_h */

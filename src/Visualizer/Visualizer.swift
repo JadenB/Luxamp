@@ -32,15 +32,15 @@ class Visualizer {
     }
     
     /// Produces a color and sends it to the output delegate. Also sends raw brightness and color values to the data delegate.
-    func visualizeBuffer(_ buffer: AudioMapper) {
+    func visualizeAudio(_ audio: AnalyzedAudio) {
         // Setup components of color
         var outputBrightness: CGFloat = 1.0
         var outputSaturation: CGFloat = 1.0
         var outputHue: CGFloat = 1.0
         
         // Calculate raw values from brightness and color mappers
-        let brightnessData = brightness.generateMapping(fromBuffer: buffer)
-        let colorData = color.generateMapping(fromBuffer: buffer)
+        let brightnessData = brightness.generateMapping(fromAudio: audio)
+        let colorData = color.generateMapping(fromAudio: audio)
         
         // Convert raw color mapping to hue and saturation with the gradient
         let gradientColor = gradient.interpolatedColor(atLocation: CGFloat(colorData.outputVal))
@@ -165,11 +165,11 @@ class VisualizerMapper {
 	}
     
     /// Transforms the value given by the driver and sets inputVal and outputVal
-    fileprivate func generateMapping(fromBuffer buffer: AudioMapper) -> VisualizerData {
+    fileprivate func generateMapping(fromAudio audio: AnalyzedAudio) -> VisualizerData {
 		// Setup returned data
 		var data = VisualizerData()
 		
-		var inputVal = driver.output(usingBuffer: buffer)
+		var inputVal = driver.output(usingAudio: audio)
 		
 		inputVal = preFilter.filter(nextValue: inputVal)
 		inputVal = smoothingFilter.filter(nextValue: inputVal)
