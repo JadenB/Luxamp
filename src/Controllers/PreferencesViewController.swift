@@ -8,19 +8,16 @@
 
 import Cocoa
 
-let PREFERENCES_MAX_BRIGHTNESS_KEY = "maxBrightness"
+let PREFERENCES_SELECTED_DEVICE_KEY = "selectedDevice"
 let PREFERENCES_DELAY_KEY = "delay"
 
 let DEVICEMENU_NONE_INDEX = 1
 
-
 class PreferencesViewController: NSViewController {
 
     @IBOutlet weak var outputDeviceMenu: NSPopUpButton!
-    @IBOutlet weak var delayField: NSTextField!
-    @IBOutlet weak var delaySlider: NSSlider!
-    @IBOutlet weak var maxBrightnessField: NSTextField!
-    @IBOutlet weak var maxBrightnessSlider: NSSlider!
+//    @IBOutlet weak var delayField: NSTextField!
+//    @IBOutlet weak var delaySlider: NSSlider!
 	
 	deinit {
 		NotificationCenter.default.removeObserver(self)
@@ -29,18 +26,22 @@ class PreferencesViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let delay: Int = UserDefaults.standard.integer(forKey: PREFERENCES_DELAY_KEY)
-        delayField.integerValue = delay
-        delaySlider.integerValue = delay
-        
-        let maxBrightness: Float = (UserDefaults.standard.object(forKey: PREFERENCES_MAX_BRIGHTNESS_KEY) as? Float) ?? 1.0
-        maxBrightnessField.integerValue = Int(100 * maxBrightness)
-        maxBrightnessSlider.integerValue = Int(100 * maxBrightness)
+//        let delay: Int = UserDefaults.standard.integer(forKey: PREFERENCES_DELAY_KEY)
+//        delayField.integerValue = delay
+//        delaySlider.integerValue = delay
         
         outputDeviceMenu.addItem(withTitle: "None")
 		outputDeviceMenu.addItems(withTitles:
 			ORSSerialPortManager.shared().availablePorts.map { $0.path }
 		)
+		
+		let selectedDevice = UserDefaults.standard.object(forKey: PREFERENCES_SELECTED_DEVICE_KEY) as? String
+		
+		if selectedDevice != nil && outputDeviceMenu.indexOfItem(withTitle: selectedDevice!) != -1 {
+			outputDeviceMenu.selectItem(withTitle: selectedDevice!)
+		} else {
+			outputDeviceMenu.selectItem(at: DEVICEMENU_NONE_INDEX)
+		}
         
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(devicesAdded), name: .ORSSerialPortsWereConnected, object: nil)
@@ -63,45 +64,41 @@ class PreferencesViewController: NSViewController {
 		FixtureManager.sharedFixture.connectToController(devicePath: devicePath)
     }
     
-    @IBAction func delayFieldChanged(_ sender: NSTextField) {
-        delaySlider.integerValue = sender.integerValue
-    }
-    
-    @IBAction func delaySliderChanged(_ sender: NSSlider) {
-        delayField.integerValue = sender.integerValue
-    }
-    
-    @IBAction func maxBrightnessFieldChanged(_ sender: NSTextField) {
-        maxBrightnessSlider.integerValue = sender.integerValue
-        let newMaxBrightness = Float(sender.integerValue) * 0.01
-        UserDefaults.standard.set(newMaxBrightness, forKey: PREFERENCES_MAX_BRIGHTNESS_KEY)
-        NotificationCenter.default.post(name: .didChangeMaxBrightness, object: nil, userInfo: [PREFERENCES_MAX_BRIGHTNESS_KEY : newMaxBrightness])
-    }
-    
-    @IBAction func maxBrightnessSliderChanged(_ sender: NSSlider) {
-        maxBrightnessField.integerValue = sender.integerValue
-        let newMaxBrightness = Float(sender.integerValue) * 0.01
-        UserDefaults.standard.set(newMaxBrightness, forKey: PREFERENCES_MAX_BRIGHTNESS_KEY)
-        NotificationCenter.default.post(name: .didChangeMaxBrightness, object: nil, userInfo: [PREFERENCES_MAX_BRIGHTNESS_KEY : newMaxBrightness])
-    }
+//    @IBAction func delayFieldChanged(_ sender: NSTextField) {
+//        delaySlider.integerValue = sender.integerValue
+//		UserDefaults.standard.set(sender.integerValue, forKey: PREFERENCES_DELAY_KEY)
+//		NotificationCenter.default.post(name: .didChangeDelay, object: nil, userInfo: [PREFERENCES_DELAY_KEY : sender.integerValue])
+//    }
+//
+//    @IBAction func delaySliderChanged(_ sender: NSSlider) {
+//        delayField.integerValue = sender.integerValue
+//		UserDefaults.standard.set(sender.integerValue, forKey: PREFERENCES_DELAY_KEY)
+//		NotificationCenter.default.post(name: .didChangeDelay, object: nil, userInfo: [PREFERENCES_DELAY_KEY : sender.integerValue])
+//    }
     
     @IBAction func resetDefaultsPressed(_ sender: Any) {
-        let defaults = UserDefaults.standard
-        let dictionary = defaults.dictionaryRepresentation()
-        dictionary.keys.forEach { key in
-            defaults.removeObject(forKey: key)
-        }
+        let domain = Bundle.main.bundleIdentifier!
+		UserDefaults.standard.removePersistentDomain(forName: domain)
+		UserDefaults.standard.synchronize()
 		
 		os_log("UserDefaults reset by user", log: Log.user, type: .debug)
     }
     
     @objc func devicesAdded(_ notification: Notification) {
         if let userInfo = notification.userInfo {
-            let addedNames = (userInfo[ORSConnectedSerialPortsKey] as! [ORSSerialPort]).map{ $0.path }
-            for name in addedNames {
-                outputDeviceMenu.insertItem(withTitle: name, at: 2)
+            let addedPaths = (userInfo[ORSConnectedSerialPortsKey] as! [ORSSerialPort]).map{ $0.path }
+            for path in addedPaths {
+                outputDeviceMenu.insertItem(withTitle: path, at: 2)
             }
         }
+		
+		let selectedDevice = UserDefaults.standard.object(forKey: PREFERENCES_SELECTED_DEVICE_KEY) as? String
+		
+		if selectedDevice != nil && outputDeviceMenu.indexOfItem(withTitle: selectedDevice!) != -1 {
+			outputDeviceMenu.selectItem(withTitle: selectedDevice!)
+		} else {
+			outputDeviceMenu.selectItem(at: DEVICEMENU_NONE_INDEX)
+		}
     }
     
     @objc func devicesRemoved(_ notification: Notification) {
@@ -119,5 +116,5 @@ class PreferencesViewController: NSViewController {
 }
 
 extension Notification.Name {
-    static let didChangeMaxBrightness = Notification.Name("didChangeMaxBrightness")
+	static let didChangeDelay = Notification.Name("didChangeDelay")
 }

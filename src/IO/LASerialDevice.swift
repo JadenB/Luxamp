@@ -284,6 +284,8 @@ class LASerialDevice: NSObject, ORSSerialPortDelegate {
 			_readyRequestRetries = 0
 			if (responseCode == 1) {
 				serialDeviceIsReady = true
+				UserDefaults.standard.set(serialPort.path, forKey: PREFERENCES_SELECTED_DEVICE_KEY)
+				UserDefaults.standard.synchronize()
 			}
 		default:
 			return

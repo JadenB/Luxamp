@@ -58,6 +58,12 @@ class ViewController: NSViewController, VisualizerDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
 		
+		if let selectedDevice = UserDefaults.standard.string(forKey: PREFERENCES_SELECTED_DEVICE_KEY) {
+			if ORSSerialPortManager.shared().availablePorts.map({$0.path}).contains(selectedDevice) {
+				FixtureManager.sharedFixture.connectToController(devicePath: selectedDevice)
+			}
+		}
+		
 		audioAnalyzer = AudioAnalyzer(bufferSize: InputAudioTapper.BUFFER_SIZE)
 		audioEngine = InputAudioTapper()
 		musicVisualizer = Visualizer()
