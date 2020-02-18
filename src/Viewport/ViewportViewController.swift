@@ -77,10 +77,10 @@ class ViewportViewController: NSViewController {
         scnView.backgroundColor = NSColor.black
         
         // Add a click gesture recognizer
-        let clickGesture = NSClickGestureRecognizer(target: self, action: #selector(handleClick(_:)))
-        var gestureRecognizers = scnView.gestureRecognizers
-        gestureRecognizers.insert(clickGesture, at: 0)
-        scnView.gestureRecognizers = gestureRecognizers
+//        let clickGesture = NSClickGestureRecognizer(target: self, action: #selector(handleClick(_:)))
+//        var gestureRecognizers = scnView.gestureRecognizers
+//        gestureRecognizers.insert(clickGesture, at: 0)
+//        scnView.gestureRecognizers = gestureRecognizers
     }
     
     @objc
