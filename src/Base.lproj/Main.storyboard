@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
+        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15705"/>
+        <plugIn identifier="com.apple.SceneKitIBPlugin" version="15705"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -844,7 +846,7 @@
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="359" y="202" width="960" height="540"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
-                        <value key="minSize" type="size" width="960" height="540"/>
+                        <value key="minSize" type="size" width="960" height="640"/>
                         <value key="minFullScreenContentSize" type="size" width="960" height="540"/>
                         <connections>
                             <outlet property="delegate" destination="B8D-0N-5wS" id="98r-iN-zZc"/>
@@ -863,23 +865,30 @@
             <objects>
                 <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="Luxamp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
-                        <rect key="frame" x="0.0" y="0.0" width="960" height="540"/>
+                        <rect key="frame" x="0.0" y="0.0" width="960" height="640"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="eHf-pn-RXR" customClass="SpectrumView" customModule="Luxamp" customModuleProvider="target">
-                                <rect key="frame" x="20" y="405" width="920" height="115"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="eHf-pn-RXR" secondAttribute="height" multiplier="8:1" id="Kxg-Me-SaH"/>
-                                </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="max">
-                                        <real key="value" value="100"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="min">
-                                        <real key="value" value="0.0"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </customView>
+                            <containerView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KLm-fl-76A" userLabel="Brightness Side">
+                                <rect key="frame" x="20" y="20" width="292" height="365"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <connections>
+                                    <segue destination="Z19-kP-1vK" kind="embed" identifier="brightnessSideSegue" id="LZo-Ia-loG"/>
+                                </connections>
+                            </containerView>
+                            <containerView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="t2r-hK-fBS" userLabel="Color Side">
+                                <rect key="frame" x="648" y="20" width="292" height="365"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <connections>
+                                    <segue destination="Z19-kP-1vK" kind="embed" identifier="colorSideSegue" id="WXO-5z-Zan"/>
+                                </connections>
+                            </containerView>
+                            <containerView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3o5-FF-Heb">
+                                <rect key="frame" x="0.0" y="405" width="960" height="235"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <connections>
+                                    <segue destination="bDQ-d6-ALD" kind="embed" identifier="viewportEmbedSegue" id="747-jc-0sN"/>
+                                </connections>
+                            </containerView>
                             <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PTS-23-40h" userLabel="Center Circle" customClass="ArcLevelView" customModule="Luxamp" customModuleProvider="target">
                                 <rect key="frame" x="352" y="80" width="256" height="256"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -899,9 +908,6 @@
                                         <rect key="frame" x="62" y="62" width="132" height="132"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <color key="color" name="systemRedColor" catalog="System" colorSpace="catalog"/>
-                                        <connections>
-                                            <action selector="colorWellChanged:" target="XfG-lQ-9wD" id="qY2-Zf-hcx"/>
-                                        </connections>
                                     </colorWell>
                                 </subviews>
                                 <userDefinedRuntimeAttributes>
@@ -938,26 +944,7 @@
                                     <action selector="presetSelected:" target="XfG-lQ-9wD" id="C0K-av-Ebb"/>
                                 </connections>
                             </popUpButton>
-                            <containerView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KLm-fl-76A">
-                                <rect key="frame" x="20" y="20" width="292" height="365"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <connections>
-                                    <segue destination="Z19-kP-1vK" kind="embed" identifier="brightnessSideSegue" id="LZo-Ia-loG"/>
-                                </connections>
-                            </containerView>
-                            <containerView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="t2r-hK-fBS">
-                                <rect key="frame" x="648" y="20" width="292" height="365"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <connections>
-                                    <segue destination="Z19-kP-1vK" kind="embed" identifier="colorSideSegue" id="WXO-5z-Zan"/>
-                                </connections>
-                            </containerView>
                         </subviews>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="eHf-pn-RXR" secondAttribute="trailing" constant="20" id="DCt-9x-bMW"/>
-                            <constraint firstItem="eHf-pn-RXR" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="d6D-tQ-dGG"/>
-                            <constraint firstItem="eHf-pn-RXR" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" id="vrU-C7-aj7"/>
-                        </constraints>
                     </view>
                     <connections>
                         <outlet property="arcLevelCenter" destination="PTS-23-40h" id="5jz-bR-OD1"/>
@@ -965,7 +952,6 @@
                         <outlet property="powerButton" destination="cC1-fh-cqM" id="PAf-TY-v55"/>
                         <outlet property="presetMenu" destination="wJQ-XF-OEo" id="HQv-A6-P5o"/>
                         <outlet property="presetMenuDeleteItem" destination="vcN-Qa-xBW" id="HJo-iU-fgU"/>
-                        <outlet property="spectrum" destination="eHf-pn-RXR" id="2wY-4k-GD0"/>
                         <segue destination="Xjn-n8-aFl" kind="sheet" identifier="saveDialogSegue" id="n7H-ob-WR0"/>
                         <segue destination="P3F-QY-07K" kind="modal" identifier="gradientEditorSegue" id="q8K-1G-fK7"/>
                     </connections>
@@ -1338,7 +1324,7 @@ Gw
                                 <rect key="frame" x="258" y="0.0" width="32" height="14"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="OUT" id="tmb-Qe-RaN">
-                                    <font key="font" metaFont="controlContent" size="11"/>
+                                    <font key="font" metaFont="message" size="11"/>
                                     <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
@@ -1447,7 +1433,20 @@ Gw
                 <customObject id="uqK-0s-Kiy" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <userDefaultsController id="rol-Na-d3K"/>
             </objects>
-            <point key="canvasLocation" x="75" y="1548"/>
+            <point key="canvasLocation" x="100" y="1672"/>
+        </scene>
+        <!--Viewport View Controller-->
+        <scene sceneID="Wty-dj-LBe">
+            <objects>
+                <viewController id="bDQ-d6-ALD" customClass="ViewportViewController" customModule="Luxamp" customModuleProvider="target" sceneMemberID="viewController">
+                    <sceneView key="view" id="3HB-Su-QB4">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    </sceneView>
+                </viewController>
+                <customObject id="jn8-4P-Zot" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-675" y="799"/>
         </scene>
     </scenes>
     <resources>

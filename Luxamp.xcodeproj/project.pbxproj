@@ -36,6 +36,8 @@
 		7D6BFD9F21F98EB700E17012 /* SmoothingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D6BFD9E21F98EB700E17012 /* SmoothingView.swift */; };
 		7D6D4DE221F2C9CC00553E11 /* AngleGradientArcLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D6D4DE121F2C9CC00553E11 /* AngleGradientArcLayer.swift */; };
 		7DA1F0A823F61DCB001416A6 /* AudioAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DA1F0A723F61DCB001416A6 /* AudioAnalyzer.swift */; };
+		7DA1F0E423F644B3001416A6 /* ViewportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DA1F0E323F644B3001416A6 /* ViewportViewController.swift */; };
+		7DA1F0E723F64606001416A6 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 7DA1F0E623F64606001416A6 /* art.scnassets */; };
 		7DB5D6E821D46E92000E7B6C /* VisualizerPresetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB5D6E721D46E92000E7B6C /* VisualizerPresetManager.swift */; };
 		7DEBB55021EE916800878309 /* AngleGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DEBB54F21EE916800878309 /* AngleGradientLayer.m */; };
 		7DEBB55521EE977400878309 /* ArcLevelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DEBB55421EE977400878309 /* ArcLevelView.swift */; };
@@ -116,6 +118,8 @@
 		7D884BD921CEEB9000FAD263 /* BiasedIIRFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiasedIIRFilter.swift; sourceTree = "<group>"; };
 		7D889CD72332C0FC00FCE787 /* ORSSerial.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ORSSerial.framework; path = Carthage/Build/Mac/ORSSerial.framework; sourceTree = "<group>"; };
 		7DA1F0A723F61DCB001416A6 /* AudioAnalyzer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioAnalyzer.swift; sourceTree = "<group>"; };
+		7DA1F0E323F644B3001416A6 /* ViewportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewportViewController.swift; sourceTree = "<group>"; };
+		7DA1F0E623F64606001416A6 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 		7DB5D6E721D46E92000E7B6C /* VisualizerPresetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizerPresetManager.swift; sourceTree = "<group>"; };
 		7DEBB54F21EE916800878309 /* AngleGradientLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AngleGradientLayer.m; sourceTree = "<group>"; };
 		7DEBB55121EE917100878309 /* AngleGradientLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AngleGradientLayer.h; sourceTree = "<group>"; };
@@ -261,6 +265,15 @@
 			path = IO;
 			sourceTree = "<group>";
 		};
+		7DA1F0E523F644C0001416A6 /* Viewport */ = {
+			isa = PBXGroup;
+			children = (
+				7DA1F0E623F64606001416A6 /* art.scnassets */,
+				7DA1F0E323F644B3001416A6 /* ViewportViewController.swift */,
+			);
+			path = Viewport;
+			sourceTree = "<group>";
+		};
 		7DB5D6E921D4ABA3000E7B6C /* Visualizer */ = {
 			isa = PBXGroup;
 			children = (
@@ -292,7 +305,6 @@
 		7DFE037321CB2C8800D6288F = {
 			isa = PBXGroup;
 			children = (
-				7D5BE95923E7C1C500B06B6F /* Luxamp.entitlements */,
 				7D889CD72332C0FC00FCE787 /* ORSSerial.framework */,
 				7D447BDB21FD333D00D09EA8 /* README.md */,
 				7DFE037E21CB2C8800D6288F /* src */,
@@ -316,11 +328,13 @@
 		7DFE037E21CB2C8800D6288F /* src */ = {
 			isa = PBXGroup;
 			children = (
+				7D5BE95923E7C1C500B06B6F /* Luxamp.entitlements */,
 				7DFE038521CB2C8900D6288F /* Main.storyboard */,
 				7DFE037F21CB2C8800D6288F /* AppDelegate.swift */,
 				7D5E4E5121D602370074B129 /* AppManager.swift */,
 				7D5BE95723E643F700B06B6F /* FixtureManager.swift */,
 				7D03140D21D2E40100F46D04 /* bridge.h */,
+				7DA1F0E523F644C0001416A6 /* Viewport */,
 				7D87087023E1354A00A17AD6 /* IO */,
 				7D2AC08023E28AED00FCDEB6 /* Fixtures */,
 				7DB5D6E921D4ABA3000E7B6C /* Visualizer */,
@@ -462,6 +476,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7DFE038421CB2C8900D6288F /* Assets.xcassets in Resources */,
+				7DA1F0E723F64606001416A6 /* art.scnassets in Resources */,
 				7DFE038721CB2C8900D6288F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -543,6 +558,7 @@
 				7D03140221D24ABE00F46D04 /* VisualizerTextField.swift in Sources */,
 				7D03140A21D2E0DE00F46D04 /* PreferencesViewController.swift in Sources */,
 				7D2AC07F23E2887600FCDEB6 /* LASerialDevice.swift in Sources */,
+				7DA1F0E423F644B3001416A6 /* ViewportViewController.swift in Sources */,
 				7DEBB55021EE916800878309 /* AngleGradientLayer.m in Sources */,
 				7DFC34202202DD7D00B4C993 /* SideViewController.swift in Sources */,
 				7D5CF64C21DA566200D86666 /* Remap.swift in Sources */,
@@ -718,7 +734,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_GCD_PERFORMANCE = YES;
-				CODE_SIGN_ENTITLEMENTS = Luxamp.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "$(PROJECT_DIR)/src/Luxamp.entitlements";
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -753,7 +769,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_GCD_PERFORMANCE = YES;
-				CODE_SIGN_ENTITLEMENTS = Luxamp.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "$(PROJECT_DIR)/src/Luxamp.entitlements";
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;

@@ -16,7 +16,6 @@ class ViewController: NSViewController, VisualizerDelegate,
                         ArcLevelViewDelegate, SaveDialogDelegate, GradientEditorDelegate {
     
     @IBOutlet weak var powerButton: NSButton!
-    @IBOutlet weak var spectrum: SpectrumView!
     
     @IBOutlet weak var presetMenu: NSPopUpButton!
     @IBOutlet weak var presetMenuDeleteItem: NSMenuItem!
@@ -25,6 +24,8 @@ class ViewController: NSViewController, VisualizerDelegate,
     
     var brightnessSide: SideViewController!
     var colorSide: SideViewController!
+	
+	var viewport: ViewportViewController!
 	
     var hidden = true
     var lastSelectedPresetName: String = ""
@@ -107,6 +108,10 @@ class ViewController: NSViewController, VisualizerDelegate,
     }
     
     override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
+		if segue.identifier == nil {
+			fatalError("Must set identifier for all segues in storyboard")
+		}
+		
         switch segue.identifier! {
         case .brightnessSideSegue:
             brightnessSide = segue.destinationController as? SideViewController
@@ -128,6 +133,8 @@ class ViewController: NSViewController, VisualizerDelegate,
         case .saveDialogSegue:
             let saveDialogController = segue.destinationController as! SaveDialogViewController
             saveDialogController.delegate = self
+		case "viewportEmbedSegue":
+			viewport = (segue.destinationController as! ViewportViewController)
         default:
             print("error: unidentified segue \(segue.identifier ?? "no identifier")")
         }
@@ -145,8 +152,8 @@ class ViewController: NSViewController, VisualizerDelegate,
         } else {
 			FixtureManager.sharedFixture.dimmer = 0.0
             stopAudioVisualization()
-            spectrum.clear()
 			colorView.color = .black
+			viewport.lightColor = .black
 			arcLevelCenter.setBrightnessLevel(to: 0.0)
 			arcLevelCenter.setColorLevel(to: 0.0)
         }
@@ -231,6 +238,7 @@ class ViewController: NSViewController, VisualizerDelegate,
 			FixtureManager.sharedFixture.color = color
 			FixtureManager.sharedFixture.sendChannels()
 			self.colorView.color = color
+			self.viewport.lightColor = color
 			
 			self.arcLevelCenter.setBrightnessLevel(to: brightnessVal)
 			self.arcLevelCenter.setColorLevel(to: colorVal)
