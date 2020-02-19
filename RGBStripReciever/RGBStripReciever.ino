@@ -117,11 +117,6 @@ void loop() {
   while(Serial.available() > 0) {
     uint8_t read_byte = Serial.read();
     
-    Serial.print(buffer_loc, DEC); 
-    Serial.print(": 0x");
-    Serial.print(read_byte, HEX);
-    Serial.print("\n");
-    
     buffer[buffer_loc] = read_byte;
 
     switch(buffer_loc) {
