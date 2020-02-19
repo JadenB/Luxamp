@@ -20,10 +20,15 @@ Luxamp
 2. An LED strip (SMD 5050 strip recommended).
 3. A computer running macOS.
 
-### Setting it up
+### Setting it up: Arduino
+1. Install the [Arduino IDE](https://www.arduino.cc/en/main/software)
+2. Load the code from /RGBStripReciever/RGBStripReciever.ino onto your Arduino.
+
+### Setting it up: macOS
 1. Connect the LED strip to your circuit and connect the Arduino to your computer via USB.
-2. Load the code from /Arduino/ColoredLEDs.ino onto your Arduino.
-3. Build the AudioLED app.
+If you're using the precompiled binary, skip to **step 4**
+2. Using terminal, cd to the main project directory and run **carthage bootstrap** to compile framework depedencies.
+3. Using Xcode, build the app in the **Luxamp Release** scheme.
 4. Set the sound input you want to use for the lights in System Preferences.
 5. Launch the app and enjoy your light show!
 
