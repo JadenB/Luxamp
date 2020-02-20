@@ -11,7 +11,7 @@ Luxamp
 
 **Luxamp for macOS** allows you to sync your LED lights to music with just an Arduino and a simple circuit. It analyzes audio from your computer's input and converts it into a vivid spectrum of colors for your lights. Every aspect of the conversion is customizable, including the smoothness, the frequency range used to determine color, and the output colors themselves.
 
-![](https://i.imgur.com/30Xkunh.gif)
+![](https://i.imgur.com/ePTkFSX.png)
 
 ## Getting started
 
